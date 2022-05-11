@@ -1,16 +1,14 @@
+import json
+
+
 class ResponseDto:
     def __init__(self, statusCode, message, data=None):
-        self.__statusCode = statusCode
-        self.__message = message
+        self.statusCode = statusCode
+        self.message = message
         if data is None:
-            self.__data = None
+            self.data = None
         else:
-            self.__data = data
+            self.data = data
 
-    @property
-    def data(self):
-        return self.__data
-
-    @data.setter
-    def data(self, data):
-        self.__data = data
+    def toJSON(self):
+        return json.loads(json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4))

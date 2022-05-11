@@ -1,6 +1,9 @@
-from flask import Flask
+from flask import Flask, Blueprint
+
+from controller import userController
 
 app = Flask(__name__)
+app.register_blueprint(userController.userApp, url_prefix="/user")
 
 
 @app.route("/")

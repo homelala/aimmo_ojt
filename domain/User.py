@@ -5,13 +5,13 @@ class User:
         self.__passwd = passwd
 
     @property
-    def get__name(self):
+    def name(self):
         return self.__name
 
     @property
-    def get__email(self):
+    def email(self):
         return self.__email
 
     @property
-    def get__passwd(self):
+    def passwd(self):
         return self.__passwd

@@ -1,17 +1,18 @@
 class UserCreateDto:
     def __init__(self, name, email, passwd):
-        self.__name = name
-        self.__email = email
-        self.__passwd = passwd
+        print(name, email, passwd)
+        self._name = name
+        self._email = email
+        self._passwd = passwd
 
     @property
-    def get__name(self):
-        return self.__name
+    def name(self):
+        return self._name
 
     @property
-    def get__email(self):
-        return self.__email
+    def email(self):
+        return self._email
 
     @property
-    def get__passwd(self):
-        return self.__passwd
+    def passwd(self):
+        return self._passwd

@@ -5,6 +5,7 @@ import json
 from dto.ResponseDto import ResponseDto
 from dto.UserCreateDto import UserCreateDto
 from dto.UserLogInDto import UserLogInDto
+from dto.UserUpdateInfoDto import UserUpdateInfoDto
 from service import userService
 from utils.CustomException import CustomException
 from utils.ErrorResponseDto import ErrorResponseDto
@@ -36,5 +37,7 @@ def userLogIn():
 def userUpdateInfo():
     try:
         body = request.get_json()
+        userService.userUpdateInfo(UserUpdateInfoDto(body["token"], body["name"]))
+        return ResponseDto(200, "회원 정보 수정이 완료되었습니다.").toJSON(), 200
     except CustomException as e:
         return ErrorResponseDto(e.message, e.statusCode).toJSON()

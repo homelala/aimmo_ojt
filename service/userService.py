@@ -34,4 +34,5 @@ def userUpdateInfo(userUpdateInfoDto):
     if not userInfo:
         raise AccessException("올바른 접근이 아닙니다.")
     else:
-        userRepository.updateUserInfo(userUpdateInfoDto.name)
+        print(userUpdateInfoDto.name)
+        userRepository.updateUserInfo(userUpdateInfoDto.token, userUpdateInfoDto.name)

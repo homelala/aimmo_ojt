@@ -18,4 +18,4 @@ def updateUserToken(email, token):
 
 
 def updateUserInfo(token, name):
-    user.update_one({"token", token}, {"$set": {"name": name}})
+    user.update_one({"token": token}, {"$set": {"name": name}})

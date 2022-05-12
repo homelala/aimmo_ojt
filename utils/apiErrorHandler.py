@@ -34,4 +34,4 @@ def errorHandler(app):
     @app.errorhandler(CustomException)
     def custom_error(e):
         traceback.print_exc()
-        return jsonify(ErrorResponseDto(e.error_message, e.status_code))
+        return ErrorResponseDto(e.error_message, e.status_code).toJSON()

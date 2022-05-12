@@ -17,3 +17,17 @@ class NotExistUserException(CustomException):
         statusCode = 403
         self.__message = message
         super().__init__(statusCode, message)
+
+
+class AlreadyExistUserException(CustomException):
+    def __init__(self, message):
+        statusCode = 403
+        self.__message = message
+        super().__init__(statusCode, message)
+
+
+class AccessException(CustomException):
+    def __init__(self, message):
+        statusCode = 403
+        self.__message = message
+        super().__init__(statusCode, message)

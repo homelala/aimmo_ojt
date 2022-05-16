@@ -1,0 +1,25 @@
+from marshmallow import fields, Schema, post_load
+
+from funcy import project
+
+from domain.Notice import Notice
+
+
+class NoticeSchema(Schema):
+    title = fields.String()
+    description = fields.String()
+    registerDate = fields.Date()
+    userId = fields.String()
+
+
+class RegisterNoticeSchema(Schema):
+    title = fields.String(required=True)
+    description = fields.String(required=True)
+    userId = fields.String(required=True)
+    token = fields.String(required=True)
+
+    @post_load
+    def newNotice(self, data, **kwargs):
+        print(data)
+        notice = Notice(**project(data, ["title", "description", "userId", "token"]))
+        return notice

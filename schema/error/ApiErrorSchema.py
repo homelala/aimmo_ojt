@@ -1,4 +1,4 @@
-from marshmallow import fields, Schema, post_load
+from marshmallow import fields, Schema
 
 
 class ApiErrorSchema(Schema):

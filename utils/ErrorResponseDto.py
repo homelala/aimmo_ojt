@@ -1,10 +1,9 @@
 import json
 
 
-class ErrorResponseDto:
-    def __init__(self, message, statusCode):
-        self.message = message
-        self.statusCode = statusCode
+class ErrorResponseDto(Exception):
+    statusCode = 400
 
-    def toJSON(self):
-        return json.loads(json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4))
+    def __init__(self, message):
+        Exception.__init__(self, message)
+        self.message = message

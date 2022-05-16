@@ -3,6 +3,7 @@ import json
 from schema.UserSchema import UserSchema
 from utils.CustomException import *
 from repository import userRepository
+from bson.objectid import ObjectId
 
 
 def userSignUp(user):
@@ -14,23 +15,24 @@ def userSignUp(user):
     return userInfo[0]["_id"]
 
 
-def userLogIn(userLoginDto):
+def userLogIn(email, passwd):
     schema = UserSchema()
-    userInfo = userRepository.findByEmail(userLoginDto.email)
+    userInfo = userRepository.findByEmail(email)
     print(userInfo)
     result = schema.dump(userInfo)
     print(result)
     if not userInfo:
         raise NotExistUserException("이메일 혹은 비밀번호가 틀렸습니다.")
-    if userInfo[0]["passwd"] != userLoginDto.passwd:
+    if userInfo[0]["passwd"] != passwd:
         raise NotExistUserException("이메일 혹은 비밀번호가 틀렸습니다.")
     token = secrets.token_hex(16)
-    userRepository.updateUserToken(userLoginDto.email, token)
+    userRepository.updateUserToken(email, token)
     return userInfo[0]["_id"]
 
 
-def userUpdateInfo(userUpdateInfoDto):
-    userInfo = userRepository.findByToken(userUpdateInfoDto.token)
-    if not userInfo:
+def userUpdateInfo(user):
+    userInfo = userRepository.findById(ObjectId(user.id))
+    print(userInfo[0], user.token)
+    if userInfo[0]["token"] != user.token:
         raise AccessException("올바른 접근이 아닙니다.")
-    userRepository.updateUserInfo(userUpdateInfoDto.token, userUpdateInfoDto.name)
+    userRepository.updateUserInfo(ObjectId(user.id), user.name)

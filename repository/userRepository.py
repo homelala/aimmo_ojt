@@ -10,13 +10,13 @@ def findByEmail(email):
     return list(user.find({"email": email}))
 
 
-def findByToken(token):
-    return list(user.find({"token": token}))
+def findById(id):
+    return list(user.find({"_id": id}))
 
 
 def updateUserToken(email, token):
     user.update_one({"email": email}, {"$set": {"token": token}})
 
 
-def updateUserInfo(token, name):
-    user.update_one({"token": token}, {"$set": {"name": name}})
+def updateUserInfo(id, name):
+    user.update_one({"_id": id}, {"$set": {"name": name}})

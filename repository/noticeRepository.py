@@ -2,7 +2,15 @@ from config.db import notice
 
 
 def save(noticeInfo):
-    notice.insert_one({"title": noticeInfo.title, "description": noticeInfo.description, "userId": noticeInfo.userId})
+    notice.insert_one(
+        {
+            "title": noticeInfo.title,
+            "description": noticeInfo.description,
+            "userId": noticeInfo.userId,
+            "registerDate": noticeInfo.registerDate,
+            "like": noticeInfo.like,
+        }
+    )
 
 
 def updateNotice(noticeId, title, description):

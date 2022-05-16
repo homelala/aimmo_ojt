@@ -5,10 +5,11 @@ class Notice:
     def __init__(self, title, description, userId, noticeId=None, token=None):
         self.__title = title
         self.__description = description
-        self.__registerDate = dt.date.today()
+        self.__registerDate = dt.datetime.today()
         self.__userId = userId
         self.__token = token
         self.__noticeId = noticeId
+        self.__like = 0
 
     @property
     def title(self):
@@ -33,3 +34,7 @@ class Notice:
     @property
     def noticeId(self):
         return self.__noticeId
+
+    @property
+    def like(self):
+        return self.__like

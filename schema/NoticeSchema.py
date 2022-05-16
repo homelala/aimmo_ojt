@@ -8,8 +8,9 @@ from domain.Notice import Notice
 class NoticeSchema(Schema):
     title = fields.String()
     description = fields.String()
-    registerDate = fields.Date()
+    registerDate = fields.String()
     userId = fields.String()
+    like = fields.Integer()
 
 
 class RegisterNoticeSchema(Schema):

@@ -32,7 +32,6 @@ def userLogIn(email, passwd):
 
 def userUpdateInfo(user):
     userInfo = userRepository.findById(ObjectId(user.id))
-    print(userInfo[0], user.token)
     if userInfo[0]["token"] != user.token:
         raise AccessException("올바른 접근이 아닙니다.")
     userRepository.updateUserInfo(ObjectId(user.id), user.name)

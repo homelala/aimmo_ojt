@@ -1,6 +1,6 @@
 from bson import json_util
-from flask import request, g
 import json
+import traceback
 from flask_apispec import use_kwargs, marshal_with, doc
 from flask_classful import route, FlaskView
 from dto.ResponseDto import ResponseDto
@@ -29,7 +29,7 @@ class UserController(FlaskView):
         except CustomException as e:
             return ErrorResponseDto(e.message), 400
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             return ErrorResponseDto(e), 500
 
     @route("/logIn", methods=["POST"])
@@ -45,7 +45,7 @@ class UserController(FlaskView):
         except CustomException as e:
             return ErrorResponseDto(e.message), 400
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             return ErrorResponseDto(e), 500
 
     @route("/update", methods=["POST"])
@@ -61,5 +61,5 @@ class UserController(FlaskView):
         except CustomException as e:
             return ErrorResponseDto(e.message), 400
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             return ErrorResponseDto(e), 500

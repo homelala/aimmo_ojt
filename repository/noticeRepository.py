@@ -24,3 +24,7 @@ def findById(noticeId):
 def deleteById(noticeId):
     print(noticeId)
     return notice.delete_one({"_id": noticeId})
+
+
+def updateLikeById(noticeId):
+    return notice.update_one({"_id": noticeId}, {"$inc": {"like": 1}})

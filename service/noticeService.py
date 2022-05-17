@@ -24,7 +24,16 @@ def readNotice(noticeId):
 
 def deleteNotice(userId, noticeId):
     noticeInfo = noticeRepository.findById(ObjectId(noticeId))
-    print(noticeInfo)
     if noticeInfo["userId"] != userId:
         raise AccessException("권한이 없는 게시글입니다.")
     return noticeRepository.deleteById(ObjectId(noticeId))
+
+
+def likeNotice(userId, token, noticeId):
+    userInfo = userRepository.findById(ObjectId(userId))
+    if userInfo[0]["token"] != token:
+        raise AccessException("올바른 접근이 아닙니다.")
+    noticeRepository.updateLikeById(ObjectId(noticeId))
+
+
+# def commentNotice(userId, noticeId, description, token):

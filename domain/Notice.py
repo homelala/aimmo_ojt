@@ -2,7 +2,7 @@ import datetime as dt
 
 
 class Notice:
-    def __init__(self, title, description, userId, noticeId=None, token=None):
+    def __init__(self, userId, title=None, description=None, noticeId=None, token=None):
         self.__title = title
         self.__description = description
         self.__registerDate = dt.datetime.today()

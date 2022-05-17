@@ -36,3 +36,14 @@ class UpdateNoticeSchema(Schema):
     def updateNotice(self, data, **kwargs):
         notice = Notice(**project(data, ["noticeId", "title", "description", "userId", "token"]))
         return notice
+
+
+class LikeNoticeSchema(Schema):
+    noticeId = fields.String(required=True)
+    userId = fields.String(required=True)
+    token = fields.String(required=True)
+
+    @post_load
+    def likeNotice(self, data, **kwargs):
+        notice = Notice(**project(data, ["noticeId", "userId", "token"]))
+        return notice

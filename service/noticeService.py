@@ -15,7 +15,7 @@ def updateNotice(notice):
     noticeInfo = noticeRepository.findById(ObjectId(notice.noticeId))
     if noticeInfo["userId"] != notice.userId:
         raise AccessException("권한이 없는 게시글입니다.")
-    noticeRepository.updateNotice(ObjectId(notice.noticeId), notice.title, notice.description)
+    noticeRepository.updateNotice(ObjectId(notice.noticeId), notice.title, notice.description, notice.tags)
 
 
 def readNotice(noticeId):

@@ -48,7 +48,7 @@ class NoticeController(FlaskView):
             traceback.print_exc()
             return ErrorResponseDto(e, 500), 500
 
-    @route("/read/<noticeId>", methods=["GET"])
+    @route("/<noticeId>", methods=["GET"])
     @doc(description="Notice 읽기", summary="Notice 읽기")
     @marshal_with(NoticeSchema(), code=200, description="notice 불러오기")
     @marshal_with(ApiErrorSchema(), code=400, description="notice 불러오기 실패")
@@ -82,7 +82,7 @@ class NoticeController(FlaskView):
             return ErrorResponseDto(e, 500), 500
 
     @route("/like", methods=["POST"])
-    @doc(description="Notice 읽기", summary="Notice 읽기")
+    @doc(description="Notice 좋아요", summary="Notice 좋아요")
     @use_kwargs(LikeNoticeSchema(), locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="notice 좋아요 완료")
     @marshal_with(ApiErrorSchema(), code=400, description="notice 좋아요 실패")

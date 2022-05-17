@@ -2,7 +2,7 @@ import datetime as dt
 
 
 class Notice:
-    def __init__(self, userId, title=None, description=None, noticeId=None, token=None):
+    def __init__(self, userId, title=None, description=None, noticeId=None, token=None, tags=None):
         self.__title = title
         self.__description = description
         self.__registerDate = dt.datetime.today()
@@ -10,6 +10,7 @@ class Notice:
         self.__token = token
         self.__noticeId = noticeId
         self.__like = 0
+        self.__tags = tags
 
     @property
     def title(self):
@@ -38,3 +39,7 @@ class Notice:
     @property
     def like(self):
         return self.__like
+
+    @property
+    def tags(self):
+        return self.__tags

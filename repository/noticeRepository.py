@@ -9,12 +9,13 @@ def save(noticeInfo):
             "userId": noticeInfo.userId,
             "registerDate": noticeInfo.registerDate,
             "like": noticeInfo.like,
+            "tags": noticeInfo.tags,
         }
     )
 
 
-def updateNotice(noticeId, title, description):
-    notice.update_one({"_id": noticeId}, {"$set": {"title": title, "description": description}})
+def updateNotice(noticeId, title, description, tags):
+    notice.update_one({"_id": noticeId}, {"$set": {"title": title, "description": description, "tags": tags}})
 
 
 def findById(noticeId):
@@ -22,7 +23,6 @@ def findById(noticeId):
 
 
 def deleteById(noticeId):
-    print(noticeId)
     return notice.delete_one({"_id": noticeId})
 
 

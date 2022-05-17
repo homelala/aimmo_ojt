@@ -11,6 +11,7 @@ class NoticeSchema(Schema):
     registerDate = fields.String()
     userId = fields.String()
     like = fields.Integer()
+    tags = fields.List(fields.String())
 
 
 class RegisterNoticeSchema(Schema):
@@ -18,10 +19,11 @@ class RegisterNoticeSchema(Schema):
     description = fields.String(required=True)
     userId = fields.String(required=True)
     token = fields.String(required=True)
+    tags = fields.List(fields.String())
 
     @post_load
     def newNotice(self, data, **kwargs):
-        notice = Notice(**project(data, ["title", "description", "userId", "token"]))
+        notice = Notice(**project(data, ["title", "description", "userId", "token", "tags"]))
         return notice
 
 
@@ -31,10 +33,11 @@ class UpdateNoticeSchema(Schema):
     description = fields.String(required=True)
     userId = fields.String(required=True)
     token = fields.String(required=True)
+    tags = fields.List(fields.String())
 
     @post_load
     def updateNotice(self, data, **kwargs):
-        notice = Notice(**project(data, ["noticeId", "title", "description", "userId", "token"]))
+        notice = Notice(**project(data, ["noticeId", "title", "description", "userId", "token", "tags"]))
         return notice
 
 

@@ -2,6 +2,7 @@ from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields, Schema, post_load
 from flask_classful import route, FlaskView
 from dto.ResponseDto import ResponseDto
+from schema.NoticeCommentSchema import NoticeRegisterSchema
 from schema.NoticeSchema import NoticeSchema, RegisterNoticeSchema, UpdateNoticeSchema, LikeNoticeSchema
 from schema.error.ApiErrorSchema import ApiErrorSchema
 from schema.reponse.ResponseSchema import ResponseSchema
@@ -90,6 +91,22 @@ class NoticeController(FlaskView):
         try:
             noticeService.likeNotice(notice.userId, notice.token, notice.noticeId)
             return ResponseDto(200, "좋아요 완료"), 200
+        except CustomException as e:
+            return ErrorResponseDto(e.message), 400
+        except Exception as e:
+            traceback.print_exc()
+            return ErrorResponseDto(e, 500), 500
+
+    @route("/comment", methods=["POST"])
+    @doc(description="Notice 댓글 달기", summary="Notice 댓글 달기")
+    @use_kwargs(NoticeRegisterSchema(), locations=("json",))
+    @marshal_with(ResponseSchema(), code=200, description="notice 댓글 달기 완료")
+    @marshal_with(ApiErrorSchema(), code=400, description="notice 댓글 달기 실패")
+    @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
+    def likeNotice(self, notice):
+        try:
+            noticeService.commentNotice(notice)
+            return ResponseDto(200, "댓글 달기 완료"), 200
         except CustomException as e:
             return ErrorResponseDto(e.message), 400
         except Exception as e:

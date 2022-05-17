@@ -8,3 +8,4 @@ db = client.aimmo_ojt
 
 user = db.user
 notice = db.notice
+noticeComment = db.notice_comment

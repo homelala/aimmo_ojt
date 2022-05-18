@@ -19,14 +19,16 @@ def updateNotice(notice):
 
 
 def readNotice(noticeId):
-    return noticeRepository.findById(ObjectId(noticeId))
+    notice = noticeRepository.findByIdWithComment(ObjectId(noticeId))
+    return notice
 
 
 def deleteNotice(userId, noticeId):
     noticeInfo = noticeRepository.findById(ObjectId(noticeId))
     if noticeInfo["userId"] != userId:
         raise AccessException("권한이 없는 게시글입니다.")
-    return noticeRepository.deleteById(ObjectId(noticeId))
+    noticeCommentRepository.deleteByNoticeId(ObjectId(noticeId))
+    noticeRepository.deleteById(ObjectId(noticeId))
 
 
 def likeNotice(userId, token, noticeId):
@@ -42,3 +44,8 @@ def commentNotice(noticeComment):
     if userInfo[0]["token"] != noticeComment.token:
         raise AccessException("올바른 접근이 아닙니다.")
     noticeCommentRepository.save(noticeComment.noticeId, noticeComment.userId, noticeComment.description, noticeComment.registerDate)
+
+
+def getMaxLikeNotice():
+    temp = noticeRepository.findByCountLike()
+    print(temp)

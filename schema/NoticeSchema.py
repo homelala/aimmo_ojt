@@ -1,16 +1,25 @@
-from marshmallow import fields, Schema, post_load
+from marshmallow import fields, Schema, post_load, post_dump
 
 from funcy import project
 
 from domain.Notice import Notice
 
 
+class CommentSchema(Schema):
+    description = fields.String(required=True)
+    registerDate = fields.String(required=True)
+    userId = fields.String(required=True)
+    noticeId = fields.String(required=True)
+
+
 class NoticeSchema(Schema):
-    title = fields.String()
-    description = fields.String()
-    registerDate = fields.String()
-    userId = fields.String()
-    like = fields.Integer()
+    noticedId = fields.String(required=True)
+    title = fields.String(required=True)
+    comments = fields.List(fields.Nested(CommentSchema()))
+    description = fields.String(required=True)
+    registerDate = fields.String(required=True)
+    userId = fields.String(required=True)
+    like = fields.Integer(required=True)
     tags = fields.List(fields.String())
 
 

@@ -10,3 +10,7 @@ def save(noticeId, userId, description, registerDate):
             "registerDate": registerDate,
         }
     )
+
+
+def deleteByNoticeId(noticeId):
+    noticeComment.delete_one({"noticeId": noticeId})

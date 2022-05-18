@@ -1,5 +1,6 @@
 from flask_apispec import use_kwargs, marshal_with, doc
-from marshmallow import fields, Schema, post_load
+from marshmallow import fields
+from bson import json_util
 from flask_classful import route, FlaskView
 from dto.ResponseDto import ResponseDto
 from schema.NoticeCommentSchema import NoticeRegisterSchema
@@ -10,6 +11,8 @@ from service import noticeService
 from utils.CustomException import CustomException
 from utils.ErrorResponseDto import ErrorResponseDto
 import traceback
+import json
+from pprint import pprint
 
 
 class NoticeController(FlaskView):
@@ -57,6 +60,7 @@ class NoticeController(FlaskView):
         try:
             noticeInfo = noticeService.readNotice(noticeId)
             schema = NoticeSchema()
+
             return schema.dump(noticeInfo), 200
         except CustomException as e:
             return ErrorResponseDto(e.message), 400
@@ -72,7 +76,6 @@ class NoticeController(FlaskView):
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def delete(self, userId, noticeId):
         try:
-            print(userId)
             noticeService.deleteNotice(userId, noticeId)
             return ResponseDto(200, "공지 삭제 완료"), 200
         except CustomException as e:

@@ -46,3 +46,19 @@ class DashBoardController(FlaskView):
         except Exception as e:
             traceback.print_exc()
             return ErrorResponseDto(e, 500), 500
+
+    @route("/recent", methods=["GET"])
+    @doc(description="최근 게시물", summary="최근 게시물")
+    @marshal_with(NoticeSchema(many=True), code=200, description="최근 게시물 불러오기 성공")
+    @marshal_with(ApiErrorSchema(), code=400, description="최근 게시물 불러오기 실패")
+    @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
+    def getHighCommentNotice(self):
+        try:
+            noticeInfo = noticeService.getRecentNotice()
+            schema = NoticeSchema(many=True)
+            return schema.dump(noticeInfo), 200
+        except CustomException as e:
+            return ErrorResponseDto(e.message), 400
+        except Exception as e:
+            traceback.print_exc()
+            return ErrorResponseDto(e, 500), 500

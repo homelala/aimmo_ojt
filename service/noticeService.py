@@ -48,10 +48,12 @@ def commentNotice(noticeComment):
 
 
 def getMaxLikeNotice():
-    temp = noticeRepository.findByCountLike()
-    return temp
+    return noticeRepository.findByCountLike()
 
 
 def getHighCommentNotice():
-    temp = noticeRepository.findByCountComment()
-    return temp
+    return noticeRepository.findByCountComment()
+
+
+def getRecentNotice():
+    return noticeRepository.findByRegisterDate()

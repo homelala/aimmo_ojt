@@ -2,6 +2,7 @@ from flask import Flask
 from flask_classful import FlaskView, route
 from flask_restx import Api, Resource
 
+from controller.dashBoardController import DashBoardController
 from controller.noticeController import NoticeController
 from controller.userController import UserController
 
@@ -19,6 +20,6 @@ class Main(FlaskView):
 Main.register(app)
 UserController.register(app)
 NoticeController.register(app)
-
+DashBoardController.register(app)
 if __name__ == "__main__":
     app.run("127.0.0.1", port=8080, debug=True)

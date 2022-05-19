@@ -52,7 +52,11 @@ def updateLikeById(noticeId):
 def findByCountLike():
     info = notice.aggregate(
         [
-            {"$addFields": {"noticeId": {"$toString": "$_id"}}},
+            {
+                "$addFields": {
+                    "noticeId": {"$toString": "$_id"},
+                },
+            },
             {
                 "$lookup": {
                     "from": "notice_comment",
@@ -61,8 +65,43 @@ def findByCountLike():
                     "as": "comments",
                 }
             },
-            {"$group": {"$count": "$comments"}},
+            {
+                "$addFields": {
+                    "countComment": {"$size": {"$ifNull": ["$comments", []]}},
+                },
+            },
             {"$limit": 10},
+            {"$sort": {"like": -1}},
         ]
     )
+
+    return list(info)
+
+
+def findByCountComment():
+    info = notice.aggregate(
+        [
+            {
+                "$addFields": {
+                    "noticeId": {"$toString": "$_id"},
+                },
+            },
+            {
+                "$lookup": {
+                    "from": "notice_comment",
+                    "localField": "noticeId",
+                    "foreignField": "noticeId",
+                    "as": "comments",
+                }
+            },
+            {
+                "$addFields": {
+                    "countComment": {"$size": {"$ifNull": ["$comments", ["ㅁㄴㅇ"]]}},
+                },
+            },
+            {"$limit": 10},
+            {"$sort": {"countComment": -1}},
+        ]
+    )
+
     return list(info)

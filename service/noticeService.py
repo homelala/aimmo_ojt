@@ -2,6 +2,7 @@ from bson import ObjectId
 
 from repository import noticeRepository, userRepository, noticeCommentRepository
 from utils.CustomException import AccessException
+from pprint import pprint
 
 
 def registerNotice(notice):
@@ -48,4 +49,9 @@ def commentNotice(noticeComment):
 
 def getMaxLikeNotice():
     temp = noticeRepository.findByCountLike()
-    print(temp)
+    return temp
+
+
+def getHighCommentNotice():
+    temp = noticeRepository.findByCountComment()
+    return temp

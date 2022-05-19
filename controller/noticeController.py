@@ -60,7 +60,6 @@ class NoticeController(FlaskView):
         try:
             noticeInfo = noticeService.readNotice(noticeId)
             schema = NoticeSchema()
-
             return schema.dump(noticeInfo), 200
         except CustomException as e:
             return ErrorResponseDto(e.message), 400

@@ -134,3 +134,31 @@ def findByRegisterDate():
     )
 
     return list(info)
+
+
+def finByUserId(userId):
+    info = notice.aggregate(
+        [
+            {
+                "$addFields": {
+                    "noticeId": {"$toString": "$_id"},
+                },
+            },
+            {
+                "$lookup": {
+                    "from": "notice_comment",
+                    "localField": "noticeId",
+                    "foreignField": "noticeId",
+                    "as": "comments",
+                }
+            },
+            {
+                "$addFields": {
+                    "countComment": {"$size": {"$ifNull": ["$comments", []]}},
+                },
+            },
+            {"$match": {"userId": userId}},
+        ]
+    )
+
+    return list(info)

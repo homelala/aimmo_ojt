@@ -1,6 +1,4 @@
 import secrets
-import json
-from schema.UserSchema import UserSchema
 from utils.CustomException import *
 from repository import userRepository
 from bson.objectid import ObjectId
@@ -16,11 +14,7 @@ def userSignUp(user):
 
 
 def userLogIn(email, passwd):
-    schema = UserSchema()
     userInfo = userRepository.findByEmail(email)
-    print(userInfo)
-    result = schema.dump(userInfo)
-    print(result)
     if not userInfo:
         raise NotExistUserException("이메일 혹은 비밀번호가 틀렸습니다.")
     if userInfo[0]["passwd"] != passwd:

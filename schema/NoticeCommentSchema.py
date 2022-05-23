@@ -4,11 +4,17 @@ from domain.NoticeComment import NoticeComment
 from funcy import project
 
 
+class NoticeInfoSchema(Schema):
+    title = fields.String(required=True)
+    registerDate = fields.String(required=True)
+
+
 class NoticeCommentSchema(Schema):
     noticeId = fields.String(required=True)
     userId = fields.String(required=True)
     description = fields.String(required=True)
     registerDate = fields.String(required=True)
+    notice = fields.List(fields.Nested(NoticeInfoSchema()))
 
 
 class NoticeRegisterSchema(Schema):

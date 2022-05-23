@@ -57,3 +57,7 @@ def getHighCommentNotice():
 
 def getRecentNotice():
     return noticeRepository.findByRegisterDate()
+
+
+def searchNotice(keyword):
+    return noticeRepository.findByTitle(keyword)

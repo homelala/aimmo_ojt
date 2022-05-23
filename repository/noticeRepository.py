@@ -162,3 +162,25 @@ def finByUserId(userId):
     )
 
     return list(info)
+
+
+def findByTitle(keyword):
+    info = notice.aggregate(
+        [
+            {
+                "$addFields": {
+                    "noticeId": {"$toString": "$_id"},
+                },
+            },
+            {
+                "$lookup": {
+                    "from": "notice_comment",
+                    "localField": "noticeId",
+                    "foreignField": "noticeId",
+                    "as": "comments",
+                }
+            },
+            {"$match": {"title": {"$regex": keyword}}},
+        ]
+    )
+    return list(info)

@@ -114,3 +114,19 @@ class NoticeController(FlaskView):
         except Exception as e:
             traceback.print_exc()
             return ErrorResponseDto(e, 500), 500
+
+    @route("/<keyword>", methods=["GET"])
+    @doc(description="Notice 검색", summary="Notice 검색")
+    @marshal_with(NoticeSchema(many=True), code=200, description="notice 검색 완료")
+    @marshal_with(ApiErrorSchema(), code=400, description="notice 검색 실패")
+    @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
+    def likeNotice(self, keyword):
+        try:
+            noticeList = noticeService.searchNotice(keyword)
+            schema = NoticeSchema(many=True)
+            return schema.dump(noticeList), 200
+        except CustomException as e:
+            return ErrorResponseDto(e.message), 400
+        except Exception as e:
+            traceback.print_exc()
+            return ErrorResponseDto(e, 500), 500

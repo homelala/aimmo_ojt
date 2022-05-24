@@ -1,7 +1,7 @@
 from flask_apispec import marshal_with, doc
 from flask_classful import route, FlaskView
 
-from dto.ResponseDto import ResponseDto
+from schema.reponse.ResponseDto import ResponseDto
 from schema.NoticeSchema import NoticeSchema
 from schema.error.ApiErrorSchema import ApiErrorSchema
 from schema.reponse.ResponseSchema import ResponseSchema
@@ -9,7 +9,6 @@ from service import noticeService
 from utils.CustomException import CustomException
 from utils.ErrorResponseDto import ErrorResponseDto
 import traceback
-from pprint import pprint
 
 
 class DashBoardController(FlaskView):

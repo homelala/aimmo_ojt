@@ -2,7 +2,7 @@ from flask_apispec import use_kwargs, marshal_with, doc
 from flask_classful import route, FlaskView
 from marshmallow import fields
 
-from dto.ResponseDto import ResponseDto
+from schema.reponse.ResponseDto import ResponseDto
 from schema.NoticeCommentSchema import NoticeCommentSchema
 from schema.NoticeSchema import NoticeSchema
 from schema.error.ApiErrorSchema import ApiErrorSchema

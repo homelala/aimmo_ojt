@@ -1,8 +1,7 @@
 from flask_apispec import use_kwargs, marshal_with, doc
-from marshmallow import fields
 from flask_classful import route, FlaskView, request
-from dto.ResponseDto import ResponseDto
-from schema.NoticeCommentSchema import RegisterCommentSchema, NoticeCommentSchema
+from schema.reponse.ResponseDto import ResponseDto
+from schema.NoticeCommentSchema import RegisterCommentSchema
 from schema.NoticeSchema import NoticeSchema, RegisterArticleSchema, LikeNoticeSchema, UpdateArticleSchema
 from schema.error.ApiErrorSchema import ApiErrorSchema
 from schema.reponse.ResponseSchema import ResponseSchema, ResponseDictSchema
@@ -11,7 +10,6 @@ from utils.CustomException import CustomException
 from utils.ErrorResponseDto import ErrorResponseDto
 import traceback
 import json
-from pprint import pprint
 
 
 class NoticeController(FlaskView):

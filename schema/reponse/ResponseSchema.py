@@ -8,7 +8,7 @@ from dto.ResponseDto import ResponseDto
 class ResponseSchema(Schema):
     statusCode = fields.Integer(required=True)
     message = fields.String(required=True)
-    data = fields.Dict(required=False)
+    data = fields.List(fields.Dict())
 
     @post_load
     def newResponseDto(self, data, **kwargs):

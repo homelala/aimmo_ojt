@@ -41,7 +41,6 @@ def likeNotice(userId, token, noticeId):
 
 def commentNotice(noticeComment):
     userInfo = userRepository.findById(ObjectId(noticeComment.userId))
-    print(userInfo[0]["token"], " ", noticeComment.token)
     if userInfo[0]["token"] != noticeComment.token:
         raise AccessException("올바른 접근이 아닙니다.")
     noticeCommentRepository.save(noticeComment.noticeId, noticeComment.userId, noticeComment.description, noticeComment.registerDate)

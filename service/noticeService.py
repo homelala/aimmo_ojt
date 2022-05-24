@@ -5,58 +5,55 @@ from utils.CustomException import AccessException
 from pprint import pprint
 
 
-def registerNotice(notice):
-    userInfo = userRepository.findById(ObjectId(notice.userId))
-    if userInfo[0]["token"] != notice.token:
+def register_article(notice):
+    user_info = userRepository.findById(ObjectId(notice.userId))
+    if user_info[0]["token"] != notice.token:
         raise AccessException("올바른 접근이 아닙니다.")
     noticeRepository.save(notice)
 
 
-def updateNotice(notice):
-    noticeInfo = noticeRepository.findById(ObjectId(notice.noticeId))
-    if noticeInfo["userId"] != notice.userId:
+def update_article(article_id, data):
+    user_info = noticeRepository.findById(ObjectId(article_id))
+    if user_info["userId"] != data.userId:
         raise AccessException("권한이 없는 게시글입니다.")
-    noticeRepository.updateNotice(ObjectId(notice.noticeId), notice.title, notice.description, notice.tags)
+    noticeRepository.updateNotice(ObjectId(article_id), data.title, data.description, data.tags)
 
 
-def readNotice(noticeId):
+def read_article(noticeId):
     notice = noticeRepository.findByIdWithComment(ObjectId(noticeId))
     return notice
 
 
-def deleteNotice(userId, noticeId):
-    noticeInfo = noticeRepository.findById(ObjectId(noticeId))
-    if noticeInfo["userId"] != userId:
-        raise AccessException("권한이 없는 게시글입니다.")
-    noticeCommentRepository.deleteByNoticeId(ObjectId(noticeId))
-    noticeRepository.deleteById(ObjectId(noticeId))
+def delete_article(article_id):
+    noticeCommentRepository.deleteByNoticeId(ObjectId(article_id))
+    noticeRepository.deleteById(ObjectId(article_id))
 
 
-def likeNotice(userId, token, noticeId):
-    userInfo = userRepository.findById(ObjectId(userId))
-    if userInfo[0]["token"] != token:
+def like_notice(userId, token, noticeId):
+    user_info = userRepository.findById(ObjectId(userId))
+    if user_info[0]["token"] != token:
         raise AccessException("올바른 접근이 아닙니다.")
     noticeRepository.updateLikeById(ObjectId(noticeId))
 
 
-def commentNotice(noticeComment):
-    userInfo = userRepository.findById(ObjectId(noticeComment.userId))
-    if userInfo[0]["token"] != noticeComment.token:
+def comment_notice(noticeComment):
+    user_info = userRepository.findById(ObjectId(noticeComment.userId))
+    if user_info[0]["token"] != noticeComment.token:
         raise AccessException("올바른 접근이 아닙니다.")
     noticeCommentRepository.save(noticeComment.noticeId, noticeComment.userId, noticeComment.description, noticeComment.registerDate)
 
 
-def getMaxLikeNotice():
+def get_high_like_notice():
     return noticeRepository.findByCountLike()
 
 
-def getHighCommentNotice():
+def get_high_comment_notice():
     return noticeRepository.findByCountComment()
 
 
-def getRecentNotice():
+def get_recent_notice():
     return noticeRepository.findByRegisterDate()
 
 
-def searchNotice(keyword):
+def search_notice(keyword):
     return noticeRepository.findByTitle(keyword)

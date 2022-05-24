@@ -23,7 +23,7 @@ class NoticeSchema(Schema):
     tags = fields.List(fields.String())
 
 
-class RegisterNoticeSchema(Schema):
+class RegisterArticleSchema(Schema):
     title = fields.String(required=True)
     description = fields.String(required=True)
     userId = fields.String(required=True)
@@ -36,8 +36,7 @@ class RegisterNoticeSchema(Schema):
         return notice
 
 
-class UpdateNoticeSchema(Schema):
-    noticeId = fields.String(required=True)
+class UpdateArticleSchema(Schema):
     title = fields.String(required=True)
     description = fields.String(required=True)
     userId = fields.String(required=True)

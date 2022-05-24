@@ -23,9 +23,9 @@ class DashBoardController(FlaskView):
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def getMaxLikeNotice(self):
         try:
-            noticeInfo = noticeService.getMaxLikeNotice()
+            notice_info = noticeService.get_high_like_notice()
             schema = NoticeSchema(many=True)
-            return ResponseDto(200, "success", schema.dump(noticeInfo)), 200
+            return ResponseDto(200, "success", schema.dump(notice_info)), 200
         except CustomException as e:
             return ErrorResponseDto(e.message), 400
         except Exception as e:
@@ -39,7 +39,7 @@ class DashBoardController(FlaskView):
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def getHighCommentNotice(self):
         try:
-            noticeInfo = noticeService.getHighCommentNotice()
+            noticeInfo = noticeService.get_high_comment_notice()
             schema = NoticeSchema(many=True)
             return ResponseDto(200, "success", schema.dump(noticeInfo)), 200
         except CustomException as e:
@@ -55,9 +55,9 @@ class DashBoardController(FlaskView):
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def getHighCommentNotice(self):
         try:
-            noticeInfo = noticeService.getRecentNotice()
+            notice_info = noticeService.get_recent_notice()
             schema = NoticeSchema(many=True)
-            return ResponseDto(200, "success", schema.dump(noticeInfo)), 200
+            return ResponseDto(200, "success", schema.dump(notice_info)), 200
         except CustomException as e:
             return ErrorResponseDto(e.message), 400
         except Exception as e:

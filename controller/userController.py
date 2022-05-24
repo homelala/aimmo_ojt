@@ -48,7 +48,7 @@ class UserController(FlaskView):
             traceback.print_exc()
             return ErrorResponseDto(e), 500
 
-    @route("/update", methods=["POST"])
+    @route("/", methods=["PUT"])
     @doc(description="User 정보 수정", summary="User 정보 수정")
     @use_kwargs(UserUpdateInfoSchema(), locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="정보 수정 성공")

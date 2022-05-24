@@ -21,7 +21,7 @@ def userLogIn(email, passwd):
         raise NotExistUserException("이메일 혹은 비밀번호가 틀렸습니다.")
     if userInfo[0]["passwd"] != passwd:
         raise NotExistUserException("이메일 혹은 비밀번호가 틀렸습니다.")
-    token = secrets.token_hex(16)
+    token = secrets.token_hex(16)  # 토큰에 사용자 정보 포함
     userRepository.updateUserToken(email, token)
     return userInfo[0]["_id"]
 

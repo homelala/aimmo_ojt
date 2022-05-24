@@ -23,7 +23,7 @@ class DashBoardController(FlaskView):
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def getMaxLikeNotice(self):
         try:
-            notice_info = noticeService.get_high_like_notice()
+            notice_info = noticeService.get_high_like_article()
             schema = NoticeSchema(many=True)
             return ResponseDto(200, "success", schema.dump(notice_info)), 200
         except CustomException as e:
@@ -39,7 +39,7 @@ class DashBoardController(FlaskView):
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def getHighCommentNotice(self):
         try:
-            noticeInfo = noticeService.get_high_comment_notice()
+            noticeInfo = noticeService.get_high_comment_article()
             schema = NoticeSchema(many=True)
             return ResponseDto(200, "success", schema.dump(noticeInfo)), 200
         except CustomException as e:
@@ -48,14 +48,14 @@ class DashBoardController(FlaskView):
             traceback.print_exc()
             return ErrorResponseDto(e, 500), 500
 
-    @route("/recent", methods=["GET"])
+    @route("/recent/articles", methods=["GET"])
     @doc(description="최근 게시물", summary="최근 게시물")
     @marshal_with(ResponseSchema(), code=200, description="최근 게시물 불러오기 성공")
     @marshal_with(ApiErrorSchema(), code=400, description="최근 게시물 불러오기 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def getHighCommentNotice(self):
         try:
-            notice_info = noticeService.get_recent_notice()
+            notice_info = noticeService.get_recent_article()
             schema = NoticeSchema(many=True)
             return ResponseDto(200, "success", schema.dump(notice_info)), 200
         except CustomException as e:

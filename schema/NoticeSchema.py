@@ -31,9 +31,9 @@ class RegisterArticleSchema(Schema):
     tags = fields.List(fields.String())
 
     @post_load
-    def newNotice(self, data, **kwargs):
-        notice = Notice(**project(data, ["title", "description", "userId", "token", "tags"]))
-        return notice
+    def new_article(self, data, **kwargs):
+        article = Notice(**project(data, ["title", "description", "userId", "token", "tags"]))
+        return article
 
 
 class UpdateArticleSchema(Schema):
@@ -50,8 +50,7 @@ class UpdateArticleSchema(Schema):
 
 
 class LikeNoticeSchema(Schema):
-    noticeId = fields.String(required=True)
-    userId = fields.String(required=True)
+    user_id = fields.String(required=True)
     token = fields.String(required=True)
 
     @post_load

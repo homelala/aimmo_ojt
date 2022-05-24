@@ -1,28 +1,28 @@
 from config.db import notice
 
 
-def save(noticeInfo):
+def save(article_info):
     notice.insert_one(
         {
-            "title": noticeInfo.title,
-            "description": noticeInfo.description,
-            "userId": noticeInfo.userId,
-            "registerDate": noticeInfo.registerDate,
-            "like": noticeInfo.like,
-            "tags": noticeInfo.tags,
+            "title": article_info.title,
+            "description": article_info.description,
+            "userId": article_info.userId,
+            "registerDate": article_info.registerDate,
+            "like": article_info.like,
+            "tags": article_info.tags,
         }
     )
 
 
-def updateNotice(noticeId, title, description, tags):
-    notice.update_one({"_id": noticeId}, {"$set": {"title": title, "description": description, "tags": tags}})
+def update(article_id, title, description, tags):
+    notice.update_one({"_id": article_id}, {"$set": {"title": title, "description": description, "tags": tags}})
 
 
-def findById(noticeId):
-    return notice.find_one({"_id": noticeId})
+def find_by_id(article_id):
+    return notice.find_one({"_id": article_id})
 
 
-def findByIdWithComment(noticeId):
+def findByIdWithComment(article_id):
     info = notice.aggregate(
         [
             {"$addFields": {"noticeId": {"$toString": "$_id"}}},
@@ -34,19 +34,19 @@ def findByIdWithComment(noticeId):
                     "as": "comments",
                 }
             },
-            {"$match": {"_id": noticeId}},
+            {"$match": {"_id": article_id}},
         ]
     )
 
     return list(info)[0]
 
 
-def deleteById(noticeId):
-    return notice.delete_one({"_id": noticeId})
+def deleteById(article_id):
+    return notice.delete_one({"_id": article_id})
 
 
-def updateLikeById(noticeId):
-    return notice.update_one({"_id": noticeId}, {"$inc": {"like": 1}})
+def updateLikeById(article_id):
+    return notice.update_one({"_id": article_id}, {"$inc": {"like": 1}})
 
 
 def findByCountLike():
@@ -136,7 +136,7 @@ def findByRegisterDate():
     return list(info)
 
 
-def finByUserId(userId):
+def finByUserId(user_id):
     info = notice.aggregate(
         [
             {
@@ -157,7 +157,7 @@ def finByUserId(userId):
                     "countComment": {"$size": {"$ifNull": ["$comments", []]}},
                 },
             },
-            {"$match": {"userId": userId}},
+            {"$match": {"userId": user_id}},
         ]
     )
 

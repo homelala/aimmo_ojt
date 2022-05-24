@@ -17,7 +17,7 @@ class MyPageController(FlaskView):
     route_base = "/page"
     decorators = (doc(tags=["Page"]),)
 
-    @route("/notice", methods=["POST"])
+    @route("/articles", methods=["POST"])
     @doc(description="내가 작성한 게시물", summary="내가 작성한 게시물")
     @use_kwargs({"userId": fields.String(required=True), "token": fields.String(required=True)}, locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="내가 작성한 게시물 불러오기 성공")
@@ -34,7 +34,7 @@ class MyPageController(FlaskView):
             traceback.print_exc()
             return ErrorResponseDto(e, 500), 500
 
-    @route("/comment", methods=["POST"])
+    @route("/comments", methods=["POST"])
     @doc(description="내가 작성한 댓글", summary="내가 작성한 댓글")
     @use_kwargs({"userId": fields.String(required=True), "token": fields.String(required=True)}, locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="내가 작성한 댓글 불러오기 성공")

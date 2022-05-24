@@ -17,7 +17,7 @@ class NoticeCommentSchema(Schema):
     notice = fields.List(fields.Nested(NoticeInfoSchema()))
 
 
-class NoticeRegisterSchema(Schema):
+class RegisterCommentSchema(Schema):
     noticeId = fields.String(required=True)
     userId = fields.String(required=True)
     description = fields.String(required=True)

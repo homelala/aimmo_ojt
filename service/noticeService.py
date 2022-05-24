@@ -16,7 +16,7 @@ def update_article(article_id, data):
     user_info = noticeRepository.findById(ObjectId(article_id))
     if user_info["userId"] != data.userId:
         raise AccessException("권한이 없는 게시글입니다.")
-    noticeRepository.updateNotice(ObjectId(article_id), data.title, data.description, data.tags)
+    noticeRepository.update(ObjectId(article_id), data.title, data.description, data.tags)
 
 
 def read_article(noticeId):
@@ -29,31 +29,32 @@ def delete_article(article_id):
     noticeRepository.deleteById(ObjectId(article_id))
 
 
-def like_notice(userId, token, noticeId):
-    user_info = userRepository.findById(ObjectId(userId))
+def like_article(notice_id, token, user_id):
+    user_info = userRepository.findById(ObjectId(user_id))
+    print(user_info)
     if user_info[0]["token"] != token:
         raise AccessException("올바른 접근이 아닙니다.")
-    noticeRepository.updateLikeById(ObjectId(noticeId))
+    noticeRepository.updateLikeById(ObjectId(notice_id))
 
 
-def comment_notice(noticeComment):
+def comment_article(article_id, noticeComment):
     user_info = userRepository.findById(ObjectId(noticeComment.userId))
     if user_info[0]["token"] != noticeComment.token:
         raise AccessException("올바른 접근이 아닙니다.")
-    noticeCommentRepository.save(noticeComment.noticeId, noticeComment.userId, noticeComment.description, noticeComment.registerDate)
+    noticeCommentRepository.save(article_id, noticeComment.userId, noticeComment.description, noticeComment.registerDate)
 
 
-def get_high_like_notice():
+def get_high_like_article():
     return noticeRepository.findByCountLike()
 
 
-def get_high_comment_notice():
+def get_high_comment_article():
     return noticeRepository.findByCountComment()
 
 
-def get_recent_notice():
+def get_recent_article():
     return noticeRepository.findByRegisterDate()
 
 
-def search_notice(keyword):
+def search_article(keyword):
     return noticeRepository.findByTitle(keyword)

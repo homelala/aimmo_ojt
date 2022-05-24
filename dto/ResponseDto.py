@@ -7,6 +7,3 @@ class ResponseDto:
         self.message = message
         if data is not None:
             self.data = data
-
-    def toJSON(self):
-        return json.loads(json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4))

@@ -14,3 +14,14 @@ class ResponseSchema(Schema):
     def newResponseDto(self, data, **kwargs):
         responseDto = ResponseDto(**project(data, ["statusCode", "message", "data"]))
         return responseDto
+
+
+class ResponseDictSchema(Schema):
+    statusCode = fields.Integer(required=True)
+    message = fields.String(required=True)
+    data = fields.Dict()
+
+    @post_load
+    def newResponseDto(self, data, **kwargs):
+        responseDto = ResponseDto(**project(data, ["statusCode", "message", "data"]))
+        return responseDto

@@ -5,7 +5,9 @@ from bson.objectid import ObjectId
 
 
 def userSignUp(user):
+    print(user.email)
     alreadyUserInfo = userRepository.findByEmail(user.email)
+    print(alreadyUserInfo)
     if alreadyUserInfo:
         raise AlreadyExistUserException("이미 존재하는 계정입니다.")
     userRepository.save(user)

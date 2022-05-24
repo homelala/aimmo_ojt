@@ -5,7 +5,7 @@ from dto.ResponseDto import ResponseDto
 from schema.NoticeCommentSchema import NoticeRegisterSchema
 from schema.NoticeSchema import NoticeSchema, RegisterNoticeSchema, UpdateNoticeSchema, LikeNoticeSchema
 from schema.error.ApiErrorSchema import ApiErrorSchema
-from schema.reponse.ResponseSchema import ResponseSchema
+from schema.reponse.ResponseSchema import ResponseSchema, ResponseDictSchema
 from service import noticeService
 from utils.CustomException import CustomException
 from utils.ErrorResponseDto import ErrorResponseDto
@@ -51,14 +51,14 @@ class NoticeController(FlaskView):
 
     @route("/<noticeId>", methods=["GET"])
     @doc(description="Notice 읽기", summary="Notice 읽기")
-    @marshal_with(NoticeSchema(), code=200, description="notice 불러오기")
+    @marshal_with(ResponseDictSchema(), code=200, description="notice 불러오기")
     @marshal_with(ApiErrorSchema(), code=400, description="notice 불러오기 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def readNotice(self, noticeId):
         try:
             noticeInfo = noticeService.readNotice(noticeId)
             schema = NoticeSchema()
-            return schema.dump(noticeInfo), 200
+            return ResponseDto(200, "success", schema.dump(noticeInfo)), 200
 
         except CustomException as e:
             return ErrorResponseDto(e.message), 400

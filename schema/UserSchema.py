@@ -3,6 +3,8 @@ from marshmallow import fields, Schema, post_load
 from domain.User import User
 from funcy import project
 
+from utils.CustomException import NotExistUserException
+
 
 class UserSchema(Schema):
     name = fields.String(required=True)
@@ -11,7 +13,7 @@ class UserSchema(Schema):
 
     @post_load
     def newUser(self, data, **kwargs):
-        user = User(**project(data, ["email", "name", "passwd"]))
+        user = User(**data)
         return user
 
 
@@ -21,8 +23,8 @@ class UserSignUpSchema(Schema):
     passwd = fields.String(required=True)
 
     @post_load
-    def newUser(self, data, **kwargs):
-        user = User(**project(data, ["email", "name", "passwd"]))
+    def new_user(self, data, **kwargs):
+        user = User(**data)
         return user
 
 
@@ -31,9 +33,11 @@ class UserLogInSchema(Schema):
     passwd = fields.String(required=True)
 
     @post_load
-    def newUser(self, data, **kwargs):
-        user = User(**project(data, ["email", "passwd"]))
-        return user
+    def new_user(self, data, **kwargs):
+        if not User.objects(email=data["email"]):
+            return False
+        else:
+            return User.objects(email=data["email"]).get()
 
 
 class UserUpdateInfoSchema(Schema):
@@ -42,6 +46,6 @@ class UserUpdateInfoSchema(Schema):
     name = fields.String(required=True)
 
     @post_load
-    def newUser(self, data, **kwargs):
-        user = User(**project(data, ["id", "name", "token"]))
+    def new_user(self, data, **kwargs):
+        user = User(**data)
         return user

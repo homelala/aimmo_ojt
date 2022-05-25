@@ -2,32 +2,30 @@ import secrets
 from utils.CustomException import *
 from repository import userRepository
 from bson.objectid import ObjectId
+from pprint import pprint
 
 
 def userSignUp(user):
-    print(user.email)
-    alreadyUserInfo = userRepository.findByEmail(user.email)
-    print(alreadyUserInfo)
-    if alreadyUserInfo:
+    already_user = userRepository.findByEmail(user.email)
+    if already_user:
         raise AlreadyExistUserException("이미 존재하는 계정입니다.")
-    userRepository.save(user)
-    userInfo = userRepository.findByEmail(user.email)
-    return userInfo[0]["_id"]
+
+    user_info = user.save()
+    return user_info
 
 
-def userLogIn(email, passwd):
-    userInfo = userRepository.findByEmail(email)
-    if not userInfo:
+def userLogIn(user, passwd):
+    if not user:
         raise NotExistUserException("이메일 혹은 비밀번호가 틀렸습니다.")
-    if userInfo[0]["passwd"] != passwd:
+    if not user.check_passwd(passwd):
         raise NotExistUserException("이메일 혹은 비밀번호가 틀렸습니다.")
-    token = secrets.token_hex(16)  # 토큰에 사용자 정보 포함
-    userRepository.updateUserToken(email, token)
-    return userInfo[0]["_id"]
+
+    user.update_token(secrets.token_hex(16))
+    return user
 
 
 def userUpdateInfo(user):
-    userInfo = userRepository.findById(ObjectId(user.id))
-    if userInfo[0]["token"] != user.token:
+    user_info = userRepository.findById(ObjectId(user.id)).get()
+    if user_info.token != user.token:
         raise AccessException("올바른 접근이 아닙니다.")
-    userRepository.updateUserInfo(ObjectId(user.id), user.name)
+    user_info.update_name(user.name)

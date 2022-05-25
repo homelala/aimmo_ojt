@@ -1,3 +1,4 @@
+from domain.User import User
 from config.db import user
 
 
@@ -6,16 +7,8 @@ def save(userInfo):
 
 
 def findByEmail(email):
-    return list(user.find({"email": email}))
+    return User.objects(email=email)
 
 
 def findById(id):
-    return list(user.find({"_id": id}))
-
-
-def updateUserToken(email, token):
-    user.update_one({"email": email}, {"$set": {"token": token}})
-
-
-def updateUserInfo(id, name):
-    user.update_one({"_id": id}, {"$set": {"name": name}})
+    return User.objects(id=id)

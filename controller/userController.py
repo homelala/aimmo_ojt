@@ -2,7 +2,7 @@ from bson import json_util
 import json
 import traceback
 from flask_apispec import use_kwargs, marshal_with, doc
-from flask_classful import route, FlaskView
+from flask_classful import route, FlaskView, request
 from schema.reponse.ResponseDto import ResponseDto
 from schema.UserSchema import UserSignUpSchema, UserLogInSchema, UserUpdateInfoSchema
 from schema.error.ApiErrorSchema import ApiErrorSchema
@@ -24,8 +24,8 @@ class UserController(FlaskView):
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def userSignUP(self, user=None):
         try:
-            userId = userService.userSignUp(user)
-            return ResponseDto(200, "회원 가입 성공", {"userId": json.loads(json_util.dumps(userId))["$oid"]}), 200
+            user_info = userService.userSignUp(user)
+            return ResponseDto(200, "회원 가입 성공", {"user_id": json.loads(json_util.dumps(user_info.id))["$oid"]}), 200
         except CustomException as e:
             return ErrorResponseDto(e.message), 400
         except Exception as e:
@@ -40,8 +40,9 @@ class UserController(FlaskView):
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def userLogIn(self, user=None):
         try:
-            userId = userService.userLogIn(user.email, user.passwd)
-            return ResponseDto(200, "로그인 성공", {"userId": json.loads(json_util.dumps(userId))["$oid"]}), 200
+            data = json.loads(request.data)
+            user_info = userService.userLogIn(user, data["passwd"])
+            return ResponseDto(200, "로그인 성공", {"userId": json.loads(json_util.dumps(user_info.id))["$oid"]}), 200
         except CustomException as e:
             return ErrorResponseDto(e.message), 400
         except Exception as e:

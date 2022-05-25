@@ -1,27 +1,29 @@
-class User:
-    def __init__(self, id=None, email=None, passwd=None, name=None, token=None):
-        self.__id = id
-        self.__name = name
-        self.__email = email
-        self.__passwd = passwd
-        self.__token = token
+from flask_mongoengine import Document
+from mongoengine import StringField, EmailField, IntField
+
+
+class User(Document):
+    id = StringField(required=False)
+    name = StringField(required=False)
+    email = EmailField(required=True, unique=True)
+    passwd = StringField(required=True)
+    token = StringField(required=False)
 
     @property
     def id(self):
         return self.__id
 
     @property
-    def name(self):
-        return self.__name
+    def user_email(self):
+        return self.email
 
-    @property
-    def email(self):
-        return self.__email
+    def check_passwd(self, passwd):
+        if self.passwd != passwd:
+            return False
+        return True
 
-    @property
-    def passwd(self):
-        return self.__passwd
+    def update_token(self, token):
+        self.update(token=token)
 
-    @property
-    def token(self):
-        return self.__token
+    def update_name(self, name):
+        self.update(name=name)

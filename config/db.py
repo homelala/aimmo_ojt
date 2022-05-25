@@ -6,6 +6,6 @@ client = MongoClient(
 
 db = client.aimmo_ojt
 
-user = db.user
+user = db.User
 notice = db.notice
 noticeComment = db.notice_comment

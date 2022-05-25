@@ -1,7 +1,8 @@
 import datetime as dt
+from flask_mongoengine import Document
 
 
-class Notice:
+class Notice(Document):
     def __init__(self, userId, title=None, description=None, noticeId=None, token=None, tags=None):
         self.__title = title
         self.__description = description

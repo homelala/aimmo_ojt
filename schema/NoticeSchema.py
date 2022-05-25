@@ -1,8 +1,10 @@
+from bson import ObjectId
 from marshmallow import fields, Schema, post_load, post_dump
 
 from funcy import project
 
 from domain.Notice import Notice
+from domain.User import User
 
 
 class CommentSchema(Schema):
@@ -26,14 +28,18 @@ class NoticeSchema(Schema):
 class RegisterArticleSchema(Schema):
     title = fields.String(required=True)
     description = fields.String(required=True)
-    userId = fields.String(required=True)
+    user_id = fields.String(required=True)
     token = fields.String(required=True)
     tags = fields.List(fields.String())
 
     @post_load
     def new_article(self, data, **kwargs):
-        article = Notice(**project(data, ["title", "description", "userId", "token", "tags"]))
-        return article
+        print(type(User.objects(token=data["token"]).get().id), type(data["user_id"]))
+        if User.objects(token=data["token"]).get().id != ObjectId(data["user_id"]):
+            return False
+        else:
+            article = Notice(title=data["title"], description=data["description"], user_id=data["user_id"], tags=data["tags"])
+            return article
 
 
 class UpdateArticleSchema(Schema):

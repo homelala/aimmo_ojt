@@ -22,7 +22,7 @@ class UserController(FlaskView):
     @marshal_with(ResponseDictSchema(), code=200, description="회원 가입 완료")
     @marshal_with(ApiErrorSchema(), code=400, description="회원 가입 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
-    def userSignUP(self, user=None):
+    def signup(self, user=None):
         try:
             user_info = userService.userSignUp(user)
             return ResponseDto(200, "회원 가입 성공", {"user_id": json.loads(json_util.dumps(user_info.id))["$oid"]}), 200
@@ -38,7 +38,7 @@ class UserController(FlaskView):
     @marshal_with(ResponseDictSchema(), code=200, description="로그인 성공")
     @marshal_with(ApiErrorSchema(), code=400, description="로그인 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
-    def userLogIn(self, user=None):
+    def login(self, user=None):
         try:
             data = json.loads(request.data)
             user_info = userService.userLogIn(user, data["passwd"])

@@ -1,17 +1,9 @@
 from config.db import notice
+from domain.Notice import Notice
 
 
 def save(article_info):
-    notice.insert_one(
-        {
-            "title": article_info.title,
-            "description": article_info.description,
-            "userId": article_info.userId,
-            "registerDate": article_info.registerDate,
-            "like": article_info.like,
-            "tags": article_info.tags,
-        }
-    )
+    Notice.save(article_info)
 
 
 def update(article_id, title, description, tags):

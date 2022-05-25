@@ -5,11 +5,11 @@ from utils.CustomException import AccessException
 from pprint import pprint
 
 
-def register_article(notice):
-    user_info = userRepository.findById(ObjectId(notice.userId))
-    if user_info[0]["token"] != notice.token:
+def register_article(article):
+    if not article:
         raise AccessException("올바른 접근이 아닙니다.")
-    noticeRepository.save(notice)
+    print(article)
+    article.save()
 
 
 def update_article(article_id, data):

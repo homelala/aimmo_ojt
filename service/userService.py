@@ -9,8 +9,7 @@ def userSignUp(user):
     already_user = userRepository.findByEmail(user.email)
     if already_user:
         raise AlreadyExistUserException("이미 존재하는 계정입니다.")
-
-    user_info = user.save()
+    user_info = userRepository.save(user)
     return user_info
 
 

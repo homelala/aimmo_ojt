@@ -45,14 +45,18 @@ class RegisterArticleSchema(Schema):
 class UpdateArticleSchema(Schema):
     title = fields.String(required=True)
     description = fields.String(required=True)
-    userId = fields.String(required=True)
+    user_id = fields.String(required=True)
     token = fields.String(required=True)
     tags = fields.List(fields.String())
 
     @post_load
     def updateNotice(self, data, **kwargs):
-        notice = Notice(**project(data, ["noticeId", "title", "description", "userId", "token", "tags"]))
-        return notice
+        print(type(User.objects(token=data["token"]).get().id), type(data["user_id"]))
+        if User.objects(token=data["token"]).get().id != ObjectId(data["user_id"]):
+            return False
+        else:
+            article = Notice(title=data["title"], description=data["description"], user_id=data["user_id"], tags=data["tags"])
+            return article
 
 
 class LikeNoticeSchema(Schema):

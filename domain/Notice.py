@@ -11,3 +11,10 @@ class Notice(Document):
     user_id = StringField(required=True)
     like = IntField(default=0)
     tags = ListField(required=True)
+
+    @property
+    def id(self):
+        return self.__id
+
+    def update_info(self, title, description, tags):
+        self.update(title=title, description=description, tags=tags)

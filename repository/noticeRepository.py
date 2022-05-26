@@ -1,3 +1,5 @@
+from bson import ObjectId
+
 from config.db import notice
 from domain.Notice import Notice
 
@@ -11,7 +13,7 @@ def update(article_id, title, description, tags):
 
 
 def find_by_id(article_id):
-    return notice.find_one({"_id": article_id})
+    return Notice.objects(id=article_id)
 
 
 def findByIdWithComment(article_id):

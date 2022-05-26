@@ -8,15 +8,18 @@ from pprint import pprint
 def register_article(article):
     if not article:
         raise AccessException("올바른 접근이 아닙니다.")
-    print(article)
-    article.save()
+    noticeRepository.save(article)
 
 
-def update_article(article_id, data):
-    user_info = noticeRepository.findById(ObjectId(article_id))
-    if user_info["userId"] != data.userId:
-        raise AccessException("권한이 없는 게시글입니다.")
-    noticeRepository.update(ObjectId(article_id), data.title, data.description, data.tags)
+def update_article(article_id, article_info):
+    if not article_info:
+        raise AccessException("올바른 접근이 아닙니다.")
+
+    article = noticeRepository.find_by_id(ObjectId(article_id)).get()
+    if article.user_id != article_info.user_id:
+        raise AccessException("권한이 없는 게시물입니다.")
+
+    article.update_info(article_info.title, article_info.description, article_info.tags)
 
 
 def read_article(noticeId):

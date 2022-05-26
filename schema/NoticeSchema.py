@@ -9,18 +9,17 @@ from domain.User import User
 
 class CommentSchema(Schema):
     description = fields.String(required=True)
-    registerDate = fields.String(required=True)
-    userId = fields.String(required=True)
-    noticeId = fields.String(required=True)
+    register_date = fields.String(required=True)
+    user_id = fields.String(required=True)
+    notice_id = fields.String(required=True)
 
 
 class NoticeSchema(Schema):
-    noticedId = fields.String(required=True)
     title = fields.String(required=True)
     comments = fields.List(fields.Nested(CommentSchema()))
     description = fields.String(required=True)
-    registerDate = fields.String(required=True)
-    userId = fields.String(required=True)
+    register_date = fields.String(required=True)
+    user_id = fields.String(required=True)
     like = fields.Integer(required=True)
     tags = fields.List(fields.String())
 

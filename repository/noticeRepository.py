@@ -1,5 +1,6 @@
 from config.db import notice
 from domain.Notice import Notice
+from pprint import pprint
 
 
 def save(article_info):
@@ -41,19 +42,19 @@ def update_by_id_like(article_id):
     return Notice.update()
 
 
-def findByCountLike():
+def find_by_like_with_comment():
     info = notice.aggregate(
         [
             {
                 "$addFields": {
-                    "noticeId": {"$toString": "$_id"},
+                    "notice_id": {"$toString": "$_id"},
                 },
             },
             {
                 "$lookup": {
                     "from": "notice_comment",
-                    "localField": "noticeId",
-                    "foreignField": "noticeId",
+                    "localField": "notice_id",
+                    "foreignField": "notice_id",
                     "as": "comments",
                 }
             },
@@ -75,14 +76,14 @@ def findByCountComment():
         [
             {
                 "$addFields": {
-                    "noticeId": {"$toString": "$_id"},
+                    "notice_id": {"$toString": "$_id"},
                 },
             },
             {
                 "$lookup": {
                     "from": "notice_comment",
-                    "localField": "noticeId",
-                    "foreignField": "noticeId",
+                    "localField": "notice_id",
+                    "foreignField": "notice_id",
                     "as": "comments",
                 }
             },
@@ -104,14 +105,14 @@ def findByRegisterDate():
         [
             {
                 "$addFields": {
-                    "noticeId": {"$toString": "$_id"},
+                    "notice_id": {"$toString": "$_id"},
                 },
             },
             {
                 "$lookup": {
                     "from": "notice_comment",
-                    "localField": "noticeId",
-                    "foreignField": "noticeId",
+                    "localField": "notice_id",
+                    "foreignField": "notice_id",
                     "as": "comments",
                 }
             },
@@ -121,7 +122,7 @@ def findByRegisterDate():
                 },
             },
             {"$limit": 10},
-            {"$sort": {"registerDate": -1}},
+            {"$sort": {"register_date": -1}},
         ]
     )
 
@@ -156,19 +157,19 @@ def finByUserId(user_id):
     return list(info)
 
 
-def findByTitle(keyword):
+def find_by_title(keyword):
     info = notice.aggregate(
         [
             {
                 "$addFields": {
-                    "noticeId": {"$toString": "$_id"},
+                    "notice_id": {"$toString": "$_id"},
                 },
             },
             {
                 "$lookup": {
                     "from": "notice_comment",
-                    "localField": "noticeId",
-                    "foreignField": "noticeId",
+                    "localField": "notice_id",
+                    "foreignField": "notice_id",
                     "as": "comments",
                 }
             },

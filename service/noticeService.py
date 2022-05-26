@@ -47,7 +47,7 @@ def comment_article(comment):
 
 
 def get_high_like_article():
-    return noticeRepository.findByCountLike()
+    return noticeRepository.find_by_like_with_comment()
 
 
 def get_high_comment_article():
@@ -59,4 +59,4 @@ def get_recent_article():
 
 
 def search_article(keyword):
-    return noticeRepository.findByTitle(keyword)
+    return noticeRepository.find_by_title(keyword)

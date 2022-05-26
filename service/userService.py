@@ -1,8 +1,8 @@
-import secrets
 from utils.CustomException import *
 from repository import userRepository
 from bson.objectid import ObjectId
 from pprint import pprint
+import jwt
 
 
 def userSignUp(user):
@@ -18,8 +18,9 @@ def userLogIn(user, passwd):
         raise NotExistUserException("이메일 혹은 비밀번호가 틀렸습니다.")
     if not user.check_passwd(passwd):
         raise NotExistUserException("이메일 혹은 비밀번호가 틀렸습니다.")
-
-    user.update_token(secrets.token_hex(16))
+    payload = {"email": user.email, "name": user.name}
+    token = jwt.encode(payload, "secret_key", algorithm="HS256")
+    user.update_token(token)
     return user
 
 

@@ -10,6 +10,8 @@ from utils.CustomException import CustomException
 from utils.ErrorResponseDto import ErrorResponseDto
 import traceback
 
+from utils.utils import valid_user
+
 
 class NoticeController(FlaskView):
     route_base = "/articles"
@@ -17,6 +19,7 @@ class NoticeController(FlaskView):
 
     @route("/", methods=["POST"])
     @doc(description="article 등록", summary="article 등록")
+    @valid_user
     @use_kwargs(RegisterArticleSchema(), locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="article 등록 완료")
     @marshal_with(ApiErrorSchema(), code=400, description="article 등록 실패")

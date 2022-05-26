@@ -9,7 +9,6 @@ from service import noticeService
 from utils.CustomException import CustomException
 from utils.ErrorResponseDto import ErrorResponseDto
 import traceback
-import json
 
 
 class NoticeController(FlaskView):

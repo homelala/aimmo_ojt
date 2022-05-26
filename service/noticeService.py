@@ -1,5 +1,6 @@
 from bson import ObjectId
 
+from domain.NoticeComment import NoticeComment
 from repository import noticeRepository, noticeCommentRepository
 from utils.CustomException import AccessException
 from pprint import pprint
@@ -28,8 +29,11 @@ def read_article(noticeId):
 
 
 def delete_article(article_id):
-    noticeCommentRepository.deleteByNoticeId(ObjectId(article_id))
+    comments = noticeCommentRepository.find_by_notice_id(article_id)
+    for comment in comments:
+        noticeCommentRepository.deleteByNoticeId(comment)
     article = noticeRepository.find_by_id(article_id).get()
+    print(article)
     noticeRepository.delete_by_id(article)
 
 

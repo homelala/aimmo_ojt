@@ -8,8 +8,8 @@ def save(comment):
     NoticeComment.save(comment)
 
 
-def deleteByNoticeId(noticeId):
-    noticeComment.delete_one({"noticeId": noticeId})
+def deleteByNoticeId(comment):
+    NoticeComment.delete(comment)
 
 
 def find_by_user_id(user_id):
@@ -33,3 +33,7 @@ def find_by_user_id(user_id):
         ]
     )
     return list(info)
+
+
+def find_by_notice_id(article_id):
+    return NoticeComment.objects(notice_id=article_id)

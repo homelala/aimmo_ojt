@@ -14,12 +14,12 @@ def find_by_id(article_id):
 def find_by_id_with_comment(article_id):
     info = notice.aggregate(
         [
-            {"$addFields": {"noticeId": {"$toString": "$_id"}}},
+            {"$addFields": {"notice_id": {"$toString": "$_id"}}},
             {
                 "$lookup": {
                     "from": "notice_comment",
-                    "localField": "noticeId",
-                    "foreignField": "noticeId",
+                    "localField": "notice_id",
+                    "foreignField": "notice_id",
                     "as": "comments",
                 }
             },
@@ -31,11 +31,7 @@ def find_by_id_with_comment(article_id):
 
 
 def delete_by_id(article):
-    article.delete()
-
-
-def update_by_id_like(article_id):
-    return Notice.update()
+    Notice.delete(article)
 
 
 def find_by_like_with_comment():

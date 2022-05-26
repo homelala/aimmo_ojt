@@ -18,3 +18,6 @@ class Notice(Document):
 
     def update_info(self, title, description, tags):
         self.update(title=title, description=description, tags=tags)
+
+    def update_like(self):
+        self.update(like=self.like + 1)

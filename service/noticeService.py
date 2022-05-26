@@ -23,21 +23,21 @@ def update_article(article_id, article_info):
 
 
 def read_article(noticeId):
-    notice = noticeRepository.findByIdWithComment(ObjectId(noticeId))
+    notice = noticeRepository.find_by_id_with_comment(ObjectId(noticeId))
     return notice
 
 
 def delete_article(article_id):
     noticeCommentRepository.deleteByNoticeId(ObjectId(article_id))
-    noticeRepository.deleteById(ObjectId(article_id))
+    article = noticeRepository.find_by_id(article_id).get()
+    noticeRepository.delete_by_id(article)
 
 
-def like_article(notice_id, token, user_id):
-    user_info = userRepository.findById(ObjectId(user_id))
-    print(user_info)
-    if user_info[0]["token"] != token:
+def like_article(article_id, data):
+    if not data:
         raise AccessException("올바른 접근이 아닙니다.")
-    noticeRepository.updateLikeById(ObjectId(notice_id))
+    article = noticeRepository.find_by_id(ObjectId(article_id)).get()
+    article.update_like()
 
 
 def comment_article(article_id, noticeComment):

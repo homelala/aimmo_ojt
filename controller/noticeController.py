@@ -88,7 +88,7 @@ class NoticeController(FlaskView):
     def like_article(self, article_id):
         try:
             data = LikeNoticeSchema().load(json.loads(request.data))
-            noticeService.like_article(article_id, data.token, data.user_id)
+            noticeService.like_article(article_id, data)
             return ResponseDto(200, "좋아요 완료"), 200
         except CustomException as e:
             return ErrorResponseDto(e.message), 400

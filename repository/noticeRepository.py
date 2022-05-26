@@ -1,5 +1,3 @@
-from bson import ObjectId
-
 from config.db import notice
 from domain.Notice import Notice
 
@@ -16,7 +14,7 @@ def find_by_id(article_id):
     return Notice.objects(id=article_id)
 
 
-def findByIdWithComment(article_id):
+def find_by_id_with_comment(article_id):
     info = notice.aggregate(
         [
             {"$addFields": {"noticeId": {"$toString": "$_id"}}},
@@ -35,12 +33,12 @@ def findByIdWithComment(article_id):
     return list(info)[0]
 
 
-def deleteById(article_id):
-    return notice.delete_one({"_id": article_id})
+def delete_by_id(article):
+    article.delete()
 
 
-def updateLikeById(article_id):
-    return notice.update_one({"_id": article_id}, {"$inc": {"like": 1}})
+def update_by_id_like(article_id):
+    return Notice.update()
 
 
 def findByCountLike():

@@ -9,14 +9,14 @@ from domain.User import User
 
 class NoticeInfoSchema(Schema):
     title = fields.String(required=True)
-    registerDate = fields.String(required=True)
+    register_date = fields.String(required=True)
 
 
 class NoticeCommentSchema(Schema):
-    noticeId = fields.String(required=True)
-    userId = fields.String(required=True)
+    notice_id = fields.String(required=True)
+    user_id = fields.String(required=True)
     description = fields.String(required=True)
-    registerDate = fields.String(required=True)
+    register_date = fields.String(required=True)
     notice = fields.List(fields.Nested(NoticeInfoSchema()))
 
 

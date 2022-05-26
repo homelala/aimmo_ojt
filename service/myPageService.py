@@ -4,17 +4,17 @@ from bson.objectid import ObjectId
 from pprint import pprint
 
 
-def getMyNotice(userId, token):
-    userInfo = userRepository.findById(ObjectId(userId))
-    if userInfo[0]["token"] != token:
+def get_my_articles(user_id, token):
+    user_info = userRepository.find_by_id(ObjectId(user_id))
+    if user_info[0]["token"] != token:
         raise AccessException("올바른 접근이 아닙니다.")
-    notice = noticeRepository.finByUserId(userId)
+    notice = noticeRepository.find_by_user_id(user_id)
     return notice
 
 
-def getMyComment(userId, token):
-    userInfo = userRepository.findById(ObjectId(userId))
-    if userInfo[0]["token"] != token:
+def get_my_comment(user_id, token):
+    user_info = userRepository.find_by_id(ObjectId(user_id))
+    if user_info[0]["token"] != token:
         raise AccessException("올바른 접근이 아닙니다.")
-    notice = noticeCommentRepository.findByUserId(userId)
+    notice = noticeCommentRepository.find_by_user_id(user_id)
     return notice

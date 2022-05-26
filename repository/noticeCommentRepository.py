@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from config.db import noticeComment
 from domain.NoticeComment import NoticeComment
 
@@ -10,13 +12,13 @@ def deleteByNoticeId(noticeId):
     noticeComment.delete_one({"noticeId": noticeId})
 
 
-def findByUserId(userId):
+def find_by_user_id(user_id):
     info = noticeComment.aggregate(
         [
             {
                 "$lookup": {
                     "from": "notice",
-                    "let": {"localId": {"$toObjectId": "$noticeId"}},
+                    "let": {"localId": {"$toObjectId": "$notice_id"}},
                     "pipeline": [
                         {
                             "$match": {
@@ -27,8 +29,7 @@ def findByUserId(userId):
                     "as": "notice",
                 }
             },
-            {"$match": {"userId": userId}},
+            {"$match": {"user_id": user_id}},
         ]
     )
-
     return list(info)

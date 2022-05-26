@@ -10,5 +10,5 @@ def findByEmail(email):
     return User.objects(email=email)
 
 
-def findById(id):
+def find_by_id(id):
     return User.objects(id=id)

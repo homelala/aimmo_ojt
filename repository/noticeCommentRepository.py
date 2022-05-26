@@ -1,15 +1,9 @@
 from config.db import noticeComment
+from domain.NoticeComment import NoticeComment
 
 
-def save(noticeId, userId, description, registerDate):
-    noticeComment.insert_one(
-        {
-            "noticeId": noticeId,
-            "userId": userId,
-            "description": description,
-            "registerDate": registerDate,
-        }
-    )
+def save(comment):
+    NoticeComment.save(comment)
 
 
 def deleteByNoticeId(noticeId):

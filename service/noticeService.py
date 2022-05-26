@@ -1,6 +1,6 @@
 from bson import ObjectId
 
-from repository import noticeRepository, userRepository, noticeCommentRepository
+from repository import noticeRepository, noticeCommentRepository
 from utils.CustomException import AccessException
 from pprint import pprint
 
@@ -40,11 +40,10 @@ def like_article(article_id, data):
     article.update_like()
 
 
-def comment_article(article_id, noticeComment):
-    user_info = userRepository.findById(ObjectId(noticeComment.userId))
-    if user_info[0]["token"] != noticeComment.token:
+def comment_article(comment):
+    if not comment:
         raise AccessException("올바른 접근이 아닙니다.")
-    noticeCommentRepository.save(article_id, noticeComment.userId, noticeComment.description, noticeComment.registerDate)
+    noticeCommentRepository.save(comment)
 
 
 def get_high_like_article():

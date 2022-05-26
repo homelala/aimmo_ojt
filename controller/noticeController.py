@@ -34,12 +34,12 @@ class NoticeController(FlaskView):
 
     @route("/<article_id>", methods=["PUT"])
     @doc(description="article 수정", summary="article 수정")
+    @use_kwargs(UpdateArticleSchema(), locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="article 수정 완료")
     @marshal_with(ApiErrorSchema(), code=400, description="article 수정 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
-    def update_article(self, article_id):
+    def update_article(self, data, article_id):
         try:
-            data = UpdateArticleSchema().load(json.loads(request.data))
             noticeService.update_article(article_id, data)
             return ResponseDto(200, "공지 수정 완료"), 200
         except CustomException as e:
@@ -82,12 +82,12 @@ class NoticeController(FlaskView):
 
     @route("/<article_id>/like", methods=["POST"])
     @doc(description="article 좋아요", summary="article 좋아요")
+    @use_kwargs(LikeNoticeSchema(), locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="article 좋아요 완료")
     @marshal_with(ApiErrorSchema(), code=400, description="article 좋아요 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
-    def like_article(self, article_id):
+    def like_article(self, data, article_id):
         try:
-            data = LikeNoticeSchema().load(json.loads(request.data))
             noticeService.like_article(article_id, data)
             return ResponseDto(200, "좋아요 완료"), 200
         except CustomException as e:
@@ -96,15 +96,15 @@ class NoticeController(FlaskView):
             traceback.print_exc()
             return ErrorResponseDto(e, 500), 500
 
-    @route("/<article_id>/comment", methods=["POST"])
+    @route("/comment", methods=["POST"])
     @doc(description="article 댓글 달기", summary="article 댓글 달기")
+    @use_kwargs(RegisterCommentSchema(), locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="article 댓글 달기 완료")
     @marshal_with(ApiErrorSchema(), code=400, description="article 댓글 달기 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
-    def comment_article(self, article_id):
+    def comment_article(self, data):
         try:
-            data = RegisterCommentSchema().load(json.loads(request.data))
-            noticeService.comment_article(article_id, data)
+            noticeService.comment_article(data)
             return ResponseDto(200, "댓글 달기 완료"), 200
         except CustomException as e:
             return ErrorResponseDto(e.message), 400

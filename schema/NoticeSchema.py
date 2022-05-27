@@ -33,11 +33,8 @@ class RegisterArticleSchema(Schema):
 
     @post_load
     def new_article(self, data, **kwargs):
-        if User.objects(token=data["token"]).get().id != ObjectId(data["user_id"]):
-            return False
-        else:
-            article = Notice(title=data["title"], description=data["description"], user_id=data["user_id"], tags=data["tags"])
-            return article
+        article = Notice(title=data["title"], description=data["description"], user_id=data["user_id"], tags=data["tags"])
+        return article
 
 
 class UpdateArticleSchema(Schema):
@@ -51,15 +48,3 @@ class UpdateArticleSchema(Schema):
     def updateNotice(self, data, **kwargs):
         article = Notice(title=data["title"], description=data["description"], user_id=data["user_id"], tags=data["tags"])
         return article
-
-
-class LikeNoticeSchema(Schema):
-    user_id = fields.String(required=True)
-    token = fields.String(required=True)
-
-    @post_load
-    def likeNotice(self, data, **kwargs):
-        if User.objects(token=data["token"]).get().id != ObjectId(data["user_id"]):
-            return False
-        else:
-            return True

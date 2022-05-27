@@ -2,7 +2,7 @@ from flask_apispec import use_kwargs, marshal_with, doc
 from flask_classful import route, FlaskView, request
 from schema.reponse.ResponseDto import ResponseDto
 from schema.NoticeCommentSchema import RegisterCommentSchema
-from schema.NoticeSchema import NoticeSchema, RegisterArticleSchema, LikeNoticeSchema, UpdateArticleSchema
+from schema.NoticeSchema import NoticeSchema, RegisterArticleSchema, UpdateArticleSchema
 from schema.error.ApiErrorSchema import ApiErrorSchema
 from schema.reponse.ResponseSchema import ResponseSchema, ResponseDictSchema
 from service import noticeService
@@ -70,6 +70,7 @@ class NoticeController(FlaskView):
 
     @route("/<article_id>", methods=["DELETE"])
     @doc(description="article 삭제", summary="article 삭제")
+    @valid_user
     @marshal_with(ResponseSchema(), code=200, description="article 삭제 완료")
     @marshal_with(ApiErrorSchema(), code=400, description="article 삭제 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
@@ -85,13 +86,13 @@ class NoticeController(FlaskView):
 
     @route("/<article_id>/like", methods=["POST"])
     @doc(description="article 좋아요", summary="article 좋아요")
-    @use_kwargs(LikeNoticeSchema(), locations=("json",))
+    @valid_user
     @marshal_with(ResponseSchema(), code=200, description="article 좋아요 완료")
     @marshal_with(ApiErrorSchema(), code=400, description="article 좋아요 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
-    def like_article(self, data, article_id):
+    def like_article(self, article_id):
         try:
-            noticeService.like_article(article_id, data)
+            noticeService.like_article(article_id)
             return ResponseDto(200, "좋아요 완료"), 200
         except CustomException as e:
             return ErrorResponseDto(e.message), 400
@@ -101,6 +102,7 @@ class NoticeController(FlaskView):
 
     @route("/comment", methods=["POST"])
     @doc(description="article 댓글 달기", summary="article 댓글 달기")
+    @valid_user
     @use_kwargs(RegisterCommentSchema(), locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="article 댓글 달기 완료")
     @marshal_with(ApiErrorSchema(), code=400, description="article 댓글 달기 실패")

@@ -19,3 +19,8 @@ def valid_user(f):
         return f(*args, **kwargs)
 
     return decorate_user
+
+
+# def valid_role(f):
+#     @wraps(f)
+#     def decorate_article(*args, **kwargs):

@@ -7,8 +7,6 @@ from pprint import pprint
 
 
 def register_article(article):
-    if not article:
-        raise AccessException("올바른 접근이 아닙니다.")
     noticeRepository.save(article)
 
 
@@ -31,20 +29,15 @@ def delete_article(article_id):
     for comment in comments:
         noticeCommentRepository.deleteByNoticeId(comment)
     article = noticeRepository.find_by_id(article_id).get()
-    print(article)
     noticeRepository.delete_by_id(article)
 
 
-def like_article(article_id, data):
-    if not data:
-        raise AccessException("올바른 접근이 아닙니다.")
+def like_article(article_id):
     article = noticeRepository.find_by_id(ObjectId(article_id)).get()
     article.update_like()
 
 
 def comment_article(comment):
-    if not comment:
-        raise AccessException("올바른 접근이 아닙니다.")
     noticeCommentRepository.save(comment)
 
 

@@ -2,9 +2,6 @@ from bson import ObjectId
 from marshmallow import fields, Schema, post_load
 
 from domain.NoticeComment import NoticeComment
-from funcy import project
-
-from domain.User import User
 
 
 class NoticeInfoSchema(Schema):
@@ -28,8 +25,5 @@ class RegisterCommentSchema(Schema):
 
     @post_load()
     def newComment(self, data, **kwargs):
-        if User.objects(token=data["token"]).get().id != ObjectId(data["user_id"]):
-            return False
-        else:
-            comment = NoticeComment(description=data["description"], user_id=data["user_id"], notice_id=data["notice_id"])
-            return comment
+        comment = NoticeComment(description=data["description"], user_id=data["user_id"], notice_id=data["notice_id"])
+        return comment

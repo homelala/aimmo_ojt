@@ -13,8 +13,6 @@ def register_article(article):
 
 
 def update_article(article_id, article_info):
-    if not article_info:
-        raise AccessException("올바른 접근이 아닙니다.")
 
     article = noticeRepository.find_by_id(ObjectId(article_id)).get()
     if article.user_id != article_info.user_id:

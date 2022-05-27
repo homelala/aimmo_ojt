@@ -26,6 +26,4 @@ def userLogIn(user, passwd):
 
 def userUpdateInfo(user):
     user_info = userRepository.find_by_id(ObjectId(user.id)).get()
-    if user_info.token != user.token:
-        raise AccessException("올바른 접근이 아닙니다.")
     user_info.update_name(user.name)

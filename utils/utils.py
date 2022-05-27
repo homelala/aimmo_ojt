@@ -1,9 +1,7 @@
 import json
 from functools import wraps
-from flask import request
+from flask import request, jsonify
 import jwt
-
-from utils.CustomException import AccessException
 
 
 def valid_user(f):
@@ -11,11 +9,12 @@ def valid_user(f):
     def decorate_user(*args, **kwargs):
         token = json.loads(request.data)["token"]
         if not token:
-            raise AccessException("잘못된 접근입니다.")
+            return jsonify({"message": "잘못된 접근입니다."}), 400
+
         try:
-            payload = jwt.decode(token, "secret_key", "HS256")
+            jwt.decode(token, "secret_key", "HS256")
         except jwt.InvalidTokenError:
-            raise AccessException("유효하지 않은 토큰입니다.")
+            return jsonify({"message": "유요한 토큰이 아닙니다.", "statusCode": 400}), 400
 
         return f(*args, **kwargs)
 

@@ -10,6 +10,7 @@ from schema.reponse.ResponseSchema import ResponseSchema, ResponseDictSchema
 from service import userService
 from utils.CustomException import CustomException
 from utils.ErrorResponseDto import ErrorResponseDto
+from utils.utils import valid_user
 
 
 class UserController(FlaskView):
@@ -51,6 +52,7 @@ class UserController(FlaskView):
 
     @route("/", methods=["PUT"])
     @doc(description="User 정보 수정", summary="User 정보 수정")
+    @valid_user
     @use_kwargs(UserUpdateInfoSchema(), locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="정보 수정 성공")
     @marshal_with(ApiErrorSchema(), code=400, description="정보 수정 실패")

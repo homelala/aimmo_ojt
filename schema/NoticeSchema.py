@@ -49,11 +49,8 @@ class UpdateArticleSchema(Schema):
 
     @post_load
     def updateNotice(self, data, **kwargs):
-        if User.objects(token=data["token"]).get().id != ObjectId(data["user_id"]):
-            return False
-        else:
-            article = Notice(title=data["title"], description=data["description"], user_id=data["user_id"], tags=data["tags"])
-            return article
+        article = Notice(title=data["title"], description=data["description"], user_id=data["user_id"], tags=data["tags"])
+        return article
 
 
 class LikeNoticeSchema(Schema):

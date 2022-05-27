@@ -36,6 +36,7 @@ class NoticeController(FlaskView):
 
     @route("/<article_id>", methods=["PUT"])
     @doc(description="article 수정", summary="article 수정")
+    @valid_user
     @use_kwargs(UpdateArticleSchema(), locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="article 수정 완료")
     @marshal_with(ApiErrorSchema(), code=400, description="article 수정 실패")

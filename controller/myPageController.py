@@ -12,6 +12,8 @@ from utils.CustomException import CustomException
 from utils.ErrorResponseDto import ErrorResponseDto
 import traceback
 
+from utils.utils import valid_user
+
 
 class MyPageController(FlaskView):
     route_base = "/my"
@@ -19,13 +21,14 @@ class MyPageController(FlaskView):
 
     @route("/<user_id>/articles", methods=["POST"])
     @doc(description="내가 작성한 게시물", summary="내가 작성한 게시물")
-    @use_kwargs({"token": fields.String(required=True)}, locations=("json",))
+    @valid_user
+    # @use_kwargs({"token": fields.String(required=True)}, locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="내가 작성한 게시물 불러오기 성공")
     @marshal_with(ApiErrorSchema(), code=400, description="내가 작성한 게시물 불러오기 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
-    def getMaxLikeNotice(self, user_id=None, token=None):
+    def getMaxLikeNotice(self, user_id=None):
         try:
-            notice_info = myPageService.get_my_articles(user_id, token)
+            notice_info = myPageService.get_my_articles(user_id)
             schema = NoticeSchema(many=True)
             return ResponseDto(200, "success", schema.dump(notice_info)), 200
         except CustomException as e:
@@ -36,13 +39,14 @@ class MyPageController(FlaskView):
 
     @route("/<user_id>/comments", methods=["POST"])
     @doc(description="내가 작성한 댓글", summary="내가 작성한 댓글")
-    @use_kwargs({"token": fields.String(required=True)}, locations=("json",))
+    @valid_user
+    # @use_kwargs({"token": fields.String(required=True)}, locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="내가 작성한 댓글 불러오기 성공")
     @marshal_with(ApiErrorSchema(), code=400, description="내가 작성한 댓글 불러오기 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
-    def getHighCommentNotice(self, user_id=None, token=None):
+    def getHighCommentNotice(self, user_id=None):
         try:
-            notice_info = myPageService.get_my_comment(user_id, token)
+            notice_info = myPageService.get_my_comment(user_id)
             schema = NoticeCommentSchema(many=True)
             return ResponseDto(200, "success", schema.dump(notice_info)), 200
         except CustomException as e:

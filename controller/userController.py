@@ -18,7 +18,7 @@ class UserController(FlaskView):
     decorators = (doc(tags=["User"]),)
 
     @route("/signUp", methods=["POST"])
-    @doc(description="User 회원 가입", summary="User 회원 가입")
+    @doc(tags=["User"], description="User 회원 가입", summary="User 회원 가입")
     @use_kwargs(UserSignUpSchema(), locations=("json",))
     @marshal_with(ResponseDictSchema(), code=200, description="회원 가입 완료")
     @marshal_with(ApiErrorSchema(), code=400, description="회원 가입 실패")

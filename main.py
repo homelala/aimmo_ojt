@@ -1,5 +1,7 @@
+from apispec import APISpec
+from apispec.ext.marshmallow import MarshmallowPlugin
 from flask import Flask
-from flask_restx import Api
+from flask_apispec import doc, FlaskApiSpec
 import mongoengine
 import traceback
 from controller.dashBoardController import DashBoardController
@@ -10,9 +12,20 @@ from controller.myPageController import MyPageController
 
 class CreateApp:
     app = Flask(__name__)
-    api = Api(app, version="1.0", title="게시판 Api", description="API description")
-    app.config.SWAGGER_UI_DOC_EXPANSION = "full"
-
+    app.config.update(
+        {
+            "APISPEC_SPEC": APISpec(
+                title="Title",
+                version="1.0.0",
+                openapi_version="3.0.0",
+                plugins=[MarshmallowPlugin()],
+            ),
+            "APISPEC_SWAGGER_URL": "/swagger-json/",
+            "APISPEC_SWAGGER_UI_URL": "/swagger/",
+        }
+    )
+    doc = FlaskApiSpec(app)
+    # doc.register(UserController)
     try:
         mongoengine.connect(host="mongodb://localhost:27017/aimmo_ojt")
         print("connect database success")

@@ -12,6 +12,7 @@ from controller.myPageController import MyPageController
 
 class CreateApp:
     app = Flask(__name__)
+
     app.config.update(
         {
             "APISPEC_SPEC": APISpec(

@@ -1,16 +1,16 @@
 from flask_apispec import use_kwargs, marshal_with, doc
-from flask_classful import route, FlaskView, request
-from schema.reponse.ResponseDto import ResponseDto
-from schema.NoticeCommentSchema import RegisterCommentSchema
-from schema.NoticeSchema import NoticeSchema, RegisterArticleSchema, UpdateArticleSchema
-from schema.error.ApiErrorSchema import ApiErrorSchema
-from schema.reponse.ResponseSchema import ResponseSchema, ResponseDictSchema
-from service import noticeService
-from utils.CustomException import CustomException
-from utils.ErrorResponseDto import ErrorResponseDto
+from flask_classful import route, FlaskView
+from app.schema.reponse.ResponseDto import ResponseDto
+from app.schema.NoticeCommentSchema import RegisterCommentSchema
+from app.schema.NoticeSchema import NoticeSchema, RegisterArticleSchema, UpdateArticleSchema
+from app.schema.error.ApiErrorSchema import ApiErrorSchema
+from app.schema.reponse.ResponseSchema import ResponseSchema, ResponseDictSchema
+from app.service import noticeService
+from app.utils.CustomException import CustomException
+from app.utils.ErrorResponseDto import ErrorResponseDto
 import traceback
 
-from utils.utils import valid_user
+from app.utils.utils import valid_user
 
 
 class NoticeController(FlaskView):

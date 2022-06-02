@@ -1,7 +1,5 @@
-from pprint import pprint
-
-from config.db import noticeComment
-from domain.NoticeComment import NoticeComment
+from app.config.db import noticeComment
+from app.domain.NoticeComment import NoticeComment
 
 
 def save(comment):

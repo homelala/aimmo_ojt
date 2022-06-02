@@ -1,10 +1,6 @@
-from bson import ObjectId
-from marshmallow import fields, Schema, post_load, post_dump
+from marshmallow import fields, Schema, post_load
 
-from funcy import project
-
-from domain.Notice import Notice
-from domain.User import User
+from app.domain.Notice import Notice
 
 
 class CommentSchema(Schema):

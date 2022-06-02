@@ -1,7 +1,6 @@
-from utils.CustomException import *
-from repository import userRepository
+from app.utils.CustomException import *
+from app.repository import userRepository
 from bson.objectid import ObjectId
-from pprint import pprint
 import jwt
 
 

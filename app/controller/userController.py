@@ -3,14 +3,14 @@ import json
 import traceback
 from flask_apispec import use_kwargs, marshal_with, doc
 from flask_classful import route, FlaskView, request
-from schema.reponse.ResponseDto import ResponseDto
-from schema.UserSchema import UserSignUpSchema, UserLogInSchema, UserUpdateInfoSchema
-from schema.error.ApiErrorSchema import ApiErrorSchema
-from schema.reponse.ResponseSchema import ResponseSchema, ResponseDictSchema
-from service import userService
-from utils.CustomException import CustomException
-from utils.ErrorResponseDto import ErrorResponseDto
-from utils.utils import valid_user
+from app.schema.reponse.ResponseDto import ResponseDto
+from app.schema.UserSchema import UserSignUpSchema, UserLogInSchema, UserUpdateInfoSchema
+from app.schema.error.ApiErrorSchema import ApiErrorSchema
+from app.schema.reponse.ResponseSchema import ResponseSchema, ResponseDictSchema
+from app.service import userService
+from app.utils.CustomException import CustomException
+from app.utils.ErrorResponseDto import ErrorResponseDto
+from app.utils.utils import valid_user
 
 
 class UserController(FlaskView):

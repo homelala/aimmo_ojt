@@ -1,18 +1,17 @@
-from flask_apispec import use_kwargs, marshal_with, doc
+from flask_apispec import marshal_with, doc
 from flask_classful import route, FlaskView
-from marshmallow import fields
 
-from schema.reponse.ResponseDto import ResponseDto
-from schema.NoticeCommentSchema import NoticeCommentSchema
-from schema.NoticeSchema import NoticeSchema
-from schema.error.ApiErrorSchema import ApiErrorSchema
-from schema.reponse.ResponseSchema import ResponseSchema
-from service import myPageService
-from utils.CustomException import CustomException
-from utils.ErrorResponseDto import ErrorResponseDto
+from app.schema.reponse.ResponseDto import ResponseDto
+from app.schema.NoticeCommentSchema import NoticeCommentSchema
+from app.schema.NoticeSchema import NoticeSchema
+from app.schema.error.ApiErrorSchema import ApiErrorSchema
+from app.schema.reponse.ResponseSchema import ResponseSchema
+from app.service import myPageService
+from app.utils.CustomException import CustomException
+from app.utils.ErrorResponseDto import ErrorResponseDto
 import traceback
 
-from utils.utils import valid_user
+from app.utils.utils import valid_user
 
 
 class MyPageController(FlaskView):

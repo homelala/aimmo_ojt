@@ -1,8 +1,7 @@
 import traceback
-from flask import jsonify
 
 from utils import CustomException
-from utils.ErrorResponseDto import ErrorResponseDto
+from app.utils.ErrorResponseDto import ErrorResponseDto
 
 
 def errorHandler(app):

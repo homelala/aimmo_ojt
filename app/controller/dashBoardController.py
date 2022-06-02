@@ -1,13 +1,13 @@
 from flask_apispec import marshal_with, doc
 from flask_classful import route, FlaskView
 
-from schema.reponse.ResponseDto import ResponseDto
-from schema.NoticeSchema import NoticeSchema
-from schema.error.ApiErrorSchema import ApiErrorSchema
-from schema.reponse.ResponseSchema import ResponseSchema
-from service import noticeService
-from utils.CustomException import CustomException
-from utils.ErrorResponseDto import ErrorResponseDto
+from app.schema.reponse.ResponseDto import ResponseDto
+from app.schema.NoticeSchema import NoticeSchema
+from app.schema.error.ApiErrorSchema import ApiErrorSchema
+from app.schema.reponse.ResponseSchema import ResponseSchema
+from app.service import noticeService
+from app.utils.CustomException import CustomException
+from app.utils.ErrorResponseDto import ErrorResponseDto
 import traceback
 
 

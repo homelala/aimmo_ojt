@@ -1,5 +1,4 @@
-from domain.User import User
-from config.db import user
+from app.domain.User import User
 
 
 def save(user):

@@ -1,9 +1,6 @@
 from marshmallow import fields, Schema, post_load
 
-from domain.User import User
-from funcy import project
-
-from utils.CustomException import NotExistUserException
+from app.domain.User import User
 
 
 class UserSchema(Schema):

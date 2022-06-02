@@ -1,7 +1,6 @@
-from bson import ObjectId
 from marshmallow import fields, Schema, post_load
 
-from domain.NoticeComment import NoticeComment
+from app.domain.NoticeComment import NoticeComment
 
 
 class NoticeInfoSchema(Schema):

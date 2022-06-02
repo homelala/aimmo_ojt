@@ -1,9 +1,7 @@
 from bson import ObjectId
 
-from domain.NoticeComment import NoticeComment
-from repository import noticeRepository, noticeCommentRepository
-from utils.CustomException import AccessException
-from pprint import pprint
+from app.repository import noticeCommentRepository, noticeRepository
+from app.utils.CustomException import AccessException
 
 
 def register_article(article):

@@ -1,7 +1,4 @@
-from utils.CustomException import *
-from repository import noticeRepository, userRepository, noticeCommentRepository
-from bson.objectid import ObjectId
-from pprint import pprint
+from app.repository import noticeCommentRepository, noticeRepository
 
 
 def get_my_articles(user_id):

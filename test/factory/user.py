@@ -1,7 +1,7 @@
 import factory
 from factory.mongoengine import MongoEngineFactory
 
-from domain.User import User
+from app.domain.User import User
 
 
 class UserFactory(MongoEngineFactory):

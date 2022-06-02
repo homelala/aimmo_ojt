@@ -1,6 +1,5 @@
-from config.db import notice
-from domain.Notice import Notice
-from pprint import pprint
+from app.config.db import notice
+from app.domain.Notice import Notice
 
 
 def save(article_info):

@@ -2,7 +2,7 @@ from marshmallow import fields, Schema, post_load
 
 from funcy import project
 
-from schema.reponse.ResponseDto import ResponseDto
+from app.schema.reponse.ResponseDto import ResponseDto
 
 
 class ResponseSchema(Schema):

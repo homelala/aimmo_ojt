@@ -1,24 +1,18 @@
 import sys
+
 import factory
 import pytest
 from flask import url_for
-
-
 from json import dumps
 import unittest
 
 sys.path.append(".")
 
-
 from app.domain import User
 
 
-class TestUser:
-    class DescribeSignUp:
-        """
-        user signUp test
-        """
-
+class Test_user:
+    class Test_signup:
         @pytest.fixture
         def user_data(self):
             return {
@@ -27,12 +21,12 @@ class TestUser:
                 "passwd": factory.Faker("passwd").generate(),
             }
 
-        @pytest.fixture()
+        @pytest.fixture
         def subject(self, client, headers, user_data):
             url = url_for("UserController:signUp")
             return client.post(url, headers=headers, data=dumps(user_data))
 
-        class Context_정상요청(unittest.TestCase):
+        class Test_정상_요청:
             def test_return_200(self, subject):
                 assert subject.status_code == 200
 

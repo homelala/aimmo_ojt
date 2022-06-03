@@ -1,4 +1,4 @@
-from app.config.db import noticeComment
+from app.db import noticeComment
 from app.domain.NoticeComment import NoticeComment
 
 

@@ -4,14 +4,15 @@ import factory
 import pytest
 from flask import url_for
 from json import dumps
-import unittest
+from werkzeug.test import Client
+from werkzeug.testapp import test_app
 
 sys.path.append(".")
 
 from app.domain import User
 
 
-class Test_user:
+class Describe_user:
     class Test_signup:
         @pytest.fixture
         def user_data(self):
@@ -27,6 +28,9 @@ class Test_user:
             return client.post(url, headers=headers, data=dumps(user_data))
 
         class Test_정상_요청:
+            def test_sample(self):
+                assert True
+
             def test_return_200(self, subject):
                 assert subject.status_code == 200
 

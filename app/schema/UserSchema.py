@@ -26,8 +26,8 @@ class UserSignUpSchema(Schema):
 
 
 class UserLogInSchema(Schema):
-    email = fields.Email(required=True)
-    passwd = fields.String(required=True)
+    email = fields.Email(required=False)
+    passwd = fields.String(required=False)
 
     @post_load
     def new_user(self, data, **kwargs):

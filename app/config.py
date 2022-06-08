@@ -14,3 +14,6 @@ class LocalConfig(Config):
 class TestConfig(Config):
     MONGO_URI = "mongomock://127.0.0.1:27017/aimmo_ojt?connect=false"
     TESTING = True
+
+
+config_by_name = dict(dev=LocalConfig, test=TestConfig)

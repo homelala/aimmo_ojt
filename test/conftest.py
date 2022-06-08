@@ -1,5 +1,7 @@
-import pytest
+import os
 
+import pytest
+import sys
 from flask import current_app, g
 from unittest import mock
 
@@ -10,6 +12,7 @@ from pprint import pprint
 def app():
     from app import create_app
 
+    os.environ["APP_ENV"] = "test"
     app = create_app()
     return app
 
@@ -38,13 +41,3 @@ def db(app):
     mongoengine.connect(host=current_app.config["MONGO_URI"])
     yield
     mongoengine.disconnect()
-
-
-#
-# @pytest.fixture(scope="function")
-# def session(db):
-#     session = db["session"]()
-#     g.db = session
-#     yield session
-#     session.rollback()
-#     session.close()

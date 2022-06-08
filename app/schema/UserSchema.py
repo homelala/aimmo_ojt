@@ -10,7 +10,6 @@ class UserSchema(Schema):
 
     @post_load
     def newUser(self, data, **kwargs):
-        print("ASDf", **data)
         user = User(**data)
         return user
 
@@ -22,7 +21,6 @@ class UserSignUpSchema(Schema):
 
     @post_load
     def new_user(self, data, **kwargs):
-        print(data)
         user = User(**data)
         return user
 

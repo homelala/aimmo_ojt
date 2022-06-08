@@ -9,14 +9,14 @@ from app.view.dashBoardController import DashBoardController
 from app.view.noticeController import NoticeController
 from app.view.userView import UserView
 from app.view.myPageController import MyPageController
-from test.conftest import db
+import sys
+import app.config as config
 
 
 def create_app():
     app = Flask(__name__)
     app.debug = True
-    phase = os.environ.get("PHASE", "local").lower()
-
+    config_name = os.getenv("APP_ENV") or "dev"
     # app.config.update(
     #     {
     #         "APISPEC_SPEC": APISpec(
@@ -32,7 +32,7 @@ def create_app():
     # doc = FlaskApiSpec(app)
 
     try:
-        app.config.from_object("app.config.%sConfig" % phase.capitalize())
+        app.config.from_object(config.config_by_name[config_name])
         mongoengine.connect(host=app.config["MONGO_URI"])
 
         print("connect database success")

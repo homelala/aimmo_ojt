@@ -1,6 +1,9 @@
 from bson import json_util
 import json
 import traceback
+import logging
+
+logger = logging.getLogger("test")
 from flask_apispec import use_kwargs, marshal_with, doc
 from flask_classful import route, FlaskView, request
 from app.schema.reponse.ResponseDto import ResponseDto
@@ -13,7 +16,7 @@ from app.utils.ErrorResponseDto import ErrorResponseDto
 from app.utils.utils import valid_user
 
 
-class UserController(FlaskView):
+class UserView(FlaskView):
     route_base = "/user"
     decorators = (doc(tags=["User"]),)
 
@@ -23,8 +26,10 @@ class UserController(FlaskView):
     @marshal_with(ResponseDictSchema(), code=200, description="회원 가입 완료")
     @marshal_with(ApiErrorSchema(), code=400, description="회원 가입 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
-    def signup(self, user=None):
+    def signup(self, user):
         try:
+            user = UserSignUpSchema().load(json.loads(request.data))
+            print(type(request.data))
             user_info = userService.userSignUp(user)
             return ResponseDto(200, "회원 가입 성공", {"user_id": json.loads(json_util.dumps(user_info.id))["$oid"]}), 200
         except CustomException as e:

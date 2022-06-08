@@ -5,6 +5,7 @@ import jwt
 
 
 def userSignUp(user):
+    print(user.email)
     already_user = userRepository.findByEmail(user.email)
     if already_user:
         raise AlreadyExistUserException("이미 존재하는 계정입니다.")

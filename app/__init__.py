@@ -5,10 +5,10 @@ from flask_apispec import FlaskApiSpec
 import mongoengine
 import traceback
 import os
-from app.controller.dashBoardController import DashBoardController
-from app.controller.noticeController import NoticeController
-from app.controller.userController import UserController
-from app.controller.myPageController import MyPageController
+from app.view.dashBoardController import DashBoardController
+from app.view.noticeController import NoticeController
+from app.view.userView import UserView
+from app.view.myPageController import MyPageController
 from test.conftest import db
 
 
@@ -44,7 +44,7 @@ def create_app():
 
     CORS(app, resources={r"*": {"origins": "*"}})
 
-    UserController.register(app)
+    UserView.register(app)
     NoticeController.register(app)
     DashBoardController.register(app)
     MyPageController.register(app)

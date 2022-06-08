@@ -10,17 +10,19 @@ class UserSchema(Schema):
 
     @post_load
     def newUser(self, data, **kwargs):
+        print("ASDf", **data)
         user = User(**data)
         return user
 
 
 class UserSignUpSchema(Schema):
-    name = fields.String(required=True)
-    email = fields.Email(required=True)
-    passwd = fields.String(required=True)
+    name = fields.String(required=False)
+    email = fields.Email(required=False)
+    passwd = fields.String(required=False)
 
     @post_load
     def new_user(self, data, **kwargs):
+        print(data)
         user = User(**data)
         return user
 

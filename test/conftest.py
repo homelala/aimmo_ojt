@@ -1,7 +1,9 @@
 import pytest
 
-from flask import current_app
+from flask import current_app, g
 from unittest import mock
+
+from pprint import pprint
 
 
 @pytest.fixture(scope="session")
@@ -24,6 +26,11 @@ def create_mock_session():
     return mock.Mock()
 
 
+@pytest.fixture
+def client(app):
+    return app.test_client()
+
+
 @pytest.fixture(scope="function", autouse=True)
 def db(app):
     import mongoengine
@@ -31,3 +38,13 @@ def db(app):
     mongoengine.connect(host=current_app.config["MONGO_URI"])
     yield
     mongoengine.disconnect()
+
+
+#
+# @pytest.fixture(scope="function")
+# def session(db):
+#     session = db["session"]()
+#     g.db = session
+#     yield session
+#     session.rollback()
+#     session.close()

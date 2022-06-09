@@ -29,7 +29,6 @@ class UserView(FlaskView):
     def signup(self, user):
         try:
             user = UserSignUpSchema().load(json.loads(request.data))
-            print(type(request.data))
             user_info = userService.userSignUp(user)
             return ResponseDto(200, "회원 가입 성공", {"user_id": json.loads(json_util.dumps(user_info.id))["$oid"]}), 200
         except CustomException as e:
@@ -65,6 +64,8 @@ class UserView(FlaskView):
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def userUpdateInfo(self, user=None):
         try:
+            user = UserUpdateInfoSchema().load(json.loads(request.data))
+            print(user)
             userService.userUpdateInfo(user)
             return ResponseDto(200, "회원 정보 수정이 완료되었습니다.")
         except CustomException as e:

@@ -7,9 +7,7 @@ import jwt
 def valid_user(f):
     @wraps(f)
     def decorate_user(*args, **kwargs):
-        token = json.loads(request.data)["token"]
-        if not token:
-            return jsonify({"message": "잘못된 접근입니다."}), 400
+        token = request.headers["token"]
 
         try:
             jwt.decode(token, "secret_key", "HS256")
@@ -19,8 +17,3 @@ def valid_user(f):
         return f(*args, **kwargs)
 
     return decorate_user
-
-
-# def valid_role(f):
-#     @wraps(f)
-#     def decorate_article(*args, **kwargs):

@@ -1,9 +1,7 @@
 import json
 import sys
 
-import factory
 import pytest
-from flask import url_for
 
 from test.factory.user import UserFactory
 import logging
@@ -17,6 +15,10 @@ class Test_user:
     @pytest.fixture
     def logged_in_user(self):
         return UserFactory.create()
+
+    @pytest.fixture
+    def make_token(self):
+        return FakeTokenFactory.create()
 
     class Test_signup:
         @pytest.fixture
@@ -99,3 +101,32 @@ class Test_user:
             def test_return_400(self, subject):
                 assert subject.status_code == 400
                 assert subject.json["message"] == "이메일 혹은 비밀번호가 틀렸습니다."
+
+    class Test_update:
+        @pytest.fixture
+        def form(self, logged_in_user):
+            return {
+                "id": str(logged_in_user.id),
+                "name": "updateName",
+            }
+
+        @pytest.fixture(scope="function")
+        def subject(self, client, headers, form):
+            return client.put("/user/", headers=headers, data=json.dumps(form))
+
+        class Test_정상_처리:
+            def test_return_200(self, subject):
+                assert subject.status_code == 200
+
+            def test_same_data(self, subject, form):
+                name = User.objects()[0].name
+                assert name == form["name"]
+
+        class Test_토근_인증_실패:
+            @pytest.fixture
+            def headers(self):
+                return {"token": "test_fail"}
+
+            def test_유효하지_않은_토큰(self, subject):
+                assert subject.json["message"] == "유요한 토큰이 아닙니다."
+                assert subject.status_code == 400

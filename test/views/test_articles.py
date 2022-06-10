@@ -78,3 +78,56 @@ class Test_articles:
             def test_return_400(self, form, subject):
                 assert subject.status_code == 400
                 assert subject.json["message"] == "권한이 없는 게시물입니다."
+
+    class Test_get_articles:
+        @pytest.fixture(scope="function")
+        def subject(self, client, register_article):
+            url = "/articles/" + str(register_article.id)
+            return client.get(url)
+
+        class Test_정상_요청:
+            def test_return_200(self, subject):
+                assert subject.status_code == 200
+
+            def test_article_length(self, subject):
+                assert len(Notice.objects()) == 1
+
+    class Test_delete_article:
+        @pytest.fixture(scope="function")
+        def subject(self, client, headers, register_article):
+            url = "/articles/" + str(register_article.id)
+            return client.delete(url, headers=headers)
+
+        class Test_정상_요청:
+            def test_return_200(self, subject):
+                assert subject.status_code == 200
+
+            def test_article_length(self, subject):
+                assert len(Notice.objects()) == 0
+
+    class Test_articles_like:
+        @pytest.fixture(scope="function")
+        def subject(self, client, headers, register_article):
+            url = "/articles/" + str(register_article.id) + "/like"
+            return client.post(url, headers=headers)
+
+        class Test_정상_요청:
+            def test_return_200(self, subject):
+                assert subject.status_code == 200
+
+            def test_like_count(self, subject):
+                assert Notice.objects()[0].like == 1
+
+    class Test_article_comment:
+        @pytest.fixture
+        def form(self):
+            return {}
+
+        @pytest.fixture(scope="function")
+        def subject(self, client, headers, register_article, form):
+            url = "/articles/" + str(register_article.id) + "/comment"
+            return client.post(url, headers=headers, data=json.dumps(form))
+
+        class Test_정상_요청:
+            def test_return_200(self, subject):
+                assert subject.status_code == 200

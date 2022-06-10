@@ -63,6 +63,7 @@ class NoticeView(FlaskView):
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def read_article(self, article_id):
         try:
+            print(article_id)
             article_info = noticeService.read_article(article_id)
             schema = NoticeSchema()
             return ResponseDto(200, "success", schema.dump(article_info)), 200

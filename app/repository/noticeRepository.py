@@ -11,7 +11,7 @@ def find_by_id(article_id):
 
 
 def find_by_id_with_comment(article_id):
-    info = notice.aggregate(
+    info = Notice.objects.aggregate(
         [
             {"$addFields": {"notice_id": {"$toString": "$_id"}}},
             {
@@ -25,7 +25,6 @@ def find_by_id_with_comment(article_id):
             {"$match": {"_id": article_id}},
         ]
     )
-
     return list(info)[0]
 
 
@@ -34,7 +33,7 @@ def delete_by_id(article):
 
 
 def find_by_like_with_comment():
-    info = notice.aggregate(
+    info = Notice.objects.aggregate(
         [
             {
                 "$addFields": {
@@ -63,7 +62,7 @@ def find_by_like_with_comment():
 
 
 def findByCountComment():
-    info = notice.aggregate(
+    info = Notice.objects.aggregate(
         [
             {
                 "$addFields": {
@@ -92,7 +91,7 @@ def findByCountComment():
 
 
 def findByRegisterDate():
-    info = notice.aggregate(
+    info = Notice.objects.aggregate(
         [
             {
                 "$addFields": {
@@ -121,7 +120,7 @@ def findByRegisterDate():
 
 
 def find_by_user_id(user_id):
-    info = notice.aggregate(
+    info = Notice.objects.aggregate(
         [
             {
                 "$addFields": {
@@ -149,7 +148,7 @@ def find_by_user_id(user_id):
 
 
 def find_by_title(keyword):
-    info = notice.aggregate(
+    info = Notice.objects.aggregate(
         [
             {
                 "$addFields": {

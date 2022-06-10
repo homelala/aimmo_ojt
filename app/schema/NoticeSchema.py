@@ -38,7 +38,6 @@ class UpdateArticleSchema(Schema):
     title = fields.String(required=False)
     description = fields.String(required=False)
     user_id = fields.String(required=False)
-    token = fields.String(required=False)
     tags = fields.List(fields.String())
 
     @post_load

@@ -17,12 +17,11 @@ class NoticeCommentSchema(Schema):
 
 
 class RegisterCommentSchema(Schema):
-    notice_id = fields.String(required=True)
-    user_id = fields.String(required=True)
-    description = fields.String(required=True)
-    token = fields.String(required=True)
+    notice_id = fields.String(required=False)
+    user_id = fields.String(required=False)
+    description = fields.String(required=False)
 
     @post_load()
     def newComment(self, data, **kwargs):
-        comment = NoticeComment(description=data["description"], user_id=data["user_id"], notice_id=data["notice_id"])
+        comment = NoticeComment(**data)
         return comment

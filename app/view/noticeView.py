@@ -115,6 +115,7 @@ class NoticeView(FlaskView):
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def comment_article(self, data):
         try:
+            data = RegisterCommentSchema().load(json.loads(request.data))
             noticeService.comment_article(data)
             return ResponseDto(200, "댓글 달기 완료"), 200
         except CustomException as e:

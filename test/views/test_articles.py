@@ -2,6 +2,7 @@ import json
 
 import pytest
 
+from app.domain.NoticeComment import NoticeComment
 from test.factory.user import UserFactory
 from test.factory.notice import NoticeFactory
 from app.domain.Notice import Notice
@@ -120,14 +121,51 @@ class Test_articles:
 
     class Test_article_comment:
         @pytest.fixture
-        def form(self):
-            return {}
+        def form(self, register_article):
+            return {
+                "notice_id": str(register_article.id),
+                "user_id": register_article.user_id,
+                "description": "comment",
+            }
 
         @pytest.fixture(scope="function")
-        def subject(self, client, headers, register_article, form):
-            url = "/articles/" + str(register_article.id) + "/comment"
+        def subject(self, client, headers, form):
+            url = "/articles/" + "comment"
             return client.post(url, headers=headers, data=json.dumps(form))
 
         class Test_정상_요청:
             def test_return_200(self, subject):
                 assert subject.status_code == 200
+
+            def test_comment_length(self, subject):
+                assert len(NoticeComment.objects()) == 1
+
+            def test_comment_data(self, subject, form):
+                assert NoticeComment.objects()[0].description == form["description"]
+
+    class Test_search_articles:
+        @pytest.fixture
+        def keyword(self, register_article):
+            return register_article.title
+
+        @pytest.fixture(scope="function")
+        def subject(self, client, headers, keyword):
+            url = "/articles" + "/search/" + keyword
+            return client.get(url, headers=headers)
+
+        class Test_정상_요청:
+            def test_return_200(self, subject):
+                assert subject.status_code == 200
+
+            def test_return_data(self, subject, keyword):
+                assert subject.json["data"][0]["title"] == keyword
+
+            class Test_부분_검색:
+                @pytest.fixture
+                def keyword(self, register_article):
+                    return register_article.title[0:2]
+
+                def test_return_data(self, subject, keyword):
+                    assert subject.json["data"][0]["title"][0:2] == keyword
+
+        ㅊ

@@ -1,5 +1,7 @@
+import json
+
 from flask_apispec import use_kwargs, marshal_with, doc
-from flask_classful import route, FlaskView
+from flask_classful import route, FlaskView, request
 from app.schema.reponse.ResponseDto import ResponseDto
 from app.schema.NoticeCommentSchema import RegisterCommentSchema
 from app.schema.NoticeSchema import NoticeSchema, RegisterArticleSchema, UpdateArticleSchema
@@ -13,7 +15,7 @@ import traceback
 from app.utils.utils import valid_user
 
 
-class NoticeController(FlaskView):
+class NoticeView(FlaskView):
     route_base = "/articles"
     decorators = (doc(tags=["Articles"]),)
 
@@ -26,6 +28,7 @@ class NoticeController(FlaskView):
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def register_article(self, article=None):
         try:
+            article = RegisterArticleSchema().load(json.loads(request.data))
             noticeService.register_article(article)
             return ResponseDto(200, "공지 등록 완료"), 200
         except CustomException as e:
@@ -43,9 +46,11 @@ class NoticeController(FlaskView):
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def update_article(self, data, article_id):
         try:
+            data = UpdateArticleSchema().load(json.loads(request.data))
             noticeService.update_article(article_id, data)
             return ResponseDto(200, "공지 수정 완료"), 200
         except CustomException as e:
+            print(e.message)
             return ErrorResponseDto(e.message), 400
         except Exception as e:
             traceback.print_exc()

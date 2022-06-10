@@ -16,10 +16,6 @@ class Test_user:
     def logged_in_user(self):
         return UserFactory.create()
 
-    @pytest.fixture
-    def make_token(self):
-        return FakeTokenFactory.create()
-
     class Test_signup:
         @pytest.fixture
         def form(self):

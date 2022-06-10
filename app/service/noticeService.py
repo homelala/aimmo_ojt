@@ -11,6 +11,7 @@ def register_article(article):
 def update_article(article_id, article_info):
 
     article = noticeRepository.find_by_id(ObjectId(article_id)).get()
+    print(str(article.user_id) + " " + str(article_info.user_id))
     if article.user_id != article_info.user_id:
         raise AccessException("권한이 없는 게시물입니다.")
 

@@ -6,7 +6,7 @@ import mongoengine
 import traceback
 import os
 from app.view.dashBoardController import DashBoardController
-from app.view.noticeController import NoticeController
+from app.view.noticeView import NoticeView
 from app.view.userView import UserView
 from app.view.myPageController import MyPageController
 import sys
@@ -45,7 +45,7 @@ def create_app():
     CORS(app, resources={r"*": {"origins": "*"}})
 
     UserView.register(app)
-    NoticeController.register(app)
+    NoticeView.register(app)
     DashBoardController.register(app)
     MyPageController.register(app)
 

@@ -1,6 +1,8 @@
 from marshmallow import fields, Schema, post_load
+from mongoengine import ReferenceField
 
 from app.domain.Notice import Notice
+from app.domain.User import User
 
 
 class CommentSchema(Schema):
@@ -21,26 +23,26 @@ class NoticeSchema(Schema):
 
 
 class RegisterArticleSchema(Schema):
-    title = fields.String(required=True)
-    description = fields.String(required=True)
-    user_id = fields.String(required=True)
-    token = fields.String(required=True)
+    title = fields.String(required=False)
+    description = fields.String(required=False)
+    user_id = fields.String(required=False)
     tags = fields.List(fields.String())
 
     @post_load
     def new_article(self, data, **kwargs):
-        article = Notice(title=data["title"], description=data["description"], user_id=data["user_id"], tags=data["tags"])
+        article = Notice(**data)
         return article
 
 
 class UpdateArticleSchema(Schema):
-    title = fields.String(required=True)
-    description = fields.String(required=True)
-    user_id = fields.String(required=True)
-    token = fields.String(required=True)
+    title = fields.String(required=False)
+    description = fields.String(required=False)
+    user_id = fields.String(required=False)
+    token = fields.String(required=False)
     tags = fields.List(fields.String())
 
     @post_load
     def updateNotice(self, data, **kwargs):
-        article = Notice(title=data["title"], description=data["description"], user_id=data["user_id"], tags=data["tags"])
+        print(data)
+        article = Notice(**data)
         return article

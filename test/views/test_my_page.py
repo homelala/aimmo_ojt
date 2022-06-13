@@ -35,3 +35,6 @@ class Describe_my_page:
         class Test_정상_요청:
             def test_return_200(self, subject):
                 assert subject.status_code == 200
+
+            def test_data_user_id(self, subject):
+                assert subject.status_code == 200

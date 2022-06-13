@@ -8,7 +8,7 @@ import os
 from app.view.dashBoardView import DashBoardView
 from app.view.noticeView import NoticeView
 from app.view.userView import UserView
-from app.view.myPageController import MyPageController
+from app.view.myPageView import MyPageView
 import sys
 import app.config as config
 
@@ -47,6 +47,6 @@ def create_app():
     UserView.register(app)
     NoticeView.register(app)
     DashBoardView.register(app)
-    MyPageController.register(app)
+    MyPageView.register(app)
 
     return app

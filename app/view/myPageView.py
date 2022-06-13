@@ -14,11 +14,11 @@ import traceback
 from app.utils.utils import valid_user
 
 
-class MyPageController(FlaskView):
+class MyPageView(FlaskView):
     route_base = "/my"
     decorators = (doc(tags=["Page"]),)
 
-    @route("/<user_id>/articles", methods=["POST"])
+    @route("/<user_id>/articles", methods=["GET"])
     @doc(description="내가 작성한 게시물", summary="내가 작성한 게시물")
     @valid_user
     # @use_kwargs({"token": fields.String(required=True)}, locations=("json",))
@@ -36,7 +36,7 @@ class MyPageController(FlaskView):
             traceback.print_exc()
             return ErrorResponseDto(e, 500), 500
 
-    @route("/<user_id>/comments", methods=["POST"])
+    @route("/<user_id>/comments", methods=["GET"])
     @doc(description="내가 작성한 댓글", summary="내가 작성한 댓글")
     @valid_user
     # @use_kwargs({"token": fields.String(required=True)}, locations=("json",))

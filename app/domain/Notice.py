@@ -24,6 +24,3 @@ class Notice(Document):
 
     def update_like(self):
         self.update(like=self.like + 1)
-
-
-#

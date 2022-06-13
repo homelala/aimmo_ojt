@@ -1,5 +1,6 @@
 from app.db import notice
 from app.domain.Notice import Notice
+from pprint import pprint
 
 
 def save(article_info):
@@ -53,8 +54,8 @@ def find_by_like_with_comment():
                     "countComment": {"$size": {"$ifNull": ["$comments", []]}},
                 },
             },
-            {"$limit": 10},
             {"$sort": {"like": -1}},
+            {"$limit": 10},
         ]
     )
 
@@ -82,11 +83,10 @@ def findByCountComment():
                     "countComment": {"$size": {"$ifNull": ["$comments", []]}},
                 },
             },
-            {"$limit": 10},
             {"$sort": {"countComment": -1}},
+            {"$limit": 10},
         ]
     )
-
     return list(info)
 
 
@@ -111,8 +111,8 @@ def findByRegisterDate():
                     "countComment": {"$size": {"$ifNull": ["$comments", []]}},
                 },
             },
-            {"$limit": 10},
             {"$sort": {"register_date": -1}},
+            {"$limit": 10},
         ]
     )
 

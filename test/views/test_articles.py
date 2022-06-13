@@ -167,5 +167,3 @@ class Test_articles:
 
                 def test_return_data(self, subject, keyword):
                     assert subject.json["data"][0]["title"][0:2] == keyword
-
-        ㅊ

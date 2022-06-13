@@ -19,7 +19,7 @@ class ResponseSchema(Schema):
 class ResponseDictSchema(Schema):
     statusCode = fields.Integer(required=True)
     message = fields.String(required=True)
-    data = fields.Dict()
+    data = fields.Dict(many=True)
 
     @post_load
     def newResponseDto(self, data, **kwargs):

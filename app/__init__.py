@@ -5,7 +5,7 @@ from flask_apispec import FlaskApiSpec
 import mongoengine
 import traceback
 import os
-from app.view.dashBoardController import DashBoardController
+from app.view.dashBoardView import DashBoardView
 from app.view.noticeView import NoticeView
 from app.view.userView import UserView
 from app.view.myPageController import MyPageController
@@ -46,7 +46,7 @@ def create_app():
 
     UserView.register(app)
     NoticeView.register(app)
-    DashBoardController.register(app)
+    DashBoardView.register(app)
     MyPageController.register(app)
 
     return app

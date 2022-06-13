@@ -23,7 +23,7 @@ class NoticeView(FlaskView):
     @doc(description="article 등록", summary="article 등록")
     @valid_user
     @use_kwargs(RegisterArticleSchema(), locations=("json",))
-    @marshal_with(ResponseSchema(), code=200, description="article 등록 완료")
+    @marshal_with(ResponseDictSchema(), code=200, description="article 등록 완료")
     @marshal_with(ApiErrorSchema(), code=400, description="article 등록 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def register_article(self, article=None):

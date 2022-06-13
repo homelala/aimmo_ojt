@@ -11,7 +11,7 @@ from app.utils.ErrorResponseDto import ErrorResponseDto
 import traceback
 
 
-class DashBoardController(FlaskView):
+class DashBoardView(FlaskView):
     route_base = "/main"
     decorators = (doc(tags=["Main"]),)
 

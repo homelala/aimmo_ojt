@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from app.db import noticeComment
 from app.domain.NoticeComment import NoticeComment
 
@@ -11,25 +13,33 @@ def deleteByNoticeId(comment):
 
 
 def find_by_user_id(user_id):
-    info = noticeComment.aggregate(
+    info = NoticeComment.objects.aggregate(
         [
+            {
+                "$addFields": {
+                    "localId": {"$toString": "$notice_id"},
+                },
+            },
             {
                 "$lookup": {
                     "from": "notice",
-                    "let": {"localId": {"$toObjectId": "$notice_id"}},
-                    "pipeline": [
-                        {
-                            "$match": {
-                                "$expr": {"$eq": ["$$localId", "$_id"]},
-                            }
-                        }
-                    ],
+                    "$let": {"foreignId": {"$toString": "_id"}},
+                    # "$pipeline": [
+                    #     {
+                    #         "$match": {
+                    #             "$expr": {"$eq": ["$$localId", "$_id"]},
+                    #         }
+                    #     }
+                    # ],
+                    "localField": "localId",
+                    "foreignField": "foreignId",
                     "as": "notice",
-                }
+                },
             },
             {"$match": {"user_id": user_id}},
         ]
     )
+    # pprint(list(info))
     return list(info)
 
 

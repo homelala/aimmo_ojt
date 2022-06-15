@@ -52,7 +52,7 @@ class Test_user:
                 }
 
             def test_return_400(self, subject):
-                assert subject.status_code == 400
+                assert subject.status_code == 402
 
     class Test_login:
         @pytest.fixture
@@ -83,7 +83,7 @@ class Test_user:
                 }
 
             def test_return_400(self, subject):
-                assert subject.status_code == 400
+                assert subject.status_code == 401
                 assert subject.json["message"] == "이메일 혹은 비밀번호가 틀렸습니다."
 
         class Test_비밀번호가_틀렸을경우:
@@ -95,7 +95,7 @@ class Test_user:
                 }
 
             def test_return_400(self, subject):
-                assert subject.status_code == 400
+                assert subject.status_code == 401
                 assert subject.json["message"] == "이메일 혹은 비밀번호가 틀렸습니다."
 
     class Test_update:
@@ -125,4 +125,4 @@ class Test_user:
 
             def test_유효하지_않은_토큰(self, subject):
                 assert subject.json["message"] == "유요한 토큰이 아닙니다."
-                assert subject.status_code == 400
+                assert subject.status_code == 405

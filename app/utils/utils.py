@@ -12,7 +12,7 @@ def valid_user(f):
         try:
             jwt.decode(token, "secret_key", "HS256")
         except jwt.InvalidTokenError:
-            return jsonify({"message": "유요한 토큰이 아닙니다.", "statusCode": 400}), 400
+            return jsonify({"message": "유요한 토큰이 아닙니다.", "statusCode": 405}), 405
 
         return f(*args, **kwargs)
 

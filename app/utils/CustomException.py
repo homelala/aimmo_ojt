@@ -14,14 +14,14 @@ class CustomException(Exception):
 
 class NotExistUserException(CustomException):
     def __init__(self, message):
-        statusCode = 403
+        statusCode = 401
         self.__message = message
         super().__init__(statusCode, message)
 
 
 class AlreadyExistUserException(CustomException):
     def __init__(self, message):
-        statusCode = 403
+        statusCode = 402
         self.__message = message
         super().__init__(statusCode, message)
 

@@ -23,15 +23,12 @@ class MyPageView(FlaskView):
     @valid_user
     # @use_kwargs({"token": fields.String(required=True)}, locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="내가 작성한 게시물 불러오기 성공")
-    @marshal_with(ApiErrorSchema(), code=400, description="내가 작성한 게시물 불러오기 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def getMaxLikeNotice(self, user_id=None):
         try:
             notice_info = myPageService.get_my_articles(user_id)
             schema = NoticeSchema(many=True)
             return ResponseDto(200, "success", schema.dump(notice_info)), 200
-        except CustomException as e:
-            return ErrorResponseDto(e.message), 400
         except Exception as e:
             traceback.print_exc()
             return ErrorResponseDto(e, 500), 500
@@ -41,15 +38,12 @@ class MyPageView(FlaskView):
     @valid_user
     # @use_kwargs({"token": fields.String(required=True)}, locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="내가 작성한 댓글 불러오기 성공")
-    @marshal_with(ApiErrorSchema(), code=400, description="내가 작성한 댓글 불러오기 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def getHighCommentNotice(self, user_id=None):
         try:
             notice_info = myPageService.get_my_comment(user_id)
             schema = NoticeCommentSchema(many=True)
             return ResponseDto(200, "success", schema.dump(notice_info)), 200
-        except CustomException as e:
-            return ErrorResponseDto(e.message), 400
         except Exception as e:
             traceback.print_exc()
             return ErrorResponseDto(e, 500), 500

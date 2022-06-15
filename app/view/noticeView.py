@@ -24,15 +24,12 @@ class NoticeView(FlaskView):
     @valid_user
     @use_kwargs(RegisterArticleSchema(), locations=("json",))
     @marshal_with(ResponseDictSchema(), code=200, description="article 등록 완료")
-    @marshal_with(ApiErrorSchema(), code=400, description="article 등록 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def register_article(self, article=None):
         try:
             article = RegisterArticleSchema().load(json.loads(request.data))
             noticeService.register_article(article)
             return ResponseDto(200, "공지 등록 완료"), 200
-        except CustomException as e:
-            return ErrorResponseDto(e.message), 400
         except Exception as e:
             traceback.print_exc()
             return ErrorResponseDto(e, 500), 500
@@ -42,7 +39,7 @@ class NoticeView(FlaskView):
     @valid_user
     @use_kwargs(UpdateArticleSchema(), locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="article 수정 완료")
-    @marshal_with(ApiErrorSchema(), code=400, description="article 수정 실패")
+    @marshal_with(ApiErrorSchema(), code=403, description="article 수정 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def update_article(self, data, article_id):
         try:
@@ -50,8 +47,7 @@ class NoticeView(FlaskView):
             noticeService.update_article(article_id, data)
             return ResponseDto(200, "공지 수정 완료"), 200
         except CustomException as e:
-            print(e.message)
-            return ErrorResponseDto(e.message), 400
+            return ErrorResponseDto(e.message, e.statusCode), e.statusCode
         except Exception as e:
             traceback.print_exc()
             return ErrorResponseDto(e, 500), 500
@@ -59,17 +55,13 @@ class NoticeView(FlaskView):
     @route("/<article_id>", methods=["GET"])
     @doc(description="article 읽기", summary="article 읽기")
     @marshal_with(ResponseDictSchema(), code=200, description="article 불러오기")
-    @marshal_with(ApiErrorSchema(), code=400, description="article 불러오기 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def read_article(self, article_id):
         try:
-            print(article_id)
             article_info = noticeService.read_article(article_id)
             schema = NoticeSchema()
             return ResponseDto(200, "success", schema.dump(article_info)), 200
 
-        except CustomException as e:
-            return ErrorResponseDto(e.message), 400
         except Exception as e:
             traceback.print_exc()
             return ErrorResponseDto(e, 500), 500
@@ -78,14 +70,11 @@ class NoticeView(FlaskView):
     @doc(description="article 삭제", summary="article 삭제")
     @valid_user
     @marshal_with(ResponseSchema(), code=200, description="article 삭제 완료")
-    @marshal_with(ApiErrorSchema(), code=400, description="article 삭제 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def delete_article(self, article_id):
         try:
             noticeService.delete_article(article_id)
             return ResponseDto(200, "공지 삭제 완료"), 200
-        except CustomException as e:
-            return ErrorResponseDto(e.message), 400
         except Exception as e:
             traceback.print_exc()
             return ErrorResponseDto(e, 500), 500
@@ -94,14 +83,11 @@ class NoticeView(FlaskView):
     @doc(description="article 좋아요", summary="article 좋아요")
     @valid_user
     @marshal_with(ResponseSchema(), code=200, description="article 좋아요 완료")
-    @marshal_with(ApiErrorSchema(), code=400, description="article 좋아요 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def like_article(self, article_id):
         try:
             noticeService.like_article(article_id)
             return ResponseDto(200, "좋아요 완료"), 200
-        except CustomException as e:
-            return ErrorResponseDto(e.message), 400
         except Exception as e:
             traceback.print_exc()
             return ErrorResponseDto(e, 500), 500
@@ -111,15 +97,12 @@ class NoticeView(FlaskView):
     @valid_user
     @use_kwargs(RegisterCommentSchema(), locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="article 댓글 달기 완료")
-    @marshal_with(ApiErrorSchema(), code=400, description="article 댓글 달기 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def comment_article(self, data):
         try:
             data = RegisterCommentSchema().load(json.loads(request.data))
             noticeService.comment_article(data)
             return ResponseDto(200, "댓글 달기 완료"), 200
-        except CustomException as e:
-            return ErrorResponseDto(e.message), 400
         except Exception as e:
             traceback.print_exc()
             return ErrorResponseDto(e, 500), 500
@@ -127,15 +110,12 @@ class NoticeView(FlaskView):
     @route("/search/<title>", methods=["GET"])
     @doc(description="article 검색", summary="article 검색")
     @marshal_with(ResponseSchema(), code=200, description="article 검색 완료")
-    @marshal_with(ApiErrorSchema(), code=400, description="article 검색 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def search_article(self, title):
         try:
             article_list = noticeService.search_article(title)
             schema = NoticeSchema(many=True)
             return ResponseDto(200, "success", schema.dump(article_list)), 200
-        except CustomException as e:
-            return ErrorResponseDto(e.message), 400
         except Exception as e:
             traceback.print_exc()
             return ErrorResponseDto(e, 500), 500

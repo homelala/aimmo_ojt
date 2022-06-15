@@ -77,7 +77,7 @@ class Test_articles:
                 return client.put(url, headers=headers, data=json.dumps(form))
 
             def test_return_400(self, form, subject):
-                assert subject.status_code == 400
+                assert subject.status_code == 403
                 assert subject.json["message"] == "권한이 없는 게시물입니다."
 
     class Test_get_articles:

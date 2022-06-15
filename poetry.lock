@@ -414,13 +414,14 @@ pymongo = ">=3.4,<4.0"
 
 [[package]]
 name = "mongomock"
-version = "3.23.0"
+version = "4.0.0"
 description = "Fake pymongo stub for testing simple MongoDB-dependent code"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
+packaging = "*"
 sentinels = "*"
 six = "*"
 
@@ -715,7 +716,7 @@ six = ">=1.5"
 name = "sentinels"
 version = "1.0.0"
 description = "Various objects to denote special meanings in python"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
@@ -825,7 +826,7 @@ email = ["email-validator"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "fb84886c21fb37993d3eaae6d334ad4c17114460ced58e9a4245a6d7408f68f2"
+content-hash = "1ad29d2a13bdf87cd17bec84f019ba58bd50bd3e0343c936b03c81d72e0fcc0a"
 
 [metadata.files]
 apispec = [
@@ -1095,8 +1096,8 @@ mongoengine = [
     {file = "mongoengine-0.20.0.tar.gz", hash = "sha256:db9e5d587e5d74e52851e0e4a53fd744725bfa9918ae6070139f5ba9c62c6edf"},
 ]
 mongomock = [
-    {file = "mongomock-3.23.0-py2.py3-none-any.whl", hash = "sha256:01ce0c4eb02b2eced0a30882412444eaf6de27a90f2502bee64e04e3b8ecdc90"},
-    {file = "mongomock-3.23.0.tar.gz", hash = "sha256:d9945e7c87c221aed47c6c10708376351a5f5ee48060943c56ba195be425b0dd"},
+    {file = "mongomock-4.0.0-py2.py3-none-any.whl", hash = "sha256:cac9c68dd7715b4ab6ae510c20b4676e5ce751f0a5434d5ad8236d974e2a2b69"},
+    {file = "mongomock-4.0.0.tar.gz", hash = "sha256:b1832c3748d47444c18867373e5cea754c2e6f644a0cfbfd667f178f68bdecfc"},
 ]
 more-itertools = [
     {file = "more-itertools-8.13.0.tar.gz", hash = "sha256:a42901a0a5b169d925f6f217cd5a190e32ef54360905b9c39ee7db5313bfec0f"},

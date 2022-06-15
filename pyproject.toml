@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "board-project"
+name = "aimmo-ojt"
 version = "0.1.0"
 description = ""
-authors = ["yeeunlee <chloe.yeeunl@gmail.com>"]
+authors = ["homelala <homelala8389l@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -17,9 +17,10 @@ flask_apispec = "^0.10.0"
 flask_mongoengine = "^0.9.5"
 arrow = "^0.16.0"
 pytest-factoryboy = "^2.0.3"
+mongomock = "^4.0.0"
 
 [tool.poetry.dev-dependencies]
-mongomock = "^3.20.0"
+mongomock = "^4.0.0"
 pytest = "^5.2"
 pytest-factoryboy = "^2.0.3"
 pytest-env = "^0.6.2"

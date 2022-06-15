@@ -1,6 +1,5 @@
 from pprint import pprint
 
-from app.db import noticeComment
 from app.domain.NoticeComment import NoticeComment
 
 
@@ -16,25 +15,18 @@ def find_by_user_id(user_id):
     info = NoticeComment.objects.aggregate(
         [
             {
-                "$addFields": {
-                    "localId": {"$toString": "$notice_id"},
-                },
-            },
-            {
                 "$lookup": {
                     "from": "notice",
-                    "$let": {"foreignId": {"$toString": "_id"}},
-                    # "$pipeline": [
-                    #     {
-                    #         "$match": {
-                    #             "$expr": {"$eq": ["$$localId", "$_id"]},
-                    #         }
-                    #     }
-                    # ],
-                    "localField": "localId",
-                    "foreignField": "foreignId",
+                    "let": {"localId": {"$toObjectId": "$notice_id"}},
+                    "pipeline": [
+                        {
+                            "$match": {
+                                "$expr": {"$eq": ["$$localId", "$_id"]},
+                            }
+                        }
+                    ],
                     "as": "notice",
-                },
+                }
             },
             {"$match": {"user_id": user_id}},
         ]

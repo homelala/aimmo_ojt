@@ -39,7 +39,7 @@ class UserView(FlaskView):
 
     @route("/logIn", methods=["POST"])
     @doc(description="User 로그인", summary="User 로그인")
-    # @use_kwargs(UserLogInSchema(), locations=("json",))#
+    # @use_kwargs(UserLogInSchema(), locations=("json",))
     @marshal_with(ResponseDictSchema(), code=200, description="로그인 성공")
     @marshal_with(ApiErrorSchema(), code=401, description="로그인 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
@@ -65,7 +65,6 @@ class UserView(FlaskView):
     def userUpdateInfo(self, user=None):
         try:
             user = UserUpdateInfoSchema().load(json.loads(request.data))
-            print(user)
             userService.userUpdateInfo(user)
             return ResponseDto(200, "회원 정보 수정이 완료되었습니다.")
         except CustomException as e:

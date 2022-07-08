@@ -33,16 +33,16 @@ class Describe_my_page:
             def test_data_user_id(self, subject):
                 assert len(subject.json["data"]) == 1
 
-    # class Context_my_comments:
-    #     @pytest.fixture(scope="function")
-    #     def subject(self, client, headers, register_comment):
-    #         url = "/my/" + str(register_comment.user_id) + "/comments"
-    #         return client.get(url, headers=headers)
-    #
-    #     class Test_정상_요청:
-    #         def test_return_200(self, subject):
-    #             assert subject.status_code == 200
-    #
-    #         # def test_data_user_id(self, subject):
-    #         #     pprint(subject.json)
-    #         #     assert len(subject.json["data"]) == 1
+    class Context_my_comments:
+        @pytest.fixture(scope="function")
+        def subject(self, client, headers, register_comment):
+            url = "/my/" + str(register_comment.user_id) + "/comments"
+            return client.get(url, headers=headers)
+
+        class Test_정상_요청:
+            def test_return_200(self, subject):
+                assert subject.status_code == 200
+
+            # def test_data_user_id(self, subject):
+            #     pprint(subject.json)
+            #     assert len(subject.json["data"]) == 1

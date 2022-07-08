@@ -21,7 +21,6 @@ class UserSignUpSchema(Schema):
 
     @post_load
     def new_user(self, data, **kwargs):
-        print("user test ", data)
         user = User(**data)
         return user
 

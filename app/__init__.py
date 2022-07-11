@@ -1,7 +1,6 @@
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
 from flask import Flask
-from flask_apispec import FlaskApiSpec
 import mongoengine
 import traceback
 import os

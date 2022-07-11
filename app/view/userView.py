@@ -20,7 +20,7 @@ class UserView(FlaskView):
     route_base = "/user"
     decorators = (doc(tags=["User"]),)
 
-    @route("/signUp", methods=["POST"])
+    @route("/", methods=["POST"])
     @doc(tags=["User"], description="User 회원 가입", summary="User 회원 가입")
     @use_kwargs(UserSignUpSchema(), locations=("json",))
     @marshal_with(ResponseDictSchema(), code=200, description="회원 가입 완료")
@@ -30,12 +30,12 @@ class UserView(FlaskView):
         try:
             user = UserSignUpSchema().load(json.loads(request.data))
             user_info = userService.userSignUp(user)
-            return ResponseDto(200, "회원 가입 성공", {"user_id": json.loads(json_util.dumps(user_info.id))["$oid"]}), 200
+            return ResponseDto({"user_id": json.loads(json_util.dumps(user_info.id))["$oid"]}), 200
         except CustomException as e:
-            return ErrorResponseDto(e.message, e.statusCode), e.statusCode
+            return ErrorResponseDto(e.message), e.statusCode
         except Exception as e:
             traceback.print_exc()
-            return ErrorResponseDto(e), 500
+            return ErrorResponseDto(e.message), 500
 
     @route("/logIn", methods=["POST"])
     @doc(description="User 로그인", summary="User 로그인")
@@ -48,27 +48,26 @@ class UserView(FlaskView):
             data = json.loads(request.data)
             user = UserLogInSchema().load(data)
             user_info = userService.userLogIn(user, data["passwd"])
-            return ResponseDto(200, "로그인 성공", {"userId": json.loads(json_util.dumps(user_info.id))["$oid"]}), 200
+            return ResponseDto({"userId": json.loads(json_util.dumps(user_info.id))["$oid"]}), 200
         except CustomException as e:
-            return ErrorResponseDto(e.message, e.statusCode), e.statusCode
+            return ErrorResponseDto(e.message), e.statusCode
         except Exception as e:
             traceback.print_exc()
-            return ErrorResponseDto(e), 500
+            return ErrorResponseDto(e.message), 500
 
     @route("/", methods=["PUT"])
     @doc(description="User 정보 수정", summary="User 정보 수정")
     @valid_user
     @use_kwargs(UserUpdateInfoSchema(), locations=("json",))
-    @marshal_with(ResponseSchema(), code=200, description="정보 수정 성공")
     @marshal_with(ApiErrorSchema(), code=403, description="정보 수정 실패")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def userUpdateInfo(self, user=None):
         try:
             user = UserUpdateInfoSchema().load(json.loads(request.data))
             userService.userUpdateInfo(user)
-            return ResponseDto(200, "회원 정보 수정이 완료되었습니다.")
+            return "", 200
         except CustomException as e:
-            return ErrorResponseDto(e.message, e.statusCode), e.statusCode
+            return ErrorResponseDto(e.message), e.statusCode
         except Exception as e:
             traceback.print_exc()
-            return ErrorResponseDto(e), 500
+            return ErrorResponseDto(e.message), 500

@@ -17,7 +17,7 @@ def userLogIn(user, passwd):
         raise NotExistUserException("이메일 혹은 비밀번호가 틀렸습니다.")
     if not user.check_passwd(passwd):
         raise NotExistUserException("이메일 혹은 비밀번호가 틀렸습니다.")
-    payload = {"email": user.email, "name": user.name}
+    payload = {"email": user.email, "name": user.name, "id": user.id}
     token = jwt.encode(payload, "secret_key", algorithm="HS256")
     user.update_token(token)
     return user

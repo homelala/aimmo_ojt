@@ -6,12 +6,11 @@ from app.domain.User import User
 
 
 class Notice(Document):
+    user = ReferenceField(User)
     id = StringField(required=False)
     title = StringField(required=True)
     description = StringField(required=True)
     register_date = DateField(default=datetime.datetime.now())
-    user_id = StringField(required=True)
-    # user = ReferenceField(User)
     like = IntField(default=0)
     tags = ListField(required=True)
 

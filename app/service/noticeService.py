@@ -2,6 +2,7 @@ from bson import ObjectId
 
 from app.repository import noticeCommentRepository, noticeRepository
 from app.utils.CustomException import AccessException
+from flask import g
 
 
 def register_article(article):
@@ -11,7 +12,7 @@ def register_article(article):
 def update_article(article_id, article_info):
 
     article = noticeRepository.find_by_id(ObjectId(article_id)).get()
-    if article.user_id != article_info.user_id:
+    if str(article.user.id) != g.user_id:
         raise AccessException("권한이 없는 게시물입니다.")
 
     article.update_info(article_info.title, article_info.description, article_info.tags)

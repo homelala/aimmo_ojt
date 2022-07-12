@@ -37,11 +37,9 @@ class RegisterArticleSchema(Schema):
 class UpdateArticleSchema(Schema):
     title = fields.String(required=False)
     description = fields.String(required=False)
-    user_id = fields.String(required=False)
     tags = fields.List(fields.String())
 
     @post_load
     def updateNotice(self, data, **kwargs):
-        print(data)
         article = Notice(**data)
         return article

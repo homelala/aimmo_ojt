@@ -17,8 +17,6 @@ class NoticeCommentSchema(Schema):
 
 
 class RegisterCommentSchema(Schema):
-    notice_id = fields.String(required=False)
-    user_id = fields.String(required=False)
     description = fields.String(required=False)
 
     @post_load()

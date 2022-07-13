@@ -19,7 +19,7 @@ def update_article(article_id, article_info):
 
 
 def read_article(noticeId):
-    notice = noticeRepository.find_by_id_with_comment(ObjectId(noticeId))
+    notice = noticeRepository.find_by_id(ObjectId(noticeId)).get()
     return notice
 
 

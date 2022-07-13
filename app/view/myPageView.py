@@ -21,7 +21,6 @@ class MyPageView(FlaskView):
     @route("/<user_id>/articles", methods=["GET"])
     @doc(description="내가 작성한 게시물", summary="내가 작성한 게시물")
     @valid_user
-    # @use_kwargs({"token": fields.String(required=True)}, locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="내가 작성한 게시물 불러오기 성공")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def getMaxLikeNotice(self, user_id=None):
@@ -36,7 +35,6 @@ class MyPageView(FlaskView):
     @route("/<user_id>/comments", methods=["GET"])
     @doc(description="내가 작성한 댓글", summary="내가 작성한 댓글")
     @valid_user
-    # @use_kwargs({"token": fields.String(required=True)}, locations=("json",))
     @marshal_with(ResponseSchema(), code=200, description="내가 작성한 댓글 불러오기 성공")
     @marshal_with(ApiErrorSchema(), code=500, description="INTERNAL_SERVER_ERROR")
     def getHighCommentNotice(self, user_id=None):

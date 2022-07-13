@@ -5,6 +5,7 @@ from flask import g
 from flask_apispec import use_kwargs, marshal_with, doc
 from flask_classful import route, FlaskView, request
 
+from app.domain.Notice import Notice
 from app.domain.NoticeComment import NoticeComment
 from app.schema.reponse.ResponseDto import ResponseDto
 from app.schema.NoticeCommentSchema import RegisterCommentSchema
@@ -25,10 +26,9 @@ class NoticeView(FlaskView):
     @route("/", methods=["POST"])
     @doc(description="article 등록", summary="article 등록")
     @valid_user
-    # @use_kwargs(RegisterArticleSchema(), locations=("json",))
+    @use_kwargs(RegisterArticleSchema(), locations=("json",))
     @marshal_empty(code=200)
     def register_article(self, article=None):
-        article = RegisterArticleSchema().load(json.loads(request.data))
         article.user = ObjectId(g.user_id)
         noticeService.register_article(article)
         return "", 200
@@ -41,7 +41,6 @@ class NoticeView(FlaskView):
     @marshal_with(ApiErrorSchema(), code=403, description="article 수정 실패")
     def update_article(self, data, article_id):
         try:
-            data = UpdateArticleSchema().load(json.loads(request.data))
             noticeService.update_article(article_id, data)
             return "", 200
         except CustomException as e:
@@ -51,11 +50,9 @@ class NoticeView(FlaskView):
     @doc(description="article 읽기", summary="article 읽기")
     @marshal_with(ResponseDictSchema(), code=200, description="article 불러오기")
     def read_article(self, article_id):
-        article_info = noticeService.read_article(article_id)
+        article_info = Notice.objects(id=article_id).get()
         article_info.comments = NoticeComment.objects(notice=article_id)
-        schema = NoticeDetailSchema()
-        result = schema.dump(article_info)
-        return ResponseDto(result), 200
+        return ResponseDto(NoticeDetailSchema().dump(article_info)), 200
 
     @route("/<article_id>", methods=["DELETE"])
     @valid_user
@@ -76,11 +73,10 @@ class NoticeView(FlaskView):
     @route("/<notice_id>/comment", methods=["POST"])
     @doc(description="article 댓글 달기", summary="article 댓글 달기")
     @valid_user
-    # @use_kwargs(RegisterCommentSchema(), locations=("json",))
+    @use_kwargs(RegisterCommentSchema(), locations=("json",))
     @marshal_empty(code=200)
     @marshal_with(ResponseSchema(), code=200, description="article 댓글 달기 완료")
     def comment_article(self, notice_id, data=None):
-        data = RegisterCommentSchema().load(json.loads(request.data))
         data.user = ObjectId(g.user_id)
         data.notice = ObjectId(notice_id)
         noticeService.comment_article(data)

@@ -27,7 +27,6 @@ class UserView(FlaskView):
     @marshal_with(ApiErrorSchema(), code=402, description="회원 가입 실패")
     def signup(self, user):
         try:
-            user = UserSignUpSchema().load(json.loads(request.data))
             user_info = userService.userSignUp(user)
             return ResponseDto({"user_id": json.loads(json_util.dumps(user_info.id))["$oid"]}), 200
         except CustomException as e:
@@ -35,14 +34,12 @@ class UserView(FlaskView):
 
     @route("/logIn", methods=["POST"])
     @doc(description="User 로그인", summary="User 로그인")
-    # @use_kwargs(UserLogInSchema(), locations=("json",))
+    @use_kwargs(UserLogInSchema(), locations=("json",))
     @marshal_with(ResponseDictSchema(), code=200, description="로그인 성공")
     @marshal_with(ApiErrorSchema(), code=401, description="로그인 실패")
-    def login(self):
+    def login(self, user):
         try:
-            data = json.loads(request.data)
-            user = UserLogInSchema().load(data)
-            user_info = userService.userLogIn(user, data["passwd"])
+            user_info = userService.userLogIn(user, user["passwd"])
             return ResponseDto({"userId": json.loads(json_util.dumps(user_info.id))["$oid"]}), 200
         except CustomException as e:
             return ErrorResponseDto(e.message), e.statusCode
@@ -55,7 +52,6 @@ class UserView(FlaskView):
     @marshal_with(ApiErrorSchema(), code=403, description="정보 수정 실패")
     def userUpdateInfo(self, user=None):
         try:
-            user = UserUpdateInfoSchema().load(json.loads(request.data))
             userService.userUpdateInfo(user)
             return "", 200
         except CustomException as e:

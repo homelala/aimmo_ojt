@@ -1,7 +1,10 @@
 from marshmallow import fields, Schema, post_load
 
 from app.domain.NoticeComment import NoticeComment
-from app.schema.NoticeSchema import NoticeInfoSchema
+
+
+class NoticeInfoSchema(Schema):
+    title = fields.String(required=True)
 
 
 class NoticeCommentSchema(Schema):
@@ -9,7 +12,7 @@ class NoticeCommentSchema(Schema):
     user_id = fields.String(required=True)
     description = fields.String(required=True)
     register_date = fields.String(required=True)
-    notice = fields.List(fields.Nested(NoticeInfoSchema()))
+    notice = fields.Nested(NoticeInfoSchema())
 
 
 class RegisterCommentSchema(Schema):

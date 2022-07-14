@@ -31,31 +31,3 @@ def find_by_id_with_comment(article_id):
 
 def delete_by_id(article):
     Notice.delete(article)
-
-
-def find_by_user_id(user_id):
-    info = Notice.objects.aggregate(
-        [
-            {
-                "$addFields": {
-                    "notice_id": {"$toString": "$_id"},
-                },
-            },
-            {
-                "$lookup": {
-                    "from": "notice_comment",
-                    "localField": "notice_id",
-                    "foreignField": "notice_id",
-                    "as": "comments",
-                }
-            },
-            {
-                "$addFields": {
-                    "countComment": {"$size": {"$ifNull": ["$comments", []]}},
-                },
-            },
-            {"$match": {"user_id": user_id}},
-        ]
-    )
-
-    return list(info)

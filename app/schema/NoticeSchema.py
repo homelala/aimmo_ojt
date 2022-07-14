@@ -9,7 +9,7 @@ class CommentUser(Schema):
     name = fields.String()
 
 
-class NoticeInfoSchema(Schema):
+class CommentInfoSchema(Schema):
     description = fields.String(required=True)
     register_date = fields.String(required=True)
     user = fields.Nested(CommentUser())
@@ -21,7 +21,7 @@ class NoticeDetailSchema(Schema):
     register_date = fields.String(required=True)
     like = fields.Integer(required=True)
     tags = fields.List(fields.String(), required=True)
-    comments = fields.List(fields.Nested(NoticeInfoSchema()))
+    comments = fields.List(fields.Nested(CommentInfoSchema()))
     count_comments = fields.Integer()
 
 

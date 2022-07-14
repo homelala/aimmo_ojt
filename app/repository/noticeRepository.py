@@ -33,92 +33,6 @@ def delete_by_id(article):
     Notice.delete(article)
 
 
-def find_by_like_with_comment():
-    info = Notice.objects.aggregate(
-        [
-            {
-                "$addFields": {
-                    "notice_id": {"$toString": "$_id"},
-                },
-            },
-            {
-                "$lookup": {
-                    "from": "notice_comment",
-                    "localField": "notice_id",
-                    "foreignField": "notice_id",
-                    "as": "comments",
-                }
-            },
-            {
-                "$addFields": {
-                    "countComment": {"$size": {"$ifNull": ["$comments", []]}},
-                },
-            },
-            {"$sort": {"like": -1}},
-            {"$limit": 10},
-        ]
-    )
-
-    return list(info)
-
-
-def findByCountComment():
-    info = Notice.objects.aggregate(
-        [
-            {
-                "$addFields": {
-                    "notice_id": {"$toString": "$_id"},
-                },
-            },
-            {
-                "$lookup": {
-                    "from": "notice_comment",
-                    "localField": "notice_id",
-                    "foreignField": "notice_id",
-                    "as": "comments",
-                }
-            },
-            {
-                "$addFields": {
-                    "countComment": {"$size": {"$ifNull": ["$comments", []]}},
-                },
-            },
-            {"$sort": {"countComment": -1}},
-            {"$limit": 10},
-        ]
-    )
-    return list(info)
-
-
-def findByRegisterDate():
-    info = Notice.objects.aggregate(
-        [
-            {
-                "$addFields": {
-                    "notice_id": {"$toString": "$_id"},
-                },
-            },
-            {
-                "$lookup": {
-                    "from": "notice_comment",
-                    "localField": "notice_id",
-                    "foreignField": "notice_id",
-                    "as": "comments",
-                }
-            },
-            {
-                "$addFields": {
-                    "countComment": {"$size": {"$ifNull": ["$comments", []]}},
-                },
-            },
-            {"$sort": {"register_date": -1}},
-            {"$limit": 10},
-        ]
-    )
-
-    return list(info)
-
-
 def find_by_user_id(user_id):
     info = Notice.objects.aggregate(
         [
@@ -144,26 +58,4 @@ def find_by_user_id(user_id):
         ]
     )
 
-    return list(info)
-
-
-def find_by_title(keyword):
-    info = Notice.objects.aggregate(
-        [
-            {
-                "$addFields": {
-                    "notice_id": {"$toString": "$_id"},
-                },
-            },
-            {
-                "$lookup": {
-                    "from": "notice_comment",
-                    "localField": "notice_id",
-                    "foreignField": "notice_id",
-                    "as": "comments",
-                }
-            },
-            {"$match": {"title": {"$regex": keyword}}},
-        ]
-    )
     return list(info)

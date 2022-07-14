@@ -1,11 +1,7 @@
 from marshmallow import fields, Schema, post_load
 
 from app.domain.NoticeComment import NoticeComment
-
-
-class NoticeInfoSchema(Schema):
-    title = fields.String(required=True)
-    register_date = fields.String(required=True)
+from app.schema.NoticeSchema import NoticeInfoSchema
 
 
 class NoticeCommentSchema(Schema):
@@ -17,9 +13,9 @@ class NoticeCommentSchema(Schema):
 
 
 class RegisterCommentSchema(Schema):
-    description = fields.String(required=False)
+    description = fields.String(required=True)
 
     @post_load()
-    def newComment(self, data, **kwargs):
+    def new_comment(self, data, **kwargs):
         comment = NoticeComment(**data)
         return comment

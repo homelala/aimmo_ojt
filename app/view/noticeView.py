@@ -9,7 +9,7 @@ from app.domain.Notice import Notice
 from app.domain.NoticeComment import NoticeComment
 from app.schema.reponse.ResponseDto import ResponseDto
 from app.schema.NoticeCommentSchema import RegisterCommentSchema
-from app.schema.NoticeSchema import NoticeSchema, RegisterArticleSchema, UpdateArticleSchema, NoticeDetailSchema
+from app.schema.NoticeSchema import RegisterArticleSchema, UpdateArticleSchema, NoticeDetailSchema
 from app.schema.error.ApiErrorSchema import ApiErrorSchema
 from app.schema.reponse.ResponseSchema import ResponseSchema, ResponseDictSchema
 from app.service import noticeService
@@ -65,27 +65,27 @@ class NoticeView(FlaskView):
     @doc(description="article 좋아요", summary="article 좋아요")
     @valid_user
     @marshal_empty(code=200)
-    @marshal_with(ResponseSchema(), code=200, description="article 좋아요 완료")
     def like_article(self, article_id):
-        noticeService.like_article(article_id)
+        Notice.objects(id=article_id).get().increase_like()
         return "", 200
 
-    @route("/<notice_id>/comment", methods=["POST"])
+    @route("/<article_id>/comment", methods=["POST"])
     @doc(description="article 댓글 달기", summary="article 댓글 달기")
     @valid_user
     @use_kwargs(RegisterCommentSchema(), locations=("json",))
     @marshal_empty(code=200)
-    @marshal_with(ResponseSchema(), code=200, description="article 댓글 달기 완료")
-    def comment_article(self, notice_id, data=None):
+    def comment_article(self, data, article_id):
         data.user = ObjectId(g.user_id)
-        data.notice = ObjectId(notice_id)
-        noticeService.comment_article(data)
+        data.notice = ObjectId(article_id)
+
+        Notice.objects(id=article_id).get().increase_comment()
+        NoticeComment.save(data)
         return "", 200
 
     @route("/search/<title>", methods=["GET"])
     @doc(description="article 검색", summary="article 검색")
     @marshal_with(ResponseSchema(), code=200, description="article 검색 완료")
     def search_article(self, title):
-        article_list = noticeService.search_article(title)
-        schema = NoticeSchema(many=True)
+        article_list = Notice.objects(title__icontains=title).order_by("-register_date")
+        schema = NoticeDetailSchema(many=True)
         return ResponseDto(schema.dump(article_list)), 200

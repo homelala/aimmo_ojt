@@ -29,28 +29,3 @@ def delete_article(article_id):
         noticeCommentRepository.deleteByNoticeId(comment)
     article = noticeRepository.find_by_id(article_id).get()
     noticeRepository.delete_by_id(article)
-
-
-def like_article(article_id):
-    article = noticeRepository.find_by_id(ObjectId(article_id)).get()
-    article.update_like()
-
-
-def comment_article(comment):
-    noticeCommentRepository.save(comment)
-
-
-def get_high_like_article():
-    return noticeRepository.find_by_like_with_comment()
-
-
-def get_high_comment_article():
-    return noticeRepository.findByCountComment()
-
-
-def get_recent_article():
-    return noticeRepository.findByRegisterDate()
-
-
-def search_article(keyword):
-    return noticeRepository.find_by_title(keyword)

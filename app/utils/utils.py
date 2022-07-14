@@ -1,11 +1,10 @@
-import json
 from functools import wraps
-from flask import request, jsonify, g
+
 import jwt
-from marshmallow import Schema
-from funcy import partial
+from flask import request, jsonify, g
 from flask_apispec import marshal_with
-from bson.json_util import loads
+from funcy import partial
+from marshmallow import Schema
 
 
 def valid_user(f):

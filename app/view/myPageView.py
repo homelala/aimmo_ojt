@@ -3,7 +3,7 @@ from flask_classful import route, FlaskView
 
 from app.schema.reponse.ResponseDto import ResponseDto
 from app.schema.NoticeCommentSchema import NoticeCommentSchema
-from app.schema.NoticeSchema import NoticeSchema
+from app.schema.NoticeSchema import NoticeDetailSchema
 from app.schema.error.ApiErrorSchema import ApiErrorSchema
 from app.schema.reponse.ResponseSchema import ResponseSchema
 from app.service import myPageService
@@ -26,7 +26,7 @@ class MyPageView(FlaskView):
     def getMaxLikeNotice(self, user_id=None):
         try:
             notice_info = myPageService.get_my_articles(user_id)
-            schema = NoticeSchema(many=True)
+            schema = NoticeDetailSchema(many=True)
             return ResponseDto(200, "success", schema.dump(notice_info)), 200
         except Exception as e:
             traceback.print_exc()

@@ -3,10 +3,6 @@ from pprint import pprint
 from app.domain.NoticeComment import NoticeComment
 
 
-def save(comment):
-    NoticeComment.save(comment)
-
-
 def deleteByNoticeId(comment):
     NoticeComment.delete(comment)
 

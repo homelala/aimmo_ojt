@@ -18,6 +18,7 @@ class User(Document):
         return self.email
 
     def check_passwd(self, passwd):
+        print(self.passwd, passwd)
         if self.passwd != passwd:
             return False
         return True

@@ -9,7 +9,7 @@ class UserSchema(Schema):
     passwd = fields.String(required=True)
 
     @post_load
-    def newUser(self, data, **kwargs):
+    def new_user(self, data, **kwargs):
         user = User(**data)
         return user
 

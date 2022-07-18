@@ -1,7 +1,11 @@
 import json
 import logging
 
-from bson import json_util
+import jwt
+from bson import json_util, ObjectId
+from flask import jsonify, request
+
+from app.domain.user import User
 
 logger = logging.getLogger("test")
 from flask_apispec import use_kwargs, marshal_with, doc
@@ -10,10 +14,9 @@ from app.schema.reponse.ResponseDto import ResponseDto
 from app.schema.user import UserSignUpSchema, UserLogInSchema, UserUpdateInfoSchema
 from app.schema.error.ApiErrorSchema import ApiErrorSchema
 from app.schema.reponse.ResponseSchema import ResponseDictSchema
-from app.service import userService
 from app.utils.CustomException import CustomException
 from app.utils.ErrorResponseDto import ErrorResponseDto
-from app.utils.utils import valid_user, marshal_empty
+from app.utils.utils import valid_user, marshal_empty, user_create_valid
 
 
 class UserView(FlaskView):
@@ -22,25 +25,32 @@ class UserView(FlaskView):
 
     @route("/", methods=["POST"])
     @doc(tags=["User"], description="User 회원 가입", summary="User 회원 가입")
+    @user_create_valid
     @use_kwargs(UserSignUpSchema(), locations=("json",))
     @marshal_with(ResponseDictSchema(), code=200, description="회원 가입 완료")
     @marshal_with(ApiErrorSchema(), code=402, description="회원 가입 실패")
     def signup(self, user):
-        try:
-            user_info = userService.userSignUp(user)
-            return ResponseDto({"user_id": json.loads(json_util.dumps(user_info.id))["$oid"]}), 200
-        except CustomException as e:
-            return ErrorResponseDto(e.message), e.statusCode
+        user_info = user.save()
+        return ResponseDto({"user_id": json.loads(json_util.dumps(user_info.id))["$oid"]}), 200
 
-    @route("/logIn", methods=["POST"])
+    @route("/log-in", methods=["POST"])
     @doc(description="User 로그인", summary="User 로그인")
     @use_kwargs(UserLogInSchema(), locations=("json",))
     @marshal_with(ResponseDictSchema(), code=200, description="로그인 성공")
     @marshal_with(ApiErrorSchema(), code=401, description="로그인 실패")
     def login(self, user):
         try:
-            user_info = userService.userLogIn(user, user["passwd"])
-            return ResponseDto({"userId": json.loads(json_util.dumps(user_info.id))["$oid"]}), 200
+            data = json.loads(request.data)
+            if not user:
+                return jsonify({"message": "이메일 혹은 비밀번호가 틀렸습니다."}, 405)
+            if not user.check_passwd(data["passwd"]):
+                return jsonify({"message": "이메일 혹은 비밀번호가 틀렸습니다."}, 405)
+
+            payload = {"email": user.email, "name": user.name, "id": str(user.id)}
+            token = jwt.encode(payload, "secret_key", algorithm="HS256")
+            user.update_token(token)
+
+            return ResponseDto({"userId": json.loads(json_util.dumps(user.id))["$oid"]}), 200
         except CustomException as e:
             return ErrorResponseDto(e.message), e.statusCode
 
@@ -52,7 +62,9 @@ class UserView(FlaskView):
     @marshal_with(ApiErrorSchema(), code=403, description="정보 수정 실패")
     def userUpdateInfo(self, user=None):
         try:
-            userService.userUpdateInfo(user)
+            user_info = User.objects(id=ObjectId(user.id)).get()
+            user_info.update_name(user.name)
+
             return "", 200
         except CustomException as e:
             return ErrorResponseDto(e.message), e.statusCode

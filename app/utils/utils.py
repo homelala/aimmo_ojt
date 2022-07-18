@@ -1,3 +1,4 @@
+import json
 from functools import wraps
 
 import jwt
@@ -5,6 +6,8 @@ from flask import request, jsonify, g
 from flask_apispec import marshal_with
 from funcy import partial
 from marshmallow import Schema
+
+from app.domain.user import User
 
 
 def valid_user(f):
@@ -17,6 +20,18 @@ def valid_user(f):
         except jwt.InvalidTokenError:
             return jsonify({"message": "유요한 토큰이 아닙니다."}, 405)
         g.user_id = payload["id"]
+        return f(*args, **kwargs)
+
+    return decorate_user
+
+
+def user_create_valid(f):
+    @wraps(f)
+    def decorate_user(*args, **kwargs):
+        data = json.loads(request.data)
+        already_user = User.objects(email=data["email"])
+        if already_user:
+            return jsonify({"message": "이미 존재하는 계정입니다."}, 405)
         return f(*args, **kwargs)
 
     return decorate_user

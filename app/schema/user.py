@@ -1,6 +1,6 @@
 from marshmallow import fields, Schema, post_load
 
-from app.domain.User import User
+from app.domain.user import User
 
 
 class UserSchema(Schema):

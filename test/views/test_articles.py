@@ -2,10 +2,10 @@ import json
 
 import pytest
 
-from app.domain.NoticeComment import NoticeComment
+from app.domain.notice_comment import NoticeComment
 from test.factory.user import UserFactory
 from test.factory.notice import NoticeFactory
-from app.domain.Notice import Notice
+from app.domain.notice import Notice
 
 
 class Test_articles:

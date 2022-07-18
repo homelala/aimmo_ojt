@@ -5,11 +5,11 @@ from flask import g
 from flask_apispec import use_kwargs, marshal_with, doc
 from flask_classful import route, FlaskView, request
 
-from app.domain.Notice import Notice
-from app.domain.NoticeComment import NoticeComment
+from app.domain.notice import Notice
+from app.domain.notice_comment import NoticeComment
 from app.schema.reponse.ResponseDto import ResponseDto
-from app.schema.NoticeCommentSchema import RegisterCommentSchema
-from app.schema.NoticeSchema import RegisterArticleSchema, UpdateArticleSchema, NoticeDetailSchema
+from app.schema.notice_comment import RegisterCommentSchema
+from app.schema.notice import RegisterArticleSchema, UpdateArticleSchema, NoticeDetailSchema
 from app.schema.error.ApiErrorSchema import ApiErrorSchema
 from app.schema.reponse.ResponseSchema import ResponseSchema, ResponseDictSchema
 from app.service import noticeService

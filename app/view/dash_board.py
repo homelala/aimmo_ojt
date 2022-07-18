@@ -2,8 +2,8 @@ from flask_apispec import marshal_with, doc, use_kwargs
 from flask_classful import route, FlaskView
 from marshmallow import fields
 
-from app.domain.Notice import Notice
-from app.schema.NoticeSchema import NoticeDetailSchema
+from app.domain.notice import Notice
+from app.schema.notice import NoticeDetailSchema
 from app.schema.reponse.ResponseDto import ResponseDto
 from app.schema.reponse.ResponseSchema import ResponseSchema
 

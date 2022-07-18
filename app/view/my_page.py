@@ -1,10 +1,10 @@
 from flask_apispec import marshal_with, doc
 from flask_classful import route, FlaskView
 
-from app.domain.Notice import Notice
-from app.domain.NoticeComment import NoticeComment
-from app.schema.NoticeCommentSchema import NoticeCommentSchema
-from app.schema.NoticeSchema import NoticeDetailSchema
+from app.domain.notice import Notice
+from app.domain.notice_comment import NoticeComment
+from app.schema.notice_comment import NoticeCommentSchema
+from app.schema.notice import NoticeDetailSchema
 from app.schema.reponse.ResponseDto import ResponseDto
 from app.schema.reponse.ResponseSchema import ResponseSchema
 from app.utils.utils import valid_user

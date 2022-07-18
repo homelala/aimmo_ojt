@@ -3,8 +3,8 @@ import datetime
 from flask_mongoengine import Document
 from mongoengine import StringField, DateField, ReferenceField
 
-from app.domain.Notice import Notice
-from app.domain.User import User
+from app.domain.notice import Notice
+from app.domain.user import User
 
 
 class NoticeComment(Document):

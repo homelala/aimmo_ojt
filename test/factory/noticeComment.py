@@ -1,6 +1,6 @@
 from factory.mongoengine import MongoEngineFactory
 
-from app.domain.NoticeComment import NoticeComment
+from app.domain.notice_comment import NoticeComment
 from factory import fuzzy
 
 

@@ -5,7 +5,7 @@ import pytest
 
 from test.factory.user import UserFactory
 import logging
-from app.domain.User import User
+from app.domain.user import User
 
 logger = logging.getLogger("test")
 sys.path.append(".")

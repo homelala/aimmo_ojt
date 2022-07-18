@@ -4,10 +4,10 @@ from flask import Flask
 import mongoengine
 import traceback
 import os
-from app.view.dashBoardView import DashBoardView
-from app.view.noticeView import NoticeView
-from app.view.userView import UserView
-from app.view.myPageView import MyPageView
+from app.view.dash_board import DashBoardView
+from app.view.notice import NoticeView
+from app.view.user import UserView
+from app.view.my_page import MyPageView
 import sys
 import app.config as config
 

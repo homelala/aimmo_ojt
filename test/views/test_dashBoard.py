@@ -2,7 +2,7 @@ import datetime
 
 import pytest
 
-from app.domain.Notice import Notice
+from app.domain.notice import Notice
 from test.factory.notice import NoticeFactory
 from test.factory.noticeComment import NoticeCommentFactory
 from test.factory.user import UserFactory

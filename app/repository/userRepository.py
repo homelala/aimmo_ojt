@@ -1,4 +1,4 @@
-from app.domain.User import User
+from app.domain.user import User
 
 
 def save(user):

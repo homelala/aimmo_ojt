@@ -1,5 +1,5 @@
 from app.db import notice
-from app.domain.Notice import Notice
+from app.domain.notice import Notice
 from pprint import pprint
 
 

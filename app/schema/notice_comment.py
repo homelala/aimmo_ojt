@@ -1,6 +1,6 @@
 from marshmallow import fields, Schema, post_load
 
-from app.domain.NoticeComment import NoticeComment
+from app.domain.notice_comment import NoticeComment
 
 
 class NoticeInfoSchema(Schema):

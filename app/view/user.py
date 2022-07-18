@@ -1,15 +1,15 @@
-from bson import json_util
 import json
-import traceback
 import logging
+
+from bson import json_util
 
 logger = logging.getLogger("test")
 from flask_apispec import use_kwargs, marshal_with, doc
-from flask_classful import route, FlaskView, request
+from flask_classful import route, FlaskView
 from app.schema.reponse.ResponseDto import ResponseDto
-from app.schema.UserSchema import UserSignUpSchema, UserLogInSchema, UserUpdateInfoSchema
+from app.schema.user import UserSignUpSchema, UserLogInSchema, UserUpdateInfoSchema
 from app.schema.error.ApiErrorSchema import ApiErrorSchema
-from app.schema.reponse.ResponseSchema import ResponseSchema, ResponseDictSchema
+from app.schema.reponse.ResponseSchema import ResponseDictSchema
 from app.service import userService
 from app.utils.CustomException import CustomException
 from app.utils.ErrorResponseDto import ErrorResponseDto

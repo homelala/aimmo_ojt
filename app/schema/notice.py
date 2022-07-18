@@ -2,7 +2,7 @@ from marshmallow import fields, Schema, post_load
 
 from marshmallow import fields, Schema, post_load
 
-from app.domain.Notice import Notice
+from app.domain.notice import Notice
 
 
 class CommentUser(Schema):

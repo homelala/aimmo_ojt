@@ -1,6 +1,6 @@
 from pprint import pprint
 
-from app.domain.NoticeComment import NoticeComment
+from app.domain.notice_comment import NoticeComment
 
 
 def deleteByNoticeId(comment):

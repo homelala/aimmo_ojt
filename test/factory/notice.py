@@ -2,7 +2,7 @@ import factory
 from factory import fuzzy
 from factory.mongoengine import MongoEngineFactory
 
-from app.domain.Notice import Notice
+from app.domain.notice import Notice
 
 
 class NoticeFactory(MongoEngineFactory):

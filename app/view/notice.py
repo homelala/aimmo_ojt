@@ -21,7 +21,7 @@ class NoticeView(FlaskView):
     @valid_user
     @use_kwargs(RegisterArticleSchema(), locations=("json",))
     @marshal_empty(code=200)
-    def register_article(self, article=None):
+    def register(self, article=None):
         article.user = ObjectId(g.user_id)
         Notice.save(article)
         return "", 200
@@ -33,7 +33,7 @@ class NoticeView(FlaskView):
     @valid_article_user
     @use_kwargs(UpdateArticleSchema(), locations=("json",))
     @marshal_empty(code=200)
-    def update_article(self, article, article_id):
+    def update(self, article, article_id):
         article_info = Notice.objects(id=ObjectId(article_id)).get()
         article_info.update_info(article.title, article.description, article.tags)
         return "", 200
@@ -42,7 +42,7 @@ class NoticeView(FlaskView):
     @doc(description="article 읽기", summary="article 읽기")
     @valid_article
     @marshal_with(ResponseDictSchema(), code=200, description="article 불러오기")
-    def read_article(self, article_id):
+    def get(self, article_id):
         article_info = Notice.objects(id=article_id).get()
         article_info.comments = NoticeComment.objects(notice=article_id)
         return ResponseDto(NoticeDetailSchema().dump(article_info)), 200
@@ -51,7 +51,7 @@ class NoticeView(FlaskView):
     @valid_user
     @valid_article
     @marshal_empty(code=200)
-    def delete_article(self, article_id):
+    def delete(self, article_id):
         comments = NoticeComment.objects(notice=article_id)
         for comment in comments:
             NoticeComment.delete(comment)
@@ -64,7 +64,7 @@ class NoticeView(FlaskView):
     @valid_user
     @valid_article
     @marshal_empty(code=200)
-    def like_article(self, article_id):
+    def like(self, article_id):
         Notice.objects(id=article_id).get().increase_like()
         return "", 200
 
@@ -74,7 +74,7 @@ class NoticeView(FlaskView):
     @valid_article
     @use_kwargs(RegisterCommentSchema(), locations=("json",))
     @marshal_empty(code=200)
-    def comment_article(self, data, article_id):
+    def comment(self, data, article_id):
         data.user = ObjectId(g.user_id)
         data.notice = ObjectId(article_id)
 
@@ -85,7 +85,7 @@ class NoticeView(FlaskView):
     @route("/search/<title>", methods=["GET"])
     @doc(description="article 검색", summary="article 검색")
     @marshal_with(ResponseSchema(), code=200, description="article 검색 완료")
-    def search_article(self, title):
+    def search(self, title):
         article_list = Notice.objects(title__icontains=title).order_by("-register_date")
         schema = NoticeDetailSchema(many=True)
         return ResponseDto(schema.dump(article_list)), 200

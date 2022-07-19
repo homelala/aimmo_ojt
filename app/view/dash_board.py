@@ -16,7 +16,7 @@ class DashBoardView(FlaskView):
     @doc(description="상위 게시물", summary="상위 좋아요 게시물")
     @use_kwargs({"category": fields.String(), "page": fields.Integer(), "limit": fields.Integer()}, location="querystring")
     @marshal_with(ResponseSchema(), code=200, description="카테고리별 상위 게시물 불러오기 성공")
-    def get_high_like_articles(self, page, limit, category):
+    def top_articles(self, page, limit, category):
         notice_info = Notice.objects().order_by("-" + category).skip((page - 1) * 10).limit(limit)
         schema = NoticeDetailSchema(many=True)
         return ResponseDto(schema.dump(notice_info)), 200

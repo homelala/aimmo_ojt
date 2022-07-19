@@ -18,7 +18,7 @@ class MyPageView(FlaskView):
     @doc(description="내가 작성한 게시물", summary="내가 작성한 게시물")
     @valid_user
     @marshal_with(ResponseSchema(), code=200, description="내가 작성한 게시물 불러오기 성공")
-    def getMaxLikeNotice(self, user_id=None):
+    def my_articles(self, user_id=None):
         notice_info = Notice.objects(user=user_id).order_by("-register_date")
         schema = NoticeDetailSchema(many=True)
         return ResponseDto(schema.dump(notice_info)), 200
@@ -27,7 +27,7 @@ class MyPageView(FlaskView):
     @doc(description="내가 작성한 댓글", summary="내가 작성한 댓글")
     @valid_user
     @marshal_with(ResponseSchema(), code=200, description="내가 작성한 댓글 불러오기 성공")
-    def getHighCommentNotice(self, user_id=None):
+    def my_comments(self, user_id=None):
         notice_info = NoticeComment.objects(user=user_id)
         schema = NoticeCommentSchema(many=True)
         return ResponseDto(schema.dump(notice_info)), 200

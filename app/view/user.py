@@ -51,7 +51,7 @@ class UserView(FlaskView):
     @valid_user
     @use_kwargs(UserUpdateInfoSchema(), locations=("json",))
     @marshal_empty(code=200)
-    def userUpdateInfo(self, user=None):
+    def update_info(self, user=None):
         user_info = User.objects(id=ObjectId(user.id)).get()
         user_info.update_name(user.name)
 

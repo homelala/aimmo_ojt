@@ -2,11 +2,13 @@ import json
 from functools import wraps
 
 import jwt
+from bson import ObjectId
 from flask import request, jsonify, g
 from flask_apispec import marshal_with
 from funcy import partial
 from marshmallow import Schema
 
+from app.domain.notice import Notice
 from app.domain.user import User
 
 
@@ -35,6 +37,18 @@ def user_create_valid(f):
         return f(*args, **kwargs)
 
     return decorate_user
+
+
+def user_article_valid(f):
+    @wraps(f)
+    def decorate_article(*args, **kwargs):
+        print(kwargs["article_id"])
+        article = Notice.objects(id=ObjectId(kwargs["article_id"])).get()
+        if str(article.user.id) != g.user_id:
+            return jsonify({"message": "권한이 없는 게시물입니다."}, 405)
+        return f(*args, **kwargs)
+
+    return decorate_article
 
 
 marshal_empty = partial(marshal_with, Schema)

@@ -1,22 +1,15 @@
-import json
-
 from bson import ObjectId
 from flask import g
 from flask_apispec import use_kwargs, marshal_with, doc
-from flask_classful import route, FlaskView, request
+from flask_classful import route, FlaskView
 
 from app.domain.notice import Notice
 from app.domain.notice_comment import NoticeComment
-from app.schema.reponse.ResponseDto import ResponseDto
-from app.schema.notice_comment import RegisterCommentSchema
 from app.schema.notice import RegisterArticleSchema, UpdateArticleSchema, NoticeDetailSchema
-from app.schema.error.ApiErrorSchema import ApiErrorSchema
+from app.schema.notice_comment import RegisterCommentSchema
+from app.schema.reponse.ResponseDto import ResponseDto
 from app.schema.reponse.ResponseSchema import ResponseSchema, ResponseDictSchema
-from app.service import noticeService
-from app.utils.CustomException import CustomException
-from app.utils.ErrorResponseDto import ErrorResponseDto
-
-from app.utils.utils import valid_user, marshal_empty
+from app.utils.utils import valid_user, marshal_empty, user_article_valid
 
 
 class NoticeView(FlaskView):
@@ -30,21 +23,19 @@ class NoticeView(FlaskView):
     @marshal_empty(code=200)
     def register_article(self, article=None):
         article.user = ObjectId(g.user_id)
-        noticeService.register_article(article)
+        Notice.save(article)
         return "", 200
 
     @route("/<article_id>", methods=["PUT"])
     @doc(description="article 수정", summary="article 수정")
     @valid_user
+    @user_article_valid
     @use_kwargs(UpdateArticleSchema(), locations=("json",))
     @marshal_empty(code=200)
-    @marshal_with(ApiErrorSchema(), code=403, description="article 수정 실패")
-    def update_article(self, data, article_id):
-        try:
-            noticeService.update_article(article_id, data)
-            return "", 200
-        except CustomException as e:
-            return ErrorResponseDto(e.message), e.statusCode
+    def update_article(self, article, article_id):
+        article_info = Notice.objects(id=ObjectId(article_id)).get()
+        article_info.update_info(article.title, article.description, article.tags)
+        return "", 200
 
     @route("/<article_id>", methods=["GET"])
     @doc(description="article 읽기", summary="article 읽기")
@@ -58,7 +49,11 @@ class NoticeView(FlaskView):
     @valid_user
     @marshal_empty(code=200)
     def delete_article(self, article_id):
-        noticeService.delete_article(article_id)
+        comments = NoticeComment.objects(notice=article_id)
+        for comment in comments:
+            NoticeComment.delete(comment)
+        article = Notice.objects(id=ObjectId(article_id)).get()
+        Notice.delete(article)
         return "", 200
 
     @route("/<article_id>/like", methods=["GET"])

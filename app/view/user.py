@@ -13,7 +13,7 @@ from flask_classful import route, FlaskView
 from app.schema.reponse.ResponseDto import ResponseDto
 from app.schema.user import UserSignUpSchema, UserLogInSchema, UserUpdateInfoSchema
 from app.schema.reponse.ResponseSchema import ResponseDictSchema
-from app.utils.utils import valid_user, marshal_empty, user_create_valid
+from app.utils.utils import valid_user, marshal_empty, valid_create_user
 
 
 class UserView(FlaskView):
@@ -22,7 +22,7 @@ class UserView(FlaskView):
 
     @route("/", methods=["POST"])
     @doc(tags=["User"], description="User 회원 가입", summary="User 회원 가입")
-    @user_create_valid
+    @valid_create_user
     @use_kwargs(UserSignUpSchema(), locations=("json",))
     @marshal_with(ResponseDictSchema(), code=200, description="회원 가입 완료")
     def signup(self, user):

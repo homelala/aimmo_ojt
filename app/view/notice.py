@@ -9,7 +9,7 @@ from app.schema.notice import RegisterArticleSchema, UpdateArticleSchema, Notice
 from app.schema.notice_comment import RegisterCommentSchema
 from app.schema.reponse.ResponseDto import ResponseDto
 from app.schema.reponse.ResponseSchema import ResponseSchema, ResponseDictSchema
-from app.utils.utils import valid_user, marshal_empty, user_article_valid
+from app.utils.utils import valid_user, marshal_empty, valid_article_user, valid_article
 
 
 class NoticeView(FlaskView):
@@ -29,7 +29,8 @@ class NoticeView(FlaskView):
     @route("/<article_id>", methods=["PUT"])
     @doc(description="article 수정", summary="article 수정")
     @valid_user
-    @user_article_valid
+    @valid_article
+    @valid_article_user
     @use_kwargs(UpdateArticleSchema(), locations=("json",))
     @marshal_empty(code=200)
     def update_article(self, article, article_id):
@@ -39,6 +40,7 @@ class NoticeView(FlaskView):
 
     @route("/<article_id>", methods=["GET"])
     @doc(description="article 읽기", summary="article 읽기")
+    @valid_article
     @marshal_with(ResponseDictSchema(), code=200, description="article 불러오기")
     def read_article(self, article_id):
         article_info = Notice.objects(id=article_id).get()
@@ -47,6 +49,7 @@ class NoticeView(FlaskView):
 
     @route("/<article_id>", methods=["DELETE"])
     @valid_user
+    @valid_article
     @marshal_empty(code=200)
     def delete_article(self, article_id):
         comments = NoticeComment.objects(notice=article_id)
@@ -59,6 +62,7 @@ class NoticeView(FlaskView):
     @route("/<article_id>/like", methods=["GET"])
     @doc(description="article 좋아요", summary="article 좋아요")
     @valid_user
+    @valid_article
     @marshal_empty(code=200)
     def like_article(self, article_id):
         Notice.objects(id=article_id).get().increase_like()
@@ -67,6 +71,7 @@ class NoticeView(FlaskView):
     @route("/<article_id>/comment", methods=["POST"])
     @doc(description="article 댓글 달기", summary="article 댓글 달기")
     @valid_user
+    @valid_article
     @use_kwargs(RegisterCommentSchema(), locations=("json",))
     @marshal_empty(code=200)
     def comment_article(self, data, article_id):

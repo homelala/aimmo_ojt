@@ -23,7 +23,7 @@ class UserView(FlaskView):
     @doc(tags=["User"], description="User 회원 가입", summary="User 회원 가입")
     @valid_create_user
     @use_kwargs(UserSignUpSchema(), locations=("json",))
-    @marshal_with({"user_id":fields.String()}, code=201, description="회원 가입 완료")
+    @marshal_with({"user_id": fields.String()}, code=201, description="회원 가입 완료")
     def signup(self, user):
         user_info = user.save()
         return {"user_id": json.loads(json_util.dumps(user_info.id))["$oid"]}, 201
@@ -31,7 +31,7 @@ class UserView(FlaskView):
     @route("/log-in", methods=["POST"])
     @doc(description="User 로그인", summary="User 로그인")
     @use_kwargs(UserLogInSchema(), locations=("json",))
-    @marshal_with({"user_id":fields.String()}, code=201, description="로그인 성공")
+    @marshal_with({"user_id": fields.String()}, code=201, description="로그인 성공")
     def login(self, user):
         data = json.loads(request.data)
         if not user or not user.check_passwd(data["passwd"]):

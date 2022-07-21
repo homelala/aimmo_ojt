@@ -2,6 +2,7 @@ from bson import ObjectId
 from flask import g
 from flask_apispec import use_kwargs, marshal_with, doc
 from flask_classful import route, FlaskView
+from marshmallow import fields
 
 from app.domain.notice import Notice
 from app.domain.notice_comment import NoticeComment
@@ -80,10 +81,11 @@ class NoticeView(FlaskView):
         NoticeComment.save(data)
         return "", 201
 
-    @route("/search/<title>", methods=["GET"])
+    @route("/search", methods=["GET"])
     @doc(description="article 검색", summary="article 검색")
+    @use_kwargs({"title": fields.String(), "page": fields.Integer(), "limit": fields.Integer()})
     @marshal_with(NoticeDetailSchema(many=True), code=200, description="article 검색 완료")
-    def search(self, title):
-        article_list = Notice.objects(title__icontains=title).order_by("-register_date")
+    def search(self, title, page, limit):
+        article_list = Notice.objects(title__icontains=title).order_by("-register_date").skip((page-1)*10).limit(limit)
         schema = NoticeDetailSchema(many=True)
         return schema.dump(article_list), 200

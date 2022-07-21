@@ -1,6 +1,5 @@
 import jwt
 import pytest
-from bson.json_util import dumps as bson_dumps
 from flask import current_app
 
 

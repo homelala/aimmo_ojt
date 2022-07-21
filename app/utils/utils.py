@@ -1,9 +1,9 @@
 import json
 from functools import wraps
+from flask import request, jsonify, g
 
 import jwt
 from bson import ObjectId
-from flask import request, jsonify, g
 from flask_apispec import marshal_with
 from funcy import partial
 from marshmallow import Schema
@@ -13,11 +13,10 @@ from app.domain.notice import Notice
 from app.domain.user import User
 
 
-def valid_user(f):
+def token_required(f):
     @wraps(f)
     def decorate_user(*args, **kwargs):
         token = request.headers["token"]
-
         try:
             payload = jwt.decode(token, "secret_key", "HS256")
         except jwt.InvalidTokenError:

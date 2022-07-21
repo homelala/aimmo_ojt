@@ -1,8 +1,9 @@
 import json
 import logging
 
-import jwt
 from bson import json_util, ObjectId
+import jwt
+
 from flask import jsonify, request
 
 from app.domain.user import User
@@ -13,7 +14,7 @@ from flask_classful import route, FlaskView
 from app.schema.reponse.ResponseDto import ResponseDto
 from app.schema.user import UserSignUpSchema, UserLogInSchema, UserUpdateInfoSchema
 from app.schema.reponse.ResponseSchema import ResponseDictSchema
-from app.utils.utils import valid_user, marshal_empty, valid_create_user
+from app.utils.utils import token_required, marshal_empty, valid_create_user
 
 
 class UserView(FlaskView):
@@ -42,13 +43,13 @@ class UserView(FlaskView):
 
         payload = {"email": user.email, "name": user.name, "id": str(user.id)}
         token = jwt.encode(payload, "secret_key", algorithm="HS256")
-        user.update_token(token)
+        user.update_token(str(token))
 
         return ResponseDto({"userId": json.loads(json_util.dumps(user.id))["$oid"]}), 200
 
     @route("/", methods=["PUT"])
     @doc(description="User 정보 수정", summary="User 정보 수정")
-    @valid_user
+    @token_required
     @use_kwargs(UserUpdateInfoSchema(), locations=("json",))
     @marshal_empty(code=200)
     def update_info(self, user=None):

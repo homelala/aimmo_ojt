@@ -7,7 +7,7 @@ from app.schema.notice_comment import NoticeCommentSchema
 from app.schema.notice import NoticeDetailSchema
 from app.schema.reponse.ResponseDto import ResponseDto
 from app.schema.reponse.ResponseSchema import ResponseSchema
-from app.utils.utils import valid_user
+from app.utils.utils import token_required
 
 
 class MyPageView(FlaskView):
@@ -16,7 +16,7 @@ class MyPageView(FlaskView):
 
     @route("/<user_id>/articles", methods=["GET"])
     @doc(description="내가 작성한 게시물", summary="내가 작성한 게시물")
-    @valid_user
+    @token_required
     @marshal_with(ResponseSchema(), code=200, description="내가 작성한 게시물 불러오기 성공")
     def my_articles(self, user_id=None):
         notice_info = Notice.objects(user=user_id).order_by("-register_date")
@@ -25,7 +25,7 @@ class MyPageView(FlaskView):
 
     @route("/<user_id>/comments", methods=["GET"])
     @doc(description="내가 작성한 댓글", summary="내가 작성한 댓글")
-    @valid_user
+    @token_required
     @marshal_with(ResponseSchema(), code=200, description="내가 작성한 댓글 불러오기 성공")
     def my_comments(self, user_id=None):
         notice_info = NoticeComment.objects(user=user_id)

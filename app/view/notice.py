@@ -1,5 +1,5 @@
 from bson import ObjectId
-from flask import request, g
+from flask import g
 from flask_apispec import use_kwargs, marshal_with, doc
 from flask_classful import route, FlaskView
 
@@ -7,8 +7,6 @@ from app.domain.notice import Notice
 from app.domain.notice_comment import NoticeComment
 from app.schema.notice import RegisterArticleSchema, UpdateArticleSchema, NoticeDetailSchema
 from app.schema.notice_comment import RegisterCommentSchema
-from app.schema.reponse.ResponseDto import ResponseDto
-from app.schema.reponse.ResponseSchema import ResponseSchema, ResponseDictSchema
 from app.utils.utils import token_required, marshal_empty, valid_article_user, valid_article
 
 
@@ -20,11 +18,11 @@ class NoticeView(FlaskView):
     @doc(description="article 등록", summary="article 등록")
     @token_required
     @use_kwargs(RegisterArticleSchema(), locations=("json",))
-    @marshal_empty(code=200)
+    @marshal_empty(code=201)
     def post(self, article=None):
         article.user = ObjectId(g.user_id)
         Notice.save(article)
-        return "", 200
+        return "", 201
 
     @route("/<article_id>", methods=["PUT"])
     @doc(description="article 수정", summary="article 수정")
@@ -41,11 +39,11 @@ class NoticeView(FlaskView):
     @route("/<article_id>", methods=["GET"])
     @doc(description="article 읽기", summary="article 읽기")
     @valid_article
-    @marshal_with(ResponseDictSchema(), code=200, description="article 불러오기")
+    @marshal_with(NoticeDetailSchema(), code=200, description="article 불러오기")
     def get(self, article_id):
         article_info = Notice.objects(id=article_id).get()
         article_info.comments = NoticeComment.objects(notice=article_id)
-        return ResponseDto(NoticeDetailSchema().dump(article_info)), 200
+        return NoticeDetailSchema().dump(article_info), 200
 
     @route("/<article_id>", methods=["DELETE"])
     @token_required
@@ -73,19 +71,19 @@ class NoticeView(FlaskView):
     @token_required
     @valid_article
     @use_kwargs(RegisterCommentSchema(), locations=("json",))
-    @marshal_empty(code=200)
+    @marshal_empty(code=201)
     def comment(self, data, article_id):
         data.user = ObjectId(g.user_id)
         data.notice = ObjectId(article_id)
 
         Notice.objects(id=article_id).get().increase_comment()
         NoticeComment.save(data)
-        return "", 200
+        return "", 201
 
     @route("/search/<title>", methods=["GET"])
     @doc(description="article 검색", summary="article 검색")
-    @marshal_with(ResponseSchema(), code=200, description="article 검색 완료")
+    @marshal_with(NoticeDetailSchema(many=True), code=200, description="article 검색 완료")
     def search(self, title):
         article_list = Notice.objects(title__icontains=title).order_by("-register_date")
         schema = NoticeDetailSchema(many=True)
-        return ResponseDto(schema.dump(article_list)), 200
+        return schema.dump(article_list), 200

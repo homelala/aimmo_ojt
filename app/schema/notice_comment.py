@@ -12,7 +12,7 @@ class NoticeCommentSchema(Schema):
     user_id = fields.String(required=True)
     description = fields.String(required=True)
     register_date = fields.String(required=True)
-
+    notice = fields.Nested(NoticeInfoSchema())
 
 class RegisterCommentSchema(Schema):
     description = fields.String(required=True)

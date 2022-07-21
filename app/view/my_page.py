@@ -26,6 +26,6 @@ class MyPageView(FlaskView):
     @token_required
     @marshal_with(NoticeCommentSchema(many=True), code=200, description="내가 작성한 댓글 불러오기 성공")
     def my_comments(self, user_id=None):
-        notice_info = NoticeComment.objects(user=user_id)
+        notice_info = NoticeComment.objects(user=user_id).select_related()
         schema = NoticeCommentSchema(many=True)
         return schema.dump(notice_info), 200

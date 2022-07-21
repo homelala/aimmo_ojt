@@ -21,7 +21,7 @@ class NoticeView(FlaskView):
     @token_required
     @use_kwargs(RegisterArticleSchema(), locations=("json",))
     @marshal_empty(code=200)
-    def register(self, article=None):
+    def post(self, article=None):
         article.user = ObjectId(g.user_id)
         Notice.save(article)
         return "", 200

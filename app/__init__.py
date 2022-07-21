@@ -11,6 +11,7 @@ from app.view.my_page import MyPageView
 import sys
 import app.config as config
 
+
 def create_app():
     app = Flask(__name__)
     app.debug = True
@@ -38,13 +39,9 @@ def create_app():
         traceback.print_exc()
         print("connect database error:" + str(e))
 
-    from flask_cors import CORS
-
-    CORS(app, resources={r"*": {"origins": "*"}})
     UserView.register(app)
     DashBoardView.register(app)
     MyPageView.register(app)
     NoticeView.register(app)
-
 
     return app

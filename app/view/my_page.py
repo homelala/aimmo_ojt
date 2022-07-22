@@ -17,7 +17,7 @@ class MyPageView(FlaskView):
     @token_required
     @marshal_with(NoticeDetailSchema(many=True), code=200, description="내가 작성한 게시물 불러오기 성공")
     def my_articles(self, user_id=None):
-        notice_info = Notice.objects(user=user_id).order_by("-register_date")
+        notice_info = Notice.objects(user=user_id, is_deleted=False).order_by("-register_date")
         schema = NoticeDetailSchema(many=True)
         return schema.dump(notice_info), 200
 
@@ -26,6 +26,6 @@ class MyPageView(FlaskView):
     @token_required
     @marshal_with(NoticeCommentSchema(many=True), code=200, description="내가 작성한 댓글 불러오기 성공")
     def my_comments(self, user_id=None):
-        notice_info = NoticeComment.objects(user=user_id).select_related()
+        notice_info = NoticeComment.objects(user=user_id, is_deleted=False).select_related()
         schema = NoticeCommentSchema(many=True)
         return schema.dump(notice_info), 200

@@ -54,7 +54,9 @@ def valid_article(f):
     @wraps(f)
     def decorate_article(*args, **kwargs):
         try:
-            Notice.objects(id=ObjectId(kwargs["article_id"])).get()
+            article = Notice.objects(id=ObjectId(kwargs["article_id"])).get()
+            if article["is_deleted"]:
+                return jsonify({"message": "존재하지 않는 게시물입니다."}, 404)
         except DoesNotExist:
             return jsonify({"message": "존재하지 않는 게시물입니다."}, 404)
 

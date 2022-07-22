@@ -15,6 +15,6 @@ class DashBoardView(FlaskView):
     @use_kwargs({"category": fields.String(), "page": fields.Integer(), "limit": fields.Integer()}, location="querystring")
     @marshal_with(NoticeDetailSchema(many=True), code=200, description="카테고리별 상위 게시물 불러오기 성공")
     def top_articles(self, page, limit, category):
-        notice_info = Notice.objects().order_by("-" + category).skip((page - 1) * 10).limit(limit)
+        notice_info = Notice.objects(is_deleted=False).order_by("-" + category).skip((page - 1) * 10).limit(limit)
         schema = NoticeDetailSchema(many=True)
         return schema.dump(notice_info), 200

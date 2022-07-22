@@ -51,11 +51,11 @@ class NoticeView(FlaskView):
     @valid_article
     @marshal_empty(code=200)
     def delete(self, article_id):
-        comments = NoticeComment.objects(notice=article_id)
+        comments = NoticeComment.objects(notice=ObjectId(article_id))
         for comment in comments:
-            NoticeComment.delete(comment)
+            comment.delete_comment()
         article = Notice.objects(id=ObjectId(article_id)).get()
-        Notice.delete(article)
+        article.delete_article()
         return "", 200
 
     @route("/<article_id>/like", methods=["GET"])
@@ -86,6 +86,6 @@ class NoticeView(FlaskView):
     @use_kwargs({"title": fields.String(), "page": fields.Integer(), "limit": fields.Integer()})
     @marshal_with(NoticeDetailSchema(many=True), code=200, description="article 검색 완료")
     def search(self, title, page, limit):
-        article_list = Notice.objects(title__icontains=title).order_by("-register_date").skip((page-1)*10).limit(limit)
+        article_list = Notice.objects(title__icontains=title, is_deleted=False).order_by("-register_date").skip((page-1)*10).limit(limit)
         schema = NoticeDetailSchema(many=True)
         return schema.dump(article_list), 200

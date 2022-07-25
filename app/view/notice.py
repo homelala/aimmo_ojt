@@ -54,8 +54,7 @@ class NoticeView(FlaskView):
         comments = NoticeComment.objects(notice=ObjectId(article_id))
         for comment in comments:
             comment.delete_comment()
-        article = Notice.objects(id=ObjectId(article_id)).get()
-        article.delete_article()
+        Notice.objects(id=ObjectId(article_id)).get().delete_article()
         return "", 200
 
     @route("/<article_id>/like", methods=["GET"])

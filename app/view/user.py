@@ -23,7 +23,6 @@ class UserView(FlaskView):
     @doc(tags=["User"], description="User 회원 가입", summary="User 회원 가입")
     @valid_create_user
     @use_kwargs(UserSignUpSchema(), locations=("json",))
-    @marshal_with({"user_id": fields.String()}, code=201, description="회원 가입 완료")
     def signup(self, user):
         user_info = user.save()
         return {"user_id": json.loads(json_util.dumps(user_info.id))["$oid"]}, 201
@@ -31,17 +30,15 @@ class UserView(FlaskView):
     @route("/log-in", methods=["POST"])
     @doc(description="User 로그인", summary="User 로그인")
     @use_kwargs(UserLogInSchema(), locations=("json",))
-    @marshal_with({"user_id": fields.String()}, code=201, description="로그인 성공")
     def login(self, user):
         data = json.loads(request.data)
         if not user or not user.check_passwd(data["passwd"]):
-            return jsonify({"message": "이메일 혹은 비밀번호가 틀렸습니다."}, 405)
+            return {"message": "이메일 혹은 비밀번호가 틀렸습니다."}, 405
 
         payload = {"email": user.email, "name": user.name, "id": str(user.id)}
         token = jwt.encode(payload, "secret_key", algorithm="HS256")
         user.update_token(str(token))
-
-        return {"userId": json.loads(json_util.dumps(user.id))["$oid"]}, 200
+        return {"user_id": json.loads(json_util.dumps(user.id))["$oid"]}, 200
 
     @route("/", methods=["PUT"])
     @doc(description="User 정보 수정", summary="User 정보 수정")

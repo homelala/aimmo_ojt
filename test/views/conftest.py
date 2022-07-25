@@ -7,7 +7,7 @@ from flask import current_app
 def token(logged_in_user):
     if logged_in_user:
         return jwt.encode(
-            {"user_id": logged_in_user.email, "name": logged_in_user.name},
+            {"user_id": logged_in_user.email, "name": logged_in_user.name, "id": str(logged_in_user.id)},
             "secret_key",
             algorithm="HS256",
         )

@@ -11,7 +11,7 @@ logger = logging.getLogger("test")
 sys.path.append(".")
 
 
-class Test_user:
+class Test_UserView:
     @pytest.fixture
     def logged_in_user(self):
         return UserFactory.create()
@@ -28,11 +28,11 @@ class Test_user:
         @pytest.fixture(scope="function")
         def subject(self, client, form):
             # url = url_for("UserView:signup")
-            return client.post("/user/signUp", data=json.dumps(form))
+            return client.post("/user/", data=json.dumps(form))
 
         class Test_정상_요청:
-            def test_return_200(self, subject):
-                assert subject.status_code == 200
+            def test_return_201(self, subject):
+                assert subject.status_code == 201
 
             def test_user_갯수가_증가한다(self, subject):
                 total_user_count = User.objects().count()
@@ -52,7 +52,7 @@ class Test_user:
                 }
 
             def test_return_400(self, subject):
-                assert subject.status_code == 402
+                assert subject.status_code == 400
 
     class Test_login:
         @pytest.fixture
@@ -68,7 +68,7 @@ class Test_user:
 
         @pytest.fixture(scope="function")
         def subject(self, client, signup_user, form):
-            return client.post("/user/logIn", data=json.dumps(form))
+            return client.post("/user/log-in", data=json.dumps(form))
 
         class Test_정상_요청:
             def test_return_200(self, subject):
@@ -82,8 +82,8 @@ class Test_user:
                     "passwd": "1111",
                 }
 
-            def test_return_400(self, subject):
-                assert subject.status_code == 401
+            def test_return_405(self, subject):
+                assert subject.status_code == 405
                 assert subject.json["message"] == "이메일 혹은 비밀번호가 틀렸습니다."
 
         class Test_비밀번호가_틀렸을경우:
@@ -91,14 +91,14 @@ class Test_user:
             def form(self):
                 return {
                     "email": "test@naver.com",
-                    "passwd": "2222",
+                    "passwd": "fail",
                 }
 
-            def test_return_400(self, subject):
-                assert subject.status_code == 401
+            def test_return_405(self, subject):
+                assert subject.status_code == 405
                 assert subject.json["message"] == "이메일 혹은 비밀번호가 틀렸습니다."
 
-    class Test_update:
+    class Test_update_info:
         @pytest.fixture
         def form(self, logged_in_user):
             return {
@@ -125,4 +125,4 @@ class Test_user:
 
             def test_유효하지_않은_토큰(self, subject):
                 assert subject.json["message"] == "유요한 토큰이 아닙니다."
-                assert subject.status_code == 405
+                assert subject.status_code == 403

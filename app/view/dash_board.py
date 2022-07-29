@@ -1,6 +1,5 @@
 from flask_apispec import marshal_with, doc, use_kwargs
 from flask_classful import route, FlaskView
-from marshmallow import fields
 
 from app.domain.notice import Notice
 from app.schema.main_page import MainPageParams

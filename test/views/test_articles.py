@@ -156,7 +156,6 @@ class Test_NoticeView:
                 assert subject.status_code == 200
 
             def test_return_data(self, subject, keyword):
-                print("adf", subject.json)
                 assert subject.json[0]["title"] == keyword
 
             class Test_부분_검색:

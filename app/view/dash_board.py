@@ -3,6 +3,7 @@ from flask_classful import route, FlaskView
 from marshmallow import fields
 
 from app.domain.notice import Notice
+from app.schema.main_page import MainPageParams
 from app.schema.notice import NoticeDetailSchema
 
 
@@ -12,7 +13,7 @@ class DashBoardView(FlaskView):
 
     @route("/top", methods=["GET"])
     @doc(description="상위 게시물", summary="상위 좋아요 게시물")
-    @use_kwargs({"category": fields.String(), "page": fields.Integer(), "limit": fields.Integer()}, location="querystring")
+    @use_kwargs(MainPageParams, locations=["query"])
     @marshal_with(NoticeDetailSchema(many=True), code=200, description="카테고리별 상위 게시물 불러오기 성공")
     def top_articles(self, page, limit, category):
         notice_info = Notice.objects(is_deleted=False).order_by("-" + category).skip((page - 1) * 10).limit(limit)

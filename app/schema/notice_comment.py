@@ -14,6 +14,7 @@ class NoticeCommentSchema(Schema):
     register_date = fields.String(required=True)
     notice = fields.Nested(NoticeInfoSchema())
 
+
 class RegisterCommentSchema(Schema):
     description = fields.String(required=True)
 

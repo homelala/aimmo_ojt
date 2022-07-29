@@ -4,9 +4,9 @@ from mongoengine import StringField, EmailField, IntField
 
 class User(Document):
     id = StringField(required=False)
-    name = StringField(required=False)
-    email = EmailField(required=True, unique=True)
-    passwd = StringField(required=True)
+    name = StringField(required=True)
+    email = EmailField(required=False, unique=True)
+    passwd = StringField(required=False)
     token = StringField(required=False)
 
     @property
@@ -18,7 +18,6 @@ class User(Document):
         return self.email
 
     def check_passwd(self, passwd):
-        print(self.passwd, passwd)
         if self.passwd != passwd:
             return False
         return True

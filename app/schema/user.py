@@ -38,8 +38,6 @@ class UserLogInSchema(Schema):
 
 
 class UserUpdateInfoSchema(Schema):
-    id = fields.String(required=False)
-    token = fields.String(required=False)
     name = fields.String(required=False)
 
     @post_load

@@ -17,6 +17,7 @@ def token_required(f):
     @wraps(f)
     def decorate_user(*args, **kwargs):
         token = request.headers["token"]
+        print(token)
         try:
             payload = jwt.decode(token, "secret_key", "HS256")
         except jwt.InvalidTokenError:

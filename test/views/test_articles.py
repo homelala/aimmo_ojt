@@ -91,6 +91,15 @@ class Test_NoticeView:
                 assert Notice.objects().get()["title"] == register_article.title
                 assert Notice.objects().get()["description"] == register_article.description
 
+        class Test_존재하지_않는_게시물:
+            @pytest.fixture(scope="function")
+            def subject(self, client, register_article):
+                url = "/articles/" + "62df7b23830f264362d5be90"
+                return client.get(url)
+
+            def test_return_404(self, subject):
+                assert subject.status_code == 404
+
     class Test_delete:
         @pytest.fixture(scope="function")
         def subject(self, client, headers, register_article):

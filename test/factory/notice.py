@@ -14,3 +14,4 @@ class NoticeFactory(MongoEngineFactory):
     tags = ["test1", "test2"]
     like = 0
     is_deleted = False
+    count_comments = 0

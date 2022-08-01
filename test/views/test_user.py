@@ -11,7 +11,7 @@ logger = logging.getLogger("test")
 sys.path.append(".")
 
 
-class Test_UserView:
+class Describe_UserView:
     @pytest.fixture
     def logged_in_user(self):
         return UserFactory.create()
@@ -30,7 +30,7 @@ class Test_UserView:
             # url = url_for("UserView:signup")
             return client.post("/user/", data=json.dumps(form))
 
-        class Test_정상_요청:
+        class Context_정상_요청:
             def test_return_201(self, subject):
                 assert subject.status_code == 201
 

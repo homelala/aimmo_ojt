@@ -45,3 +45,14 @@ class UpdateArticleSchema(Schema):
     def updateNotice(self, data, **kwargs):
         article = Notice(**data)
         return article
+
+
+class SearchArticleSchema(Schema):
+    page = fields.Integer(required=True)
+    title = fields.String(required=True)
+    limit = fields.Integer(required=True)
+
+    @post_load
+    def make_param(self, data, **kwargs):
+        return data
+

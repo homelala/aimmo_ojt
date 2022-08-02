@@ -6,7 +6,7 @@ from marshmallow import fields
 
 from app.domain.notice import Notice
 from app.domain.notice_comment import NoticeComment
-from app.schema.notice import RegisterArticleSchema, UpdateArticleSchema, NoticeDetailSchema
+from app.schema.notice import RegisterArticleSchema, UpdateArticleSchema, NoticeDetailSchema, SearchArticleSchema
 from app.schema.notice_comment import RegisterCommentSchema
 from app.utils.utils import token_required, marshal_empty, valid_article_user, valid_article
 
@@ -82,7 +82,7 @@ class NoticeView(FlaskView):
 
     @route("/search", methods=["GET"])
     @doc(description="article 검색", summary="article 검색")
-    # @use_kwargs({"title": fields.String(), "page": fields.Integer(), "limit": fields.Integer()})
+    @use_kwargs(SearchArticleSchema(), locations=["query"])
     @marshal_with(NoticeDetailSchema(many=True), code=200, description="article 검색 완료")
     def search(self, title, page, limit):
         article_list = Notice.objects(title__icontains=title, is_deleted=False).order_by("-register_date").skip((page-1)*10).limit(limit)
